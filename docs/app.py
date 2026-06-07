@@ -4,7 +4,7 @@ A comprehensive documentation site for the Refast framework, built with Refast i
 
 Run:
     cd <project_root>
-    uvicorn docs_site.app:app --reload
+    uvicorn docs.app:app --reload
 """
 
 from pathlib import Path

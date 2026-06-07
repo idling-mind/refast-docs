@@ -15,7 +15,7 @@ built on FastAPI. The documentation site is itself built with Refast (dogfooding
 
 Write the complete content for the **{{PAGE_TITLE}}** documentation page.
 
-- **File to edit:** `docs_site/pages/{{SECTION}}/{{FILENAME}}.py`
+- **File to edit:** `docs/pages/{{SECTION}}/{{FILENAME}}.py`
 - **Route:** `{{PAGE_ROUTE}}`
 - **Section:** {{SECTION_NAME}}
 
@@ -25,14 +25,14 @@ Write the complete content for the **{{PAGE_TITLE}}** documentation page.
 {{SOURCE_FILES_LIST}}
 
 2. **Read the section instructions** for detailed content requirements:
-   - `docs_site/pages/{{SECTION}}/AGENT_INSTRUCTIONS.md`
+   - `docs/pages/{{SECTION}}/AGENT_INSTRUCTIONS.md`
 
 3. **Read one or two existing completed pages** as style references:
-   - `docs_site/pages/getting_started/installation.py`
-   - `docs_site/pages/home.py`
+   - `docs/pages/getting_started/installation.py`
+   - `docs/pages/home.py`
 
 4. **Read the target file** you're editing to see the current placeholder:
-   - `docs_site/pages/{{SECTION}}/{{FILENAME}}.py`
+   - `docs/pages/{{SECTION}}/{{FILENAME}}.py`
 
 5. **Write the page** by replacing the CONTENT string and optionally the render()
    function with full documentation content.
@@ -58,7 +58,7 @@ PAGE_ROUTE = "{{PAGE_ROUTE}}"
 
 def render(ctx):
     """Render the {{page description}} page."""
-    from docs_site.app import docs_layout  # MUST be deferred import
+    from docs.app import docs_layout  # MUST be deferred import
 
     content = Container(
         class_name="max-w-4xl mx-auto p-6",
@@ -107,7 +107,7 @@ For component reference pages, include actual rendered components alongside code
 
 ```python
 def render(ctx):
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     content = Container(
         class_name="max-w-4xl mx-auto p-6",
@@ -192,7 +192,7 @@ Before finishing, verify:
 - Do NOT use components that aren't in the framework
 - Do NOT add navigation callbacks unless the page needs internal links
 - Do NOT change PAGE_ROUTE or PAGE_TITLE (they must match app.py's NAV_SECTIONS)
-- Do NOT modify docs_site/app.py
+- Do NOT modify docs/app.py
 ```
 
 ---

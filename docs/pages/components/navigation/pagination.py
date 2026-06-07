@@ -1,7 +1,7 @@
 """Pagination — /docs/components/pagination."""
 
 from refast import Context
-from docs_site.pages.components.playground import playground_card
+from docs.pages.components.playground import playground_card
 from refast.components import (
     Card,
     CardContent,
@@ -200,7 +200,7 @@ def _playground(ctx: Context):
 
 def render(ctx: Context):
     """Render the Pagination component reference page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     content = Container(
         class_name="max-w-4xl mx-auto p-6",

@@ -268,7 +268,7 @@ sends a focused WebSocket message — no full page re-render happens.
 
 def render(ctx):
     """Render the DOM updates concept page with a live demo."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     updates_demo = Container(
         id="updates-demo-container",

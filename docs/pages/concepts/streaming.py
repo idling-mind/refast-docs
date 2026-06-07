@@ -271,7 +271,7 @@ component. Use **Stop** to interrupt mid-stream.
 
 def render(ctx: Context):
     """Render the streaming concept page with a live demo."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     stream_demo = Container(
         class_name="space-y-4",

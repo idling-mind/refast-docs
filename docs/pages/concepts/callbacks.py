@@ -155,7 +155,7 @@ Button(
 
 def render(ctx):
     """Render the callbacks concept page with inline live demos."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     basic_demo = Container(
         id="callbacks-basic-demo",

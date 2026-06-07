@@ -60,7 +60,7 @@ def render_todo_list(ctx: Context) -> rc.Component:
 
 def render(ctx: Context):
     """Render the live todo app page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     # The actual app content
     app_content = rc.Container(

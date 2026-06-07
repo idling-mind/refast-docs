@@ -2,7 +2,7 @@
 
 from refast.components import Container, Heading, Separator
 
-from docs_site.pages.utils import render_markdown_with_demo_apps
+from docs.pages.utils import render_markdown_with_demo_apps
 
 PAGE_TITLE = "Navigation Components"
 PAGE_ROUTE = "/docs/components/navigation"
@@ -10,7 +10,7 @@ PAGE_ROUTE = "/docs/components/navigation"
 
 def render(ctx):
     """Render the navigation components reference page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     content = Container(
         class_name="max-w-4xl mx-auto p-6",

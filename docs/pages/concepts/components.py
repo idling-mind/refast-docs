@@ -10,7 +10,7 @@ PAGE_ROUTE = "/docs/concepts/components"
 
 def render(ctx):
     """Render the components concept page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     basic_demo = Container(
         children=[

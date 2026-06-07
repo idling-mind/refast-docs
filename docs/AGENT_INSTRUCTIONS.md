@@ -9,7 +9,7 @@ It runs as a standard Refast app with a sidebar-based layout and 30+ pages of do
 
 ```bash
 cd <project_root>
-uvicorn docs_site.app:app --reload --port 8000
+uvicorn docs.app:app --reload --port 8000
 ```
 
 Open http://localhost:8000 in your browser.

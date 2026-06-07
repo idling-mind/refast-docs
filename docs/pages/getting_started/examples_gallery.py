@@ -179,7 +179,7 @@ async def _nav(ctx: Context, path):
 
 def render(ctx):
     """Render the examples gallery page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     content = Container(
         class_name="max-w-5xl mx-auto p-6",

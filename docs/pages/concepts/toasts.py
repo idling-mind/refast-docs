@@ -3,7 +3,7 @@
 from refast import Context
 from refast.components import Button, Column, Container, Heading, Row, Separator, Text
 
-from docs_site.pages.utils import render_markdown_with_demo_apps
+from docs.pages.utils import render_markdown_with_demo_apps
 
 PAGE_TITLE = "Toast Notifications"
 PAGE_ROUTE = "/docs/concepts/toasts"
@@ -94,7 +94,7 @@ def _variants_demo(ctx: Context):
 
 def render(ctx):
     """Render the toasts concept page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     variants_demo = _variants_demo(ctx)
 

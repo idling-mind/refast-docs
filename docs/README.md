@@ -6,7 +6,7 @@ A comprehensive documentation site for the Refast framework, **built with Refast
 
 ```bash
 # From the project root
-uvicorn docs_site.app:app --reload --port 8000
+uvicorn docs.app:app --reload --port 8000
 ```
 
 Open http://localhost:8000
@@ -14,7 +14,7 @@ Open http://localhost:8000
 ## Structure
 
 ```
-docs_site/
+docs/
 ├── app.py                      # Main app, shared layout, route registrations
 ├── AGENT_INSTRUCTIONS.md       # Top-level instructions for AI agents
 ├── TODO.md                     # Known issues tracker
@@ -44,7 +44,7 @@ PAGE_TITLE = "Page Title"
 PAGE_ROUTE = "/docs/route"
 
 def render(ctx):
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
     content = Container(
         class_name="max-w-4xl mx-auto p-6",
         children=[

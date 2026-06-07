@@ -23,7 +23,7 @@ PAGE_ROUTE = "/docs/concepts/bundle-splitting"
 
 def render(ctx: Context):
     """Render the bundle splitting concept page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     content = Container(
         class_name="max-w-4xl mx-auto p-6 space-y-8",

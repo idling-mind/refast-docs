@@ -38,7 +38,7 @@ async def handle_call_js(ctx: Context) -> None:
 
 def render(ctx):
     """Render the JS interop concept page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     # ------------------------------------------------------------------
     # Demo 1 — ctx.js() toggling a CSS class (pure client-side)

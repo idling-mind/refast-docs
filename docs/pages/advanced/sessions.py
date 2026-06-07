@@ -8,7 +8,7 @@ PAGE_ROUTE = "/docs/advanced/sessions"
 
 def render(ctx):
     """Render the sessions guide page."""
-    from docs_site.app import docs_layout
+    from docs.app import docs_layout
 
     content = Container(
         class_name="max-w-4xl mx-auto p-6",
