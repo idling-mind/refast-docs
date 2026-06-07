@@ -65,11 +65,11 @@ Card(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Card sub-components (`CardHeader`, `CardContent`, `CardFooter`, etc.). |
-| `title` | `str \| None` | `None` | Shorthand title rendered by the React component directly (without `CardHeader`). |
-| `description` | `str \| None` | `None` | Shorthand description rendered below `title`. |
-| `on_click` | `Callback \| None` | `None` | Optional click callback — makes the card interactive. |
+| `title` | `str | None` | `None` | Shorthand title rendered by the React component directly (without `CardHeader`). |
+| `description` | `str | None` | `None` | Shorthand description rendered below `title`. |
+| `on_click` | `Callback | None` | `None` | Optional click callback — makes the card interactive. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
-| `style` | `dict \| None` | `None` | Inline CSS style dict. |
+| `style` | `dict | None` | `None` | Inline CSS style dict. |
 
 ---
 
@@ -92,11 +92,11 @@ CardHeader(children=[
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `str \| None` | `None` | Shorthand title text. |
-| `description` | `str \| None` | `None` | Shorthand subtitle text. |
+| `title` | `str | None` | `None` | Shorthand title text. |
+| `description` | `str | None` | `None` | Shorthand subtitle text. |
 | `children` | `list` | `[]` | Explicit child components (overrides shorthand). |
 | `class_name` | `str` | `""` | Additional CSS class names. |
-| `style` | `dict \| None` | `None` | Inline CSS style dict. |
+| `style` | `dict | None` | `None` | Inline CSS style dict. |
 
 ---
 
@@ -114,7 +114,7 @@ CardTitle(children=["Billing Summary"], class_name="text-xl")
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Title text or components. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
-| `style` | `dict \| None` | `None` | Inline CSS style dict. |
+| `style` | `dict | None` | `None` | Inline CSS style dict. |
 
 ---
 
@@ -132,7 +132,7 @@ CardDescription(children=["Renews monthly — cancel any time."])
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Description text or components. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
-| `style` | `dict \| None` | `None` | Inline CSS style dict. |
+| `style` | `dict | None` | `None` | Inline CSS style dict. |
 
 ---
 
@@ -153,7 +153,7 @@ CardContent(children=[
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Content to display in the card body. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
-| `style` | `dict \| None` | `None` | Inline CSS style dict. |
+| `style` | `dict | None` | `None` | Inline CSS style dict. |
 
 ---
 
@@ -172,7 +172,7 @@ CardFooter(children=[
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Footer content — typically action buttons. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
-| `style` | `dict \| None` | `None` | Inline CSS style dict. |
+| `style` | `dict | None` | `None` | Inline CSS style dict. |
 
 ---
 

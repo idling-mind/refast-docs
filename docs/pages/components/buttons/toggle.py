@@ -267,26 +267,26 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | `""` | Button text label |
-| `icon` | `str \\| None` | `None` | Lucide icon name |
-| `pressed` | `bool \\| None` | `None` | Controlled pressed state |
+| `icon` | `str | None` | `None` | Lucide icon name |
+| `pressed` | `bool | None` | `None` | Controlled pressed state |
 | `default_pressed` | `bool` | `False` | Initial pressed state (uncontrolled) |
 | `disabled` | `bool` | `False` | Prevents interaction |
-| `variant` | `"default" \\| "outline"` | `"default"` | Visual style |
-| `size` | `"sm" \\| "md" \\| "lg"` | `"md"` | Button size |
-| `on_pressed_change` | `Callback \\| None` | `None` | Called with new pressed state |
+| `variant` | `"default" | "outline"` | `"default"` | Visual style |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Button size |
+| `on_pressed_change` | `Callback | None` | `None` | Called with new pressed state |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## ToggleGroup Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `"single" \\| "multiple"` | `"single"` | Selection mode |
-| `value` | `str \\| list[str] \\| dict[str, bool] \\| None` | `None` | Controlled value |
-| `default_value` | `str \\| list[str] \\| dict[str, bool] \\| None` | `None` | Initial value (uncontrolled) |
+| `type` | `"single" | "multiple"` | `"single"` | Selection mode |
+| `value` | `str | list[str] | dict[str, bool] | None` | `None` | Controlled value |
+| `default_value` | `str | list[str] | dict[str, bool] | None` | `None` | Initial value (uncontrolled) |
 | `disabled` | `bool` | `False` | Disables all items |
-| `variant` | `"default" \\| "outline"` | `"default"` | Visual style applied to all items |
-| `size` | `"sm" \\| "md" \\| "lg"` | `"md"` | Size applied to all items |
-| `on_value_change` | `Callback \\| None` | `None` | Called with the new value |
+| `variant` | `"default" | "outline"` | `"default"` | Visual style applied to all items |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Size applied to all items |
+| `on_value_change` | `Callback | None` | `None` | Called with the new value |
 | `children` | `list` | *(required)* | `ToggleGroupItem` components |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
@@ -295,9 +295,9 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | `""` | Item text |
-| `icon` | `str \\| None` | `None` | Lucide icon name |
-| `value` | `str \\| None` | `None` | Unique value for this item |
-| `name` | `str \\| None` | `None` | Alternative identifier |
+| `icon` | `str | None` | `None` | Lucide icon name |
+| `value` | `str | None` | `None` | Unique value for this item |
+| `name` | `str | None` | `None` | Alternative identifier |
 | `disabled` | `bool` | `False` | Disables this specific item |
 
 ## Examples

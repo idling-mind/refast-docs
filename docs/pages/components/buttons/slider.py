@@ -236,20 +236,20 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `list[float] \\| None` | `None` | Controlled value(s) — a list allows range sliders |
-| `default_value` | `list[float] \\| None` | `[0]` | Initial value (uncontrolled) |
+| `value` | `list[float] | None` | `None` | Controlled value(s) — a list allows range sliders |
+| `default_value` | `list[float] | None` | `[0]` | Initial value (uncontrolled) |
 | `min` | `float` | `0` | Minimum value |
 | `max` | `float` | `100` | Maximum value |
 | `step` | `float` | `1` | Increment between values |
 | `disabled` | `bool` | `False` | Prevents interaction |
-| `orientation` | `"horizontal" \\| "vertical"` | `"horizontal"` | Slider direction |
-| `label` | `str \\| None` | `None` | Visible label above the slider |
-| `description` | `str \\| None` | `None` | Helper text below the slider |
+| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Slider direction |
+| `label` | `str | None` | `None` | Visible label above the slider |
+| `description` | `str | None` | `None` | Helper text below the slider |
 | `show_value` | `bool` | `False` | Display current value next to thumb |
 | `required` | `bool` | `False` | Marks the field as required |
-| `error` | `str \\| None` | `None` | Validation error message |
-| `on_value_change` | `Callback \\| None` | `None` | Called continuously while dragging |
-| `on_value_commit` | `Callback \\| None` | `None` | Called once when the user releases the thumb |
+| `error` | `str | None` | `None` | Validation error message |
+| `on_value_change` | `Callback | None` | `None` | Called continuously while dragging |
+| `on_value_commit` | `Callback | None` | `None` | Called once when the user releases the thumb |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Controlled Usage

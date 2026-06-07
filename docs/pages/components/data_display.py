@@ -107,8 +107,8 @@ Table(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Cell content. |
-| `col_span` | `int \| None` | `None` | Number of columns this cell spans. |
-| `row_span` | `int \| None` | `None` | Number of rows this cell spans. |
+| `col_span` | `int | None` | `None` | Number of columns this cell spans. |
+| `row_span` | `int | None` | `None` | Number of rows this cell spans. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ---
@@ -182,11 +182,11 @@ Each entry in `columns` is a `dict`:
 | `page_size` | `int` | `10` | Rows per page. |
 | `loading` | `bool` | `False` | Display a loading overlay. |
 | `empty_message` | `str` | `"No data available"` | Shown when `data` is empty or no rows match. |
-| `current_page` | `int \| None` | `None` | Controlled current page (1-based). |
-| `on_row_click` | `Callback \| None` | `None` | Fired on row click. `ctx.event_data` is the row dict. |
-| `on_sort_change` | `Callback \| None` | `None` | Fired on sort change. `ctx.event_data` is `{"key": ..., "direction": "asc"\|"desc"}` or `None`. |
-| `on_filter_change` | `Callback \| None` | `None` | Fired when filter input changes. `ctx.event_data` is `{"value": ...}`. |
-| `on_page_change` | `Callback \| None` | `None` | Fired on page change. `ctx.event_data` is `{"page": <n>}`. |
+| `current_page` | `int | None` | `None` | Controlled current page (1-based). |
+| `on_row_click` | `Callback | None` | `None` | Fired on row click. `ctx.event_data` is the row dict. |
+| `on_sort_change` | `Callback | None` | `None` | Fired on sort change. `ctx.event_data` is `{"key": ..., "direction": "asc"|"desc"}` or `None`. |
+| `on_filter_change` | `Callback | None` | `None` | Fired when filter input changes. `ctx.event_data` is `{"value": ...}`. |
+| `on_page_change` | `Callback | None` | `None` | Fired on page change. `ctx.event_data` is `{"page": <n>}`. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ---
@@ -228,9 +228,9 @@ Tabs(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list[TabItem]` | `[]` | `TabItem` components. |
-| `default_value` | `str \| None` | `None` | Value of the initially active tab (uncontrolled). |
-| `value` | `str \| None` | `None` | Controlled active tab. Pair with `on_value_change`. |
-| `on_value_change` | `Callback \| None` | `None` | Called when the active tab changes. `ctx.event_data` is the new tab value. |
+| `default_value` | `str | None` | `None` | Value of the initially active tab (uncontrolled). |
+| `value` | `str | None` | `None` | Controlled active tab. Pair with `on_value_change`. |
+| `on_value_change` | `Callback | None` | `None` | Called when the active tab changes. `ctx.event_data` is the new tab value. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ### TabItem props
@@ -288,10 +288,10 @@ Accordion(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list[AccordionItem]` | `[]` | `AccordionItem` components. |
-| `type` | `"single" \| "multiple"` | `"single"` | Selection behaviour. `"single"` opens at most one section. |
+| `type` | `"single" | "multiple"` | `"single"` | Selection behaviour. `"single"` opens at most one section. |
 | `collapsible` | `bool` | `True` | If `True` and `type="single"`, allows closing all items. |
-| `default_value` | `str \| list[str] \| None` | `None` | Initially open item(s). |
-| `on_value_change` | `Callback \| None` | `None` | Called when open items change. `ctx.event_data` is the new value. |
+| `default_value` | `str | list[str] | None` | `None` | Initially open item(s). |
+| `on_value_change` | `Callback | None` | `None` | Called when open items change. `ctx.event_data` is the new value. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ### AccordionItem props
@@ -339,10 +339,10 @@ Avatar(src="/avatars/bob.jpg", alt="Bob", fallback="B", size="sm")
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `src` | `str \| None` | `None` | URL of the user image. Omit to show initials only. |
+| `src` | `str | None` | `None` | URL of the user image. Omit to show initials only. |
 | `alt` | `str` | `""` | Alternative text; also used to derive the fallback initial. |
-| `fallback` | `str \| None` | `None` | Short string (1–2 chars) shown when the image is unavailable. |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Avatar diameter: `sm`=32 px, `md`=40 px, `lg`=48 px. |
+| `fallback` | `str | None` | `None` | Short string (1–2 chars) shown when the image is unavailable. |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Avatar diameter: `sm`=32 px, `md`=40 px, `lg`=48 px. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ---
@@ -365,7 +365,7 @@ Badge(children=["Beta"], variant="secondary")
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Badge content — typically a short string. |
-| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "success" \| "warning"` | `"default"` | Visual style. |
+| `variant` | `"default" | "secondary" | "destructive" | "outline" | "success" | "warning"` | `"default"` | Visual style. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ### Variants
@@ -406,11 +406,11 @@ Image(
 |------|------|---------|-------------|
 | `src` | `str` | *(required)* | Image source URL. |
 | `alt` | `str` | `""` | Alternative text. |
-| `width` | `int \| str \| None` | `None` | Width in pixels (int) or CSS string. |
-| `height` | `int \| str \| None` | `None` | Height in pixels (int) or CSS string. |
-| `object_fit` | `"contain" \| "cover" \| "fill" \| "none" \| "scale-down"` | `"cover"` | CSS `object-fit` value. |
+| `width` | `int | str | None` | `None` | Width in pixels (int) or CSS string. |
+| `height` | `int | str | None` | `None` | Height in pixels (int) or CSS string. |
+| `object_fit` | `"contain" | "cover" | "fill" | "none" | "scale-down"` | `"cover"` | CSS `object-fit` value. |
 | `loading` | `bool` | `False` | Show a loading skeleton while the image loads. |
-| `fallback_src` | `str \| None` | `None` | Fallback URL if the main image fails. |
+| `fallback_src` | `str | None` | `None` | Fallback URL if the main image fails. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ---
@@ -466,8 +466,8 @@ Tooltip(
 |------|------|---------|-------------|
 | `content` | `str` | *(required)* | Plain-text tooltip message. |
 | `children` | `list` | `[]` | The trigger element(s). Typically a single component. |
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred side of the trigger to show the tooltip. |
-| `side_offset` | `int \| None` | `None` | Pixel gap between trigger and tooltip (defaults to `4` in the frontend). |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"top"` | Preferred side of the trigger to show the tooltip. |
+| `side_offset` | `int | None` | `None` | Pixel gap between trigger and tooltip (defaults to `4` in the frontend). |
 | `class_name` | `str` | `""` | Additional CSS class names on the tooltip content. |
 
 ---
@@ -512,11 +512,11 @@ HoverCard(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | One `HoverCardTrigger` and one `HoverCardContent`. |
-| `open` | `bool \| None` | `None` | Controlled open state. Omit for uncontrolled. |
+| `open` | `bool | None` | `None` | Controlled open state. Omit for uncontrolled. |
 | `default_open` | `bool` | `False` | Initial open state (uncontrolled). |
 | `open_delay` | `int` | `700` | Milliseconds before the card opens on hover. |
 | `close_delay` | `int` | `300` | Milliseconds before the card closes after hover ends. |
-| `on_open_change` | `Callback \| None` | `None` | Called when the open state changes. |
+| `on_open_change` | `Callback | None` | `None` | Called when the open state changes. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 
 ### HoverCardTrigger props
@@ -532,8 +532,8 @@ HoverCard(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Content displayed inside the floating card. |
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side relative to the trigger. |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred side relative to the trigger. |
 | `side_offset` | `int` | `4` | Pixel gap between trigger and card. |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment of the card relative to the trigger. |
+| `align` | `"start" | "center" | "end"` | `"center"` | Alignment of the card relative to the trigger. |
 | `class_name` | `str` | `""` | Additional CSS class names. |
 """

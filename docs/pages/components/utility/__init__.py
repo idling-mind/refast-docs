@@ -44,9 +44,9 @@ Separator(orientation="vertical")    # vertical
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the line |
+| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Direction of the line |
 | `decorative` | `bool` | `True` | Hides from accessibility tree when `True` |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -68,8 +68,8 @@ AspectRatio(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `ratio` | `float` | `1.0` | Width ÷ height, e.g. `16/9`, `4/3`, `1.0` |
-| `children` | `list \| Component \| None` | `None` | Content to constrain |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `children` | `list | Component | None` | `None` | Content to constrain |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -93,18 +93,18 @@ ScrollArea(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Scrollable content |
-| `type` | `"auto" \| "always" \| "scroll" \| "hover"` | `"hover"` | When the scrollbar is visible |
+| `children` | `list | Component | None` | `None` | Scrollable content |
+| `type` | `"auto" | "always" | "scroll" | "hover"` | `"hover"` | When the scrollbar is visible |
 | `scroll_hide_delay` | `int` | `600` | ms before scrollbar hides (hover/scroll modes) |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### ScrollBar props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Scrollbar axis |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `orientation` | `"vertical" | "horizontal"` | `"vertical"` | Scrollbar axis |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -135,29 +135,29 @@ Collapsible(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool \| None` | `None` | Controlled open state |
+| `open` | `bool | None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial state (uncontrolled) |
-| `on_open_change` | `Callback \| None` | `None` | Fired on state change |
+| `on_open_change` | `Callback | None` | `None` | Fired on state change |
 | `disabled` | `bool` | `False` | Prevents toggling |
-| `children` | `list \| Component \| None` | `None` | Trigger + content |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `children` | `list | Component | None` | `None` | Trigger + content |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### CollapsibleTrigger props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Interactive trigger element |
+| `children` | `list | Component | None` | `None` | Interactive trigger element |
 | `as_child` | `bool` | `True` | Merge props onto child (Radix asChild pattern) |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### CollapsibleContent props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Hidden/shown content |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `children` | `list | Component | None` | `None` | Hidden/shown content |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -193,10 +193,10 @@ Carousel(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Content + nav buttons |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Scroll axis |
-| `opts` | `dict \| None` | `None` | Embla options (e.g. `{"loop": True}`) |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `children` | `list | Component | None` | `None` | Content + nav buttons |
+| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Scroll axis |
+| `opts` | `dict | None` | `None` | Embla options (e.g. `{"loop": True}`) |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### CarouselContent / CarouselItem / CarouselPrevious / CarouselNext
@@ -231,10 +231,10 @@ ResizablePanelGroup(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | Split orientation |
-| `children` | `list \| Component \| None` | `None` | Panels and handles |
-| `on_layout` | `Callback \| None` | `None` | Fired with size array on resize |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `direction` | `"horizontal" | "vertical"` | `"horizontal"` | Split orientation |
+| `children` | `list | Component | None` | `None` | Panels and handles |
+| `on_layout` | `Callback | None` | `None` | Fired with size array on resize |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### ResizablePanel props
@@ -242,15 +242,15 @@ ResizablePanelGroup(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `default_size` | `float` | `50` | Initial size as % of group |
-| `min_size` | `float \| None` | `None` | Minimum size % |
-| `max_size` | `float \| None` | `None` | Maximum size % |
+| `min_size` | `float | None` | `None` | Minimum size % |
+| `max_size` | `float | None` | `None` | Maximum size % |
 | `collapsible` | `bool` | `False` | Allow full collapse |
-| `collapsed_size` | `float \| None` | `None` | Size % when collapsed |
-| `on_collapse` | `Callback \| None` | `None` | Fired on collapse |
-| `on_expand` | `Callback \| None` | `None` | Fired on expand |
-| `on_resize` | `Callback \| None` | `None` | Fired on every resize |
-| `children` | `list \| Component \| None` | `None` | Panel content |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `collapsed_size` | `float | None` | `None` | Size % when collapsed |
+| `on_collapse` | `Callback | None` | `None` | Fired on collapse |
+| `on_expand` | `Callback | None` | `None` | Fired on expand |
+| `on_resize` | `Callback | None` | `None` | Fired on every resize |
+| `children` | `list | Component | None` | `None` | Panel content |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### ResizableHandle props
@@ -258,7 +258,7 @@ ResizablePanelGroup(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `with_handle` | `bool` | `False` | Show a grip icon on the handle bar |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -283,12 +283,12 @@ ThemeSwitcher(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `default_theme` | `"light" \| "dark" \| "system"` | `"system"` | Theme used if no preference is stored |
+| `default_theme` | `"light" | "dark" | "system"` | `"system"` | Theme used if no preference is stored |
 | `storage_key` | `str` | `"refast-theme"` | `localStorage` key for persistence |
 | `show_system_option` | `bool` | `True` | Show "System" option in dropdown mode |
-| `mode` | `"toggle" \| "dropdown"` | `"toggle"` | Display mode |
-| `on_change` | `Callback \| None` | `None` | Fired with the new theme string |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `mode` | `"toggle" | "dropdown"` | `"toggle"` | Display mode |
+| `on_change` | `Callback | None` | `None` | Fired with the new theme string |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -307,16 +307,16 @@ Container(children=[..., Toaster(position="bottom-right", rich_colors=True)])
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"bottom-right"` | Where toasts appear |
+| `position` | `"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"` | `"bottom-right"` | Where toasts appear |
 | `expand` | `bool` | `False` | Expand toasts on hover by default |
 | `duration` | `int` | `4000` | Default duration in ms |
 | `visible_toasts` | `int` | `3` | Maximum simultaneous toasts |
 | `close_button` | `bool` | `False` | Show close button on each toast |
 | `rich_colors` | `bool` | `False` | Coloured backgrounds per variant |
-| `theme` | `"light" \| "dark" \| "system"` | `"system"` | Toast colour theme |
-| `offset` | `str \| int \| None` | `None` | Screen-edge offset (px or CSS value) |
+| `theme` | `"light" | "dark" | "system"` | `"system"` | Toast colour theme |
+| `offset` | `str | int | None` | `None` | Screen-edge offset (px or CSS value) |
 | `gap` | `int` | `14` | Gap between stacked toasts (px) |
-| `dir` | `"ltr" \| "rtl" \| "auto"` | `"auto"` | Text direction |
+| `dir` | `"ltr" | "rtl" | "auto"` | `"auto"` | Text direction |
 | `invert` | `bool` | `False` | Invert default colours |
 
 ---
@@ -339,11 +339,11 @@ Empty(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `icon` | `str \| None` | `None` | Lucide icon name shown above the title |
+| `icon` | `str | None` | `None` | Lucide icon name shown above the title |
 | `title` | `str` | `""` | Heading text |
 | `description` | `str` | `""` | Sub-text |
-| `action` | `Component \| None` | `None` | Optional CTA button |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `action` | `Component | None` | `None` | Optional CTA button |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -361,7 +361,7 @@ Row(children=["Press ", Kbd("⌘"), " + ", Kbd("K"), " to open the palette."])
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `str` | (positional) | Key label to display |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -381,6 +381,6 @@ LoadingOverlay(loading=is_saving, text="Saving…")
 | `loading` | `bool` | `False` | Whether the overlay is visible |
 | `text` | `str` | `"Loading..."` | Message shown beside the spinner |
 | `blur` | `bool` | `True` | Apply a blur effect to the content behind |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

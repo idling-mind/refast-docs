@@ -176,9 +176,9 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"horizontal" \\| "vertical"` | `"horizontal"` | Scroll axis |
+| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Scroll axis |
 | `loop` | `bool` | `False` | Whether to wrap around continuously |
-| `opts` | `dict \\| None` | `None` | Embla Carousel options (advanced) |
+| `opts` | `dict | None` | `None` | Embla Carousel options (advanced) |
 | `children` | `ChildrenType` | `None` | `CarouselContent` + navigation buttons |
 
 ### `CarouselItem`
@@ -192,7 +192,7 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `on_click` | `Callback \\| None` | `None` | Optional server callback when navigating |
+| `on_click` | `Callback | None` | `None` | Optional server callback when navigating |
 
 ## Component Hierarchy
 

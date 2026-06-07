@@ -186,15 +186,15 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool \\| None` | `None` | Controlled open state |
+| `open` | `bool | None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
-| `on_open_change` | `Callback \\| None` | `None` | Called when open state changes |
+| `on_open_change` | `Callback | None` | `None` | Called when open state changes |
 
 ### `SheetContent`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" \\| "right" \\| "bottom" \\| "left"` | `"right"` | Slide-in edge |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"right"` | Slide-in edge |
 | `children` | `ChildrenType` | `None` | Panel content |
 
 ### `SheetTitle`

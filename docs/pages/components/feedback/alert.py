@@ -158,11 +158,11 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `str \\| None` | `None` | Bold heading of the alert |
-| `message` | `str \\| None` | `None` | Body text |
-| `variant` | `"default" \\| "success" \\| "warning" \\| "destructive" \\| "info"` | `"default"` | Color and icon |
+| `title` | `str | None` | `None` | Bold heading of the alert |
+| `message` | `str | None` | `None` | Body text |
+| `variant` | `"default" | "success" | "warning" | "destructive" | "info"` | `"default"` | Color and icon |
 | `dismissible` | `bool` | `False` | Show a close button |
-| `on_dismiss` | `Callback \\| None` | `None` | Called when the close button is clicked |
+| `on_dismiss` | `Callback | None` | `None` | Called when the close button is clicked |
 | `children` | `ChildrenType` | `None` | Custom content inside the alert |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 

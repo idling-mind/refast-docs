@@ -44,8 +44,8 @@ Heading("Section", level=2, class_name="text-blue-600")
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Heading content |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | HTML heading level |
-| `style` | `dict \| None` | `None` | Inline CSS overrides |
+| `level` | `1 | 2 | 3 | 4 | 5 | 6` | `1` | HTML heading level |
+| `style` | `dict | None` | `None` | Inline CSS overrides |
 
 ---
 
@@ -60,7 +60,7 @@ Paragraph("This is a paragraph of body text.", class_name="text-muted-foreground
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Paragraph content |
-| `style` | `dict \| None` | `None` | Inline CSS overrides |
+| `style` | `dict | None` | `None` | Inline CSS overrides |
 
 ---
 
@@ -84,7 +84,7 @@ Code(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `code` | `str` | *(required)* | Source code string |
-| `language` | `str \| None` | `None` | Language for syntax highlighting (e.g., `"python"`, `"typescript"`) |
+| `language` | `str | None` | `None` | Language for syntax highlighting (e.g., `"python"`, `"typescript"`) |
 | `inline` | `bool` | `True` | Render as `<code>` (inline) or `<pre><code>` (block) |
 | `show_line_numbers` | `bool` | `False` | Show line numbers in block mode |
 
@@ -103,8 +103,8 @@ Link("Profile", href="/profile", on_click=ctx.callback(navigate))
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Link label |
 | `href` | `str` | *(required)* | Destination URL |
-| `target` | `"_self" \| "_blank" \| "_parent" \| "_top"` | `"_self"` | Link target |
-| `on_click` | `Callback \| None` | `None` | Click callback |
+| `target` | `"_self" | "_blank" | "_parent" | "_top"` | `"_self"` | Link target |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ---
 
@@ -148,7 +148,7 @@ Icon("alert-circle", color="red", stroke_width=1.5)
 |------|------|---------|-------------|
 | `name` | `str` | *(required)* | Lucide icon name (e.g., `"home"`, `"settings"`) |
 | `size` | `int` | `16` | Icon size in pixels |
-| `color` | `str \| None` | `None` | CSS colour value; defaults to `currentColor` |
+| `color` | `str | None` | `None` | CSS colour value; defaults to `currentColor` |
 | `stroke_width` | `float` | `2` | Stroke width |
 
 Icons can be used inline as children of other components:
@@ -181,9 +181,9 @@ BlockQuote(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `str \| Component \| list \| None` | `None` | Quote body |
-| `cite` | `str \| None` | `None` | Attribution / author displayed below the quote |
+| `children` | `str | Component | list | None` | `None` | Quote body |
+| `cite` | `str | None` | `None` | Attribution / author displayed below the quote |
 | `color` | `str` | `"default"` | Named variant (`default`, `secondary`, `destructive`, `info`, `success`, `warning`) or any CSS color |
-| `icon` | `str \| None` | `None` | Lucide icon name shown above the body |
+| `icon` | `str | None` | `None` | Lucide icon name shown above the body |
 | `icon_size` | `int` | `20` | Icon size in pixels |
 """

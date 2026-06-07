@@ -205,7 +205,7 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"horizontal" \\| "vertical"` | `"horizontal"` | Menu axis |
+| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Menu axis |
 | `children` | `ChildrenType` | `None` | `NavigationMenuList` children |
 
 ### `NavigationMenuLink`
@@ -215,7 +215,7 @@ REFERENCE = """
 | `label` | `str` | *(required)* | Link text |
 | `href` | `str` | `"#"` | Navigation URL |
 | `active` | `bool` | `False` | Mark as current page |
-| `on_click` | `Callback \\| None` | `None` | Click callback |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ## Component Hierarchy
 

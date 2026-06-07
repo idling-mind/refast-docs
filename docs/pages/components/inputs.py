@@ -71,23 +71,23 @@ Input(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str \| None` | `None` | HTML `name` attribute; omit to skip. |
-| `label` | `str \| None` | `None` | Label text displayed above the input. |
-| `description` | `str \| None` | `None` | Help text below the label. |
-| `type` | `"text" \| "email" \| "password" \| "number" \| "tel" \| "url" \| "search"` | `"text"` | HTML input type. |
+| `name` | `str | None` | `None` | HTML `name` attribute; omit to skip. |
+| `label` | `str | None` | `None` | Label text displayed above the input. |
+| `description` | `str | None` | `None` | Help text below the label. |
+| `type` | `"text" | "email" | "password" | "number" | "tel" | "url" | "search"` | `"text"` | HTML input type. |
 | `placeholder` | `str` | `""` | Placeholder text. |
-| `value` | `str \| None` | `None` | Controlled value; `None` leaves the input uncontrolled. |
+| `value` | `str | None` | `None` | Controlled value; `None` leaves the input uncontrolled. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables interaction. |
 | `read_only` | `bool` | `False` | Renders in read-only mode. |
-| `error` | `str \| None` | `None` | Error message displayed below the input. |
+| `error` | `str | None` | `None` | Error message displayed below the input. |
 | `debounce` | `int` | `0` | Milliseconds to delay `on_change` after the user stops typing. |
-| `on_change` | `Callback \| None` | `None` | Fired when the value changes. |
-| `on_blur` | `Callback \| None` | `None` | Fired when the input loses focus. |
-| `on_focus` | `Callback \| None` | `None` | Fired when the input gains focus. |
-| `on_keydown` | `Callback \| None` | `None` | Fired on key-down. |
-| `on_keyup` | `Callback \| None` | `None` | Fired on key-up. |
-| `on_input` | `Callback \| None` | `None` | Fired on every native input event. |
+| `on_change` | `Callback | None` | `None` | Fired when the value changes. |
+| `on_blur` | `Callback | None` | `None` | Fired when the input loses focus. |
+| `on_focus` | `Callback | None` | `None` | Fired when the input gains focus. |
+| `on_keydown` | `Callback | None` | `None` | Fired on key-down. |
+| `on_keyup` | `Callback | None` | `None` | Fired on key-up. |
+| `on_input` | `Callback | None` | `None` | Fired on every native input event. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -113,22 +113,22 @@ Textarea(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str \| None` | `None` | HTML `name` attribute; omit to skip. |
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text. |
+| `name` | `str | None` | `None` | HTML `name` attribute; omit to skip. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text. |
 | `placeholder` | `str` | `""` | Placeholder text. |
-| `value` | `str \| None` | `None` | Controlled value. |
+| `value` | `str | None` | `None` | Controlled value. |
 | `rows` | `int` | `3` | Number of visible text rows. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables interaction. |
-| `error` | `str \| None` | `None` | Error message. |
+| `error` | `str | None` | `None` | Error message. |
 | `debounce` | `int` | `0` | Milliseconds to delay `on_change`. |
-| `on_change` | `Callback \| None` | `None` | Fired on value change. |
-| `on_blur` | `Callback \| None` | `None` | Fired on blur. |
-| `on_focus` | `Callback \| None` | `None` | Fired on focus. |
-| `on_keydown` | `Callback \| None` | `None` | Fired on key-down. |
-| `on_keyup` | `Callback \| None` | `None` | Fired on key-up. |
-| `on_input` | `Callback \| None` | `None` | Fired on every input event. |
+| `on_change` | `Callback | None` | `None` | Fired on value change. |
+| `on_blur` | `Callback | None` | `None` | Fired on blur. |
+| `on_focus` | `Callback | None` | `None` | Fired on focus. |
+| `on_keydown` | `Callback | None` | `None` | Fired on key-down. |
+| `on_keyup` | `Callback | None` | `None` | Fired on key-up. |
+| `on_input` | `Callback | None` | `None` | Fired on every input event. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -160,15 +160,15 @@ Select(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `list[dict]` | *(required)* | List of `{"value": str, "label": str}` dicts. Add `"disabled": True` to disable an option. |
-| `name` | `str \| None` | `None` | HTML `name` attribute. |
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text. |
-| `value` | `str \| None` | `None` | Controlled selected value. |
+| `name` | `str | None` | `None` | HTML `name` attribute. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text. |
+| `value` | `str | None` | `None` | Controlled selected value. |
 | `placeholder` | `str` | `"Select..."` | Placeholder option when nothing is selected. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables the select. |
-| `error` | `str \| None` | `None` | Error message. |
-| `on_change` | `Callback \| None` | `None` | Fired when the selection changes. |
+| `error` | `str | None` | `None` | Error message. |
+| `on_change` | `Callback | None` | `None` | Fired when the selection changes. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -213,30 +213,30 @@ CheckboxGroup(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str \| None` | `None` | HTML `name` attribute. |
-| `value` | `str \| None` | `None` | Value submitted when checked. |
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text. |
+| `name` | `str | None` | `None` | HTML `name` attribute. |
+| `value` | `str | None` | `None` | Value submitted when checked. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text. |
 | `checked` | `bool` | `False` | Controlled checked state. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables interaction. |
-| `error` | `str \| None` | `None` | Error message. |
-| `on_change` | `Callback \| None` | `None` | Fired when checked state changes. Serialized as `on_checked_change`. |
+| `error` | `str | None` | `None` | Error message. |
+| `on_change` | `Callback | None` | `None` | Fired when checked state changes. Serialized as `on_checked_change`. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ### CheckboxGroup props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str \| None` | `None` | Shared HTML `name` for form submission. |
-| `label` | `str \| None` | `None` | Group label. |
-| `description` | `str \| None` | `None` | Group help text. |
+| `name` | `str | None` | `None` | Shared HTML `name` for form submission. |
+| `label` | `str | None` | `None` | Group label. |
+| `description` | `str | None` | `None` | Group help text. |
 | `value` | `list[str]` | `[]` | Controlled list of checked values. |
-| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Layout direction. |
+| `orientation` | `"vertical" | "horizontal"` | `"vertical"` | Layout direction. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables all checkboxes. |
-| `error` | `str \| None` | `None` | Group error message. |
-| `on_change` | `Callback \| None` | `None` | Called with the updated `list[str]` on any change. |
+| `error` | `str | None` | `None` | Group error message. |
+| `on_change` | `Callback | None` | `None` | Called with the updated `list[str]` on any change. |
 | `children` | `list[Checkbox]` | `[]` | Individual `Checkbox` components. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -270,29 +270,29 @@ RadioGroup(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `str` | *(required)* | The value emitted when this radio is selected. |
-| `name` | `str \| None` | `None` | HTML `name` grouping attribute. |
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text. |
+| `name` | `str | None` | `None` | HTML `name` grouping attribute. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text. |
 | `checked` | `bool` | `False` | Controlled checked state. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables this radio. |
-| `error` | `str \| None` | `None` | Error message. |
-| `on_change` | `Callback \| None` | `None` | Fired when this radio is selected. |
+| `error` | `str | None` | `None` | Error message. |
+| `on_change` | `Callback | None` | `None` | Fired when this radio is selected. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ### RadioGroup props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str \| None` | `None` | Shared HTML `name` attribute. |
-| `label` | `str \| None` | `None` | Group label. |
-| `description` | `str \| None` | `None` | Group help text. |
-| `value` | `str \| None` | `None` | Controlled selected value. |
-| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Layout direction. |
+| `name` | `str | None` | `None` | Shared HTML `name` attribute. |
+| `label` | `str | None` | `None` | Group label. |
+| `description` | `str | None` | `None` | Group help text. |
+| `value` | `str | None` | `None` | Controlled selected value. |
+| `orientation` | `"vertical" | "horizontal"` | `"vertical"` | Layout direction. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `disabled` | `bool` | `False` | Disables all radio buttons. |
-| `error` | `str \| None` | `None` | Group error message. |
-| `on_change` | `Callback \| None` | `None` | Called with the new `str` value. Serialized as `on_value_change`. |
+| `error` | `str | None` | `None` | Group error message. |
+| `on_change` | `Callback | None` | `None` | Called with the new `str` value. Serialized as `on_value_change`. |
 | `children` | `list[Radio]` | `[]` | Individual `Radio` components. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -322,10 +322,10 @@ InputWrapper(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text below the label. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text below the label. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
-| `error` | `str \| None` | `None` | Error message below the control. |
+| `error` | `str | None` | `None` | Error message below the control. |
 | `children` | `ChildrenType` | `None` | The wrapped control(s). |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -375,7 +375,7 @@ Label(text="API Key", html_for="api-key-input", required=True)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `on_submit` | `Callback \| None` | `None` | Fired when the form is submitted. |
+| `on_submit` | `Callback | None` | `None` | Fired when the form is submitted. |
 | `children` | `ChildrenType` | `None` | Form content. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -383,9 +383,9 @@ Label(text="API Key", html_for="api-key-input", required=True)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `str \| None` | `None` | Field label text. |
-| `hint` | `str \| None` | `None` | Hint text displayed below the label. |
-| `error` | `str \| None` | `None` | Validation error message. |
+| `label` | `str | None` | `None` | Field label text. |
+| `hint` | `str | None` | `None` | Hint text displayed below the label. |
+| `error` | `str | None` | `None` | Validation error message. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `children` | `ChildrenType` | `None` | The wrapped input component(s). |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
@@ -395,7 +395,7 @@ Label(text="API Key", html_for="api-key-input", required=True)
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Label text content. |
-| `html_for` | `str \| None` | `None` | Associates the label with a control's `id`. |
+| `html_for` | `str | None` | `None` | Associates the label with a control's `id`. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -447,37 +447,37 @@ Calendar(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `date \| list[date] \| dict \| str \| None` | `None` | Selected date(s). |
+| `value` | `date | list[date] | dict | str | None` | `None` | Selected date(s). |
 | `placeholder` | `str` | `"Pick a date"` | Button text when no date is selected. |
 | `disabled` | `bool` | `False` | Disables the picker. |
 | `format` | `str` | `"PPP"` | `date-fns` format string for the button label. |
-| `mode` | `"single" \| "multiple" \| "range"` | `"single"` | Selection mode. |
-| `caption_layout` | `"label" \| "dropdown" \| "dropdown-months" \| "dropdown-years"` | `"label"` | Calendar header navigation style. |
-| `min_date` | `date \| str \| None` | `None` | Earliest selectable date. |
-| `max_date` | `date \| str \| None` | `None` | Latest selectable date. |
-| `number_of_months` | `int \| None` | `None` | Number of calendar months shown simultaneously. |
-| `label` | `str \| None` | `None` | Label text above the picker. |
-| `description` | `str \| None` | `None` | Help text below the label. |
+| `mode` | `"single" | "multiple" | "range"` | `"single"` | Selection mode. |
+| `caption_layout` | `"label" | "dropdown" | "dropdown-months" | "dropdown-years"` | `"label"` | Calendar header navigation style. |
+| `min_date` | `date | str | None` | `None` | Earliest selectable date. |
+| `max_date` | `date | str | None` | `None` | Latest selectable date. |
+| `number_of_months` | `int | None` | `None` | Number of calendar months shown simultaneously. |
+| `label` | `str | None` | `None` | Label text above the picker. |
+| `description` | `str | None` | `None` | Help text below the label. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
-| `error` | `str \| None` | `None` | Error message. |
-| `on_change` | `Callback \| None` | `None` | Fired when the selection changes. |
+| `error` | `str | None` | `None` | Error message. |
+| `on_change` | `Callback | None` | `None` | Fired when the selection changes. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ### Calendar props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `mode` | `"single" \| "multiple" \| "range"` | `"single"` | Selection mode. |
-| `selected` | `date \| list[date] \| dict \| None` | `None` | Controlled selected date(s). |
-| `default_month` | `date \| None` | `None` | Initial month to display. |
-| `caption_layout` | `"label" \| "dropdown" \| "dropdown-months" \| "dropdown-years"` | `"label"` | Header navigation style. |
+| `mode` | `"single" | "multiple" | "range"` | `"single"` | Selection mode. |
+| `selected` | `date | list[date] | dict | None` | `None` | Controlled selected date(s). |
+| `default_month` | `date | None` | `None` | Initial month to display. |
+| `caption_layout` | `"label" | "dropdown" | "dropdown-months" | "dropdown-years"` | `"label"` | Header navigation style. |
 | `disabled` | `bool` | `False` | Disables all interaction. |
 | `show_outside_days` | `bool` | `True` | Show days from adjacent months. |
-| `min_date` | `date \| str \| None` | `None` | Earliest selectable date. |
-| `max_date` | `date \| str \| None` | `None` | Latest selectable date. |
-| `number_of_months` | `int \| None` | `None` | Number of months displayed. |
-| `on_select` | `Callback \| None` | `None` | Fired when the selection changes. |
-| `on_month_change` | `Callback \| None` | `None` | Fired when the displayed month changes. |
+| `min_date` | `date | str | None` | `None` | Earliest selectable date. |
+| `max_date` | `date | str | None` | `None` | Latest selectable date. |
+| `number_of_months` | `int | None` | `None` | Number of months displayed. |
+| `on_select` | `Callback | None` | `None` | Fired when the selection changes. |
+| `on_month_change` | `Callback | None` | `None` | Fired when the displayed month changes. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -522,17 +522,17 @@ Combobox(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `list[dict]` | `[]` | List of `{"value": str, "label": str}` dicts. |
-| `value` | `str \| list[str] \| None` | `None` | Controlled selected value(s). |
+| `value` | `str | list[str] | None` | `None` | Controlled selected value(s). |
 | `placeholder` | `str` | `"Select..."` | Trigger button text when nothing is selected. |
 | `search_placeholder` | `str` | `"Search..."` | Placeholder inside the search input. |
 | `empty_text` | `str` | `"No results found."` | Text shown when no options match the search. |
 | `multiselect` | `bool` | `False` | Allow selecting multiple values. |
 | `disabled` | `bool` | `False` | Disables the combobox. |
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
-| `error` | `str \| None` | `None` | Error message. |
-| `on_select` | `Callback \| None` | `None` | Fired when the selection changes. |
+| `error` | `str | None` | `None` | Error message. |
+| `on_select` | `Callback | None` | `None` | Fired when the selection changes. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -585,15 +585,15 @@ InputOTP(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `max_length` | `int` | `6` | Total number of OTP characters. |
-| `value` | `str \| None` | `None` | Controlled OTP value. |
+| `value` | `str | None` | `None` | Controlled OTP value. |
 | `disabled` | `bool` | `False` | Disables the input. |
-| `pattern` | `str \| None` | `None` | Regex pattern to validate each character. |
-| `label` | `str \| None` | `None` | Label text. |
-| `description` | `str \| None` | `None` | Help text. |
+| `pattern` | `str | None` | `None` | Regex pattern to validate each character. |
+| `label` | `str | None` | `None` | Label text. |
+| `description` | `str | None` | `None` | Help text. |
 | `required` | `bool` | `False` | Shows a required asterisk. |
-| `error` | `str \| None` | `None` | Error message. |
-| `on_change` | `Callback \| None` | `None` | Fired on every character change. |
-| `on_complete` | `Callback \| None` | `None` | Fired when all slots are filled. |
+| `error` | `str | None` | `None` | Error message. |
+| `on_change` | `Callback | None` | `None` | Fired on every character change. |
+| `on_complete` | `Callback | None` | `None` | Fired when all slots are filled. |
 | `children` | `ChildrenType` | `None` | Custom layout using `InputOTPGroup` / `InputOTPSlot` / `InputOTPSeparator`. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 

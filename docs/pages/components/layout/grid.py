@@ -124,11 +124,11 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \\| Component \\| None` | `None` | Grid cell components |
-| `columns` | `int \\| str` | `1` | Number of equal columns, or a CSS `gridTemplateColumns` string |
-| `rows` | `int \\| str \\| None` | `None` | Number of equal rows, or a CSS `gridTemplateRows` string |
+| `children` | `list | Component | None` | `None` | Grid cell components |
+| `columns` | `int | str` | `1` | Number of equal columns, or a CSS `gridTemplateColumns` string |
+| `rows` | `int | str | None` | `None` | Number of equal rows, or a CSS `gridTemplateRows` string |
 | `gap` | `int` | `4` | Gap between cells (Tailwind spacing unit) |
-| `id` | `str \\| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Advanced: Custom Template

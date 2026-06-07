@@ -281,31 +281,31 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool \\| None` | `None` | Controlled open state |
+| `open` | `bool | None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
-| `on_open_change` | `Callback \\| None` | `None` | Called when open state changes |
-| `title` | `str \\| None` | `None` | Shorthand title (skips `DialogHeader`) |
-| `description` | `str \\| None` | `None` | Shorthand description |
+| `on_open_change` | `Callback | None` | `None` | Called when open state changes |
+| `title` | `str | None` | `None` | Shorthand title (skips `DialogHeader`) |
+| `description` | `str | None` | `None` | Shorthand description |
 | `confirm_label` | `str` | `"Continue"` | Label for the confirm button |
 | `cancel_label` | `str` | `"Cancel"` | Label for the cancel button |
-| `on_confirm` | `Callback \\| None` | `None` | Confirm callback |
-| `on_cancel` | `Callback \\| None` | `None` | Cancel callback |
-| `variant` | `"default" \\| "destructive"` | `"default"` | Visual style |
-| `trigger` | `Component \\| None` | `None` | Shorthand trigger component |
+| `on_confirm` | `Callback | None` | `None` | Confirm callback |
+| `on_cancel` | `Callback | None` | `None` | Cancel callback |
+| `variant` | `"default" | "destructive"` | `"default"` | Visual style |
+| `trigger` | `Component | None` | `None` | Shorthand trigger component |
 
 ### `DialogAction`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Button text |
-| `on_click` | `Callback \\| None` | `None` | Click callback |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ### `DialogCancel`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | `"Cancel"` | Button text |
-| `on_click` | `Callback \\| None` | `None` | Click callback |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ## Shorthand API
 

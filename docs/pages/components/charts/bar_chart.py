@@ -161,32 +161,32 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `config` | `dict[str, ChartConfig] \| None` | `None` | Optional override map; auto-built from series children when omitted |
+| `config` | `dict[str, ChartConfig] | None` | `None` | Optional override map; auto-built from series children when omitted |
 | `class_name` | `str` | `""` | Container class; set height here (e.g. `"h-64"`) |
 | `children` | `list` | `[]` | The chart component(s) |
-| `min_height` | `int \\| str \\| None` | `200` | Minimum height |
-| `aspect` | `float \\| None` | `None` | Aspect ratio (width / height) |
+| `min_height` | `int | str | None` | `200` | Minimum height |
+| `aspect` | `float | None` | `None` | Aspect ratio (width / height) |
 
 ## ChartConfig Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `label` | `str` | Human-readable series label |
-| `color` | `str \\| None` | CSS color value (e.g. `hsl(var(--chart-1))`) |
-| `icon` | `str \\| None` | Lucide icon name for the legend |
+| `color` | `str | None` | CSS color value (e.g. `hsl(var(--chart-1))`) |
+| `icon` | `str | None` | Lucide icon name for the legend |
 
 ## BarChart Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `list[dict]` | *(required)* | Array of data objects |
-| `layout` | `"horizontal" \\| "vertical"` | `"horizontal"` | Chart orientation |
+| `layout` | `"horizontal" | "vertical"` | `"horizontal"` | Chart orientation |
 | `margin` | `dict` | `{top:10, right:10, left:10, bottom:0}` | Chart margins |
-| `bar_category_gap` | `str \\| int \\| None` | `None` | Gap between bar categories |
-| `bar_gap` | `str \\| int \\| None` | `None` | Gap between bars in the same group |
-| `max_bar_size` | `int \\| None` | `None` | Maximum bar width |
+| `bar_category_gap` | `str | int | None` | `None` | Gap between bar categories |
+| `bar_gap` | `str | int | None` | `None` | Gap between bars in the same group |
+| `max_bar_size` | `int | None` | `None` | Maximum bar width |
 | `stack_offset` | `str` | `"none"` | `"expand"`, `"none"`, `"wiggle"`, `"silhouette"` |
-| `on_click` | `Callback \\| None` | `None` | Click on a bar |
+| `on_click` | `Callback | None` | `None` | Click on a bar |
 | `children` | `list` | `[]` | Axes, bars, tooltip, legend |
 
 ## Bar Props
@@ -195,12 +195,12 @@ REFERENCE = """
 |------|------|---------|-------------|
 | `data_key` | `str` | *(required)* | Key from data objects |
 | `fill` | `str` | *(auto from `data_key`)* | CSS color; defaults to `var(--color-{data_key})` |
-| `radius` | `int \\| list[int]` | `0` | Corner radius |
-| `stack_id` | `str \\| None` | `None` | Bars sharing the same `stack_id` are stacked |
-| `bar_size` | `int \\| None` | `None` | Fixed bar width in pixels |
-| `min_point_size` | `int \\| None` | `None` | Minimum bar height for zero values |
-| `label` | `str \| None` | `None` | Human-readable series label shown in tooltip/legend |
-| `bar_label` | `bool \| dict \| None` | `None` | Show value labels on bars |
-| `background` | `bool \\| dict` | `False` | Show background bar |
+| `radius` | `int | list[int]` | `0` | Corner radius |
+| `stack_id` | `str | None` | `None` | Bars sharing the same `stack_id` are stacked |
+| `bar_size` | `int | None` | `None` | Fixed bar width in pixels |
+| `min_point_size` | `int | None` | `None` | Minimum bar height for zero values |
+| `label` | `str | None` | `None` | Human-readable series label shown in tooltip/legend |
+| `bar_label` | `bool | dict | None` | `None` | Show value labels on bars |
+| `background` | `bool | dict` | `False` | Show background bar |
 | `hide` | `bool` | `False` | Hide this bar series |
 """

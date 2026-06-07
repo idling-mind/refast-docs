@@ -91,8 +91,8 @@ Pagination(
 | `label` | `str` | *(required)* | Page label text |
 | `href` | `str` | `"#"` | URL for the link |
 | `is_active` | `bool` | `False` | Highlights the current page |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Button size |
-| `on_click` | `Callback \| None` | `None` | Click callback |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Button size |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ### PaginationPrevious / PaginationNext
 
@@ -100,7 +100,7 @@ Pagination(
 |------|------|---------|-------------|
 | `href` | `str` | `"#"` | Navigation URL |
 | `disabled` | `bool` | `False` | Disables the control |
-| `on_click` | `Callback \| None` | `None` | Click callback |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ---
 
@@ -176,9 +176,9 @@ SidebarProvider(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"left" \| "right"` | `"left"` | Which side the sidebar appears on |
-| `variant` | `"sidebar" \| "floating" \| "inset"` | `"sidebar"` | Visual style |
-| `collapsible` | `"offcanvas" \| "icon" \| "none"` | `"offcanvas"` | Collapse behaviour. `"icon"` collapses to icon-only mode. `"offcanvas"` slides off screen. `"none"` is always visible. |
+| `side` | `"left" | "right"` | `"left"` | Which side the sidebar appears on |
+| `variant` | `"sidebar" | "floating" | "inset"` | `"sidebar"` | Visual style |
+| `collapsible` | `"offcanvas" | "icon" | "none"` | `"offcanvas"` | Collapse behaviour. `"icon"` collapses to icon-only mode. `"offcanvas"` slides off screen. `"none"` is always visible. |
 | `children` | `list` | `[]` | Sidebar sections |
 
 ### SidebarMenuButton
@@ -186,20 +186,20 @@ SidebarProvider(
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Button text |
-| `icon` | `str \| None` | `None` | Lucide icon name (e.g., `"home"`, `"settings"`) |
+| `icon` | `str | None` | `None` | Lucide icon name (e.g., `"home"`, `"settings"`) |
 | `is_active` | `bool` | `False` | Highlights the button as the current selection |
-| `variant` | `"default" \| "outline"` | `"default"` | Visual style |
-| `size` | `"default" \| "sm" \| "lg"` | `"default"` | Button size |
-| `href` | `str \| None` | `None` | If set, renders as a link |
-| `on_click` | `Callback \| None` | `None` | Click callback |
+| `variant` | `"default" | "outline"` | `"default"` | Visual style |
+| `size` | `"default" | "sm" | "lg"` | `"default"` | Button size |
+| `href` | `str | None` | `None` | If set, renders as a link |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ### SidebarMenuAction
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `icon` | `str \| None` | `None` | Lucide icon name |
+| `icon` | `str | None` | `None` | Lucide icon name |
 | `show_on_hover` | `bool` | `False` | Only show on hover |
-| `on_click` | `Callback \| None` | `None` | Click callback |
+| `on_click` | `Callback | None` | `None` | Click callback |
 
 ### Other Sidebar sub-components
 
@@ -249,27 +249,27 @@ DropdownMenu(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool \| None` | `None` | Controlled open state |
+| `open` | `bool | None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
-| `on_open_change` | `Callback \| None` | `None` | Fired when open state changes |
+| `on_open_change` | `Callback | None` | `None` | Fired when open state changes |
 
 ### DropdownMenuContent
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred placement side |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred placement side |
 | `side_offset` | `int` | `4` | Pixel gap from trigger |
-| `align` | `"start" \| "center" \| "end"` | `"start"` | Alignment along the side |
+| `align` | `"start" | "center" | "end"` | `"start"` | Alignment along the side |
 
 ### DropdownMenuItem
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Item text |
-| `icon` | `str \| None` | `None` | Lucide icon name |
-| `shortcut` | `str \| None` | `None` | Keyboard shortcut hint text |
+| `icon` | `str | None` | `None` | Lucide icon name |
+| `shortcut` | `str | None` | `None` | Keyboard shortcut hint text |
 | `disabled` | `bool` | `False` | Disables the item |
-| `on_select` | `Callback \| None` | `None` | Fired when item is selected |
+| `on_select` | `Callback | None` | `None` | Fired when item is selected |
 
 ### DropdownMenuCheckboxItem
 
@@ -277,7 +277,7 @@ DropdownMenu(
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Item text |
 | `checked` | `bool` | `False` | Checked state |
-| `on_checked_change` | `Callback \| None` | `None` | Fires on toggle |
+| `on_checked_change` | `Callback | None` | `None` | Fires on toggle |
 | `disabled` | `bool` | `False` | Disables the item |
 
 ### DropdownMenuRadioGroup / DropdownMenuRadioItem

@@ -24,7 +24,7 @@ For every component on a page, include:
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | (positional) | Button text |
-| `variant` | `"default" \| "secondary"` | `"default"` | Visual variant |
+| `variant` | `"default" | "secondary"` | `"default"` | Visual variant |
 ```
 
 ### Live Example Pattern

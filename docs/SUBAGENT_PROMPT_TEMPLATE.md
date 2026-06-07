@@ -98,8 +98,8 @@ CONTENT = r"""
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | — | Button text |
-| `variant` | `"default" \| "outline"` | `"default"` | Visual style |
-| `on_click` | `Callback \| None` | `None` | Click handler |
+| `variant` | `"default" | "outline"` | `"default"` | Visual style |
+| `on_click` | `Callback | None` | `None` | Click handler |
 ```
 
 ### Live Demos (Component Reference Pages)

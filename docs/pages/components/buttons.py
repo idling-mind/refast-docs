@@ -65,14 +65,14 @@ Button("Extra Large", size="xl")   # h-12 — hero / prominent CTAs
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(positional)* | Button text |
-| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. `"default"` is the primary filled style. |
-| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Button dimensions. |
-| `icon` | `str \| None` | `None` | Lucide icon name (e.g. `"save"`, `"trash"`, `"settings"`). |
-| `icon_position` | `"left" \| "right"` | `"left"` | Icon placement relative to the label. |
+| `variant` | `"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"` | `"default"` | Visual style. `"default"` is the primary filled style. |
+| `size` | `"xs" | "sm" | "md" | "lg" | "xl"` | `"md"` | Button dimensions. |
+| `icon` | `str | None` | `None` | Lucide icon name (e.g. `"save"`, `"trash"`, `"settings"`). |
+| `icon_position` | `"left" | "right"` | `"left"` | Icon placement relative to the label. |
 | `disabled` | `bool` | `False` | Prevents interaction. |
 | `loading` | `bool` | `False` | Replaces icon with a spinner and disables the button. |
-| `type` | `"button" \| "submit" \| "reset"` | `"button"` | HTML `<button>` type attribute. |
-| `on_click` | `Callback \| None` | `None` | Server callback invoked on click. |
+| `type` | `"button" | "submit" | "reset"` | `"button"` | HTML `<button>` type attribute. |
+| `on_click` | `Callback | None` | `None` | Server callback invoked on click. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ### Variants
@@ -113,11 +113,11 @@ IconButton(icon="star", size="xl")  # 48 × 48 px — 24 px icon
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `icon` | `str` | *(required)* | Lucide icon name. |
-| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost"` | `"ghost"` | Visual style. |
-| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Controls button dimensions and icon size. |
+| `variant` | `"default" | "secondary" | "destructive" | "outline" | "ghost"` | `"ghost"` | Visual style. |
+| `size` | `"xs" | "sm" | "md" | "lg" | "xl"` | `"md"` | Controls button dimensions and icon size. |
 | `disabled` | `bool` | `False` | Prevents interaction. |
-| `aria_label` | `str \| None` | `None` | Accessible label — defaults to the icon name if omitted. |
-| `on_click` | `Callback \| None` | `None` | Server callback invoked on click. |
+| `aria_label` | `str | None` | `None` | Accessible label — defaults to the icon name if omitted. |
+| `on_click` | `Callback | None` | `None` | Server callback invoked on click. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -148,13 +148,13 @@ Toggle(label="Underline", icon="Underline", variant="outline", size="lg")
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | `""` | Visible text label. |
-| `icon` | `str \| None` | `None` | Lucide icon name. |
-| `pressed` | `bool \| None` | `None` | Controlled pressed state. Omit for uncontrolled. |
+| `icon` | `str | None` | `None` | Lucide icon name. |
+| `pressed` | `bool | None` | `None` | Controlled pressed state. Omit for uncontrolled. |
 | `default_pressed` | `bool` | `False` | Initial pressed state (uncontrolled only). |
 | `disabled` | `bool` | `False` | Prevents interaction. |
-| `variant` | `"default" \| "outline"` | `"default"` | Visual style. |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Button dimensions. |
-| `on_pressed_change` | `Callback \| None` | `None` | Called with the new `bool` state when the toggle changes. |
+| `variant` | `"default" | "outline"` | `"default"` | Visual style. |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Button dimensions. |
+| `on_pressed_change` | `Callback | None` | `None` | Called with the new `bool` state when the toggle changes. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -202,13 +202,13 @@ ToggleGroup(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `"single" \| "multiple"` | `"single"` | Selection behaviour. |
-| `value` | `str \| list[str] \| dict[str, bool] \| None` | `None` | Controlled selected value(s). |
-| `default_value` | `str \| list[str] \| dict[str, bool] \| None` | `None` | Initial selected value(s) (uncontrolled). |
+| `type` | `"single" | "multiple"` | `"single"` | Selection behaviour. |
+| `value` | `str | list[str] | dict[str, bool] | None` | `None` | Controlled selected value(s). |
+| `default_value` | `str | list[str] | dict[str, bool] | None` | `None` | Initial selected value(s) (uncontrolled). |
 | `disabled` | `bool` | `False` | Disables the entire group. |
-| `variant` | `"default" \| "outline"` | `"default"` | Visual style applied to all items. |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Size applied to all items. |
-| `on_value_change` | `Callback \| None` | `None` | Called whenever the selection changes. |
+| `variant` | `"default" | "outline"` | `"default"` | Visual style applied to all items. |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Size applied to all items. |
+| `on_value_change` | `Callback | None` | `None` | Called whenever the selection changes. |
 | `children` | `list[ToggleGroupItem]` | `[]` | The items inside the group. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -218,7 +218,7 @@ ToggleGroup(
 |------|------|---------|-------------|
 | `value` | `str` | *(required)* | Unique identifier for this item within the group. |
 | `label` | `str` | `""` | Visible text label. |
-| `icon` | `str \| None` | `None` | Lucide icon name. |
+| `icon` | `str | None` | `None` | Lucide icon name. |
 | `disabled` | `bool` | `False` | Disables this item only. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
@@ -247,11 +247,11 @@ Switch(checked=True, disabled=True)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `bool \| None` | `None` | Controlled checked state. Omit for uncontrolled. |
+| `checked` | `bool | None` | `None` | Controlled checked state. Omit for uncontrolled. |
 | `default_checked` | `bool` | `False` | Initial checked state (uncontrolled only). |
 | `disabled` | `bool` | `False` | Prevents interaction. |
-| `name` | `str \| None` | `None` | HTML `name` attribute for form submission. |
-| `on_change` | `Callback \| None` | `None` | Called with the new `bool` state when toggled. The callback key in the serialized tree is `on_checked_change`. |
+| `name` | `str | None` | `None` | HTML `name` attribute for form submission. |
+| `on_change` | `Callback | None` | `None` | Called with the new `bool` state when toggled. The callback key in the serialized tree is `on_checked_change`. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 
 ---
@@ -295,18 +295,18 @@ Slider(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `list[float] \| None` | `None` | Controlled value(s). One element = single thumb; two = range. |
+| `value` | `list[float] | None` | `None` | Controlled value(s). One element = single thumb; two = range. |
 | `default_value` | `list[float]` | `[0]` | Initial value(s) (uncontrolled). |
 | `min` | `float` | `0` | Minimum value. |
 | `max` | `float` | `100` | Maximum value. |
 | `step` | `float` | `1` | Step increment. |
 | `disabled` | `bool` | `False` | Prevents interaction. |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Track orientation. |
-| `label` | `str \| None` | `None` | Label displayed above the slider. |
-| `description` | `str \| None` | `None` | Help text displayed below the label. |
+| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Track orientation. |
+| `label` | `str | None` | `None` | Label displayed above the slider. |
+| `description` | `str | None` | `None` | Help text displayed below the label. |
 | `required` | `bool` | `False` | Shows a required asterisk next to the label. |
-| `error` | `str \| None` | `None` | Error message displayed below the slider. |
-| `on_value_change` | `Callback \| None` | `None` | Called continuously as the thumb moves. Receives `list[float]`. |
-| `on_value_commit` | `Callback \| None` | `None` | Called when the user releases the thumb. Receives `list[float]`. |
+| `error` | `str | None` | `None` | Error message displayed below the slider. |
+| `on_value_change` | `Callback | None` | `None` | Called continuously as the thumb moves. Receives `list[float]`. |
+| `on_value_commit` | `Callback | None` | `None` | Called when the user releases the thumb. Receives `list[float]`. |
 | `class_name` | `str` | `""` | Additional Tailwind classes. |
 """

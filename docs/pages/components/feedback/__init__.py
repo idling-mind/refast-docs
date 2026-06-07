@@ -51,11 +51,11 @@ Alert(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `str \| None` | `None` | Bold heading shown above the message |
+| `title` | `str | None` | `None` | Bold heading shown above the message |
 | `message` | `str` | `""` | Body text of the alert |
-| `variant` | `"default" \| "success" \| "warning" \| "destructive" \| "info"` | `"default"` | Visual style |
+| `variant` | `"default" | "success" | "warning" | "destructive" | "info"` | `"default"` | Visual style |
 | `dismissible` | `bool` | `False` | Shows an × close button |
-| `on_dismiss` | `Callback \| None` | `None` | Called when the close button is clicked |
+| `on_dismiss` | `Callback | None` | `None` | Called when the close button is clicked |
 
 ---
 
@@ -71,7 +71,7 @@ Spinner(size="lg")    # large full-page indicator
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Size of the spinner |
+| `size` | `"sm" | "md" | "lg"` | `"md"` | Size of the spinner |
 
 ---
 
@@ -92,10 +92,10 @@ Progress(
 |------|------|---------|-------------|
 | `value` | `float` | `0` | Current progress value |
 | `max` | `float` | `100` | Maximum value |
-| `label` | `str \| None` | `None` | Text label above the bar |
+| `label` | `str | None` | `None` | Text label above the bar |
 | `show_value` | `bool` | `False` | Show the `value/max` as text |
-| `foreground_color` | `str \| None` | `None` | Override bar fill colour (CSS value) |
-| `track_color` | `str \| None` | `None` | Override track colour (CSS value) |
+| `foreground_color` | `str | None` | `None` | Override bar fill colour (CSS value) |
+| `track_color` | `str | None` | `None` | Override track colour (CSS value) |
 | `striped` | `bool` | `False` | Striped animated pattern |
 
 ---
@@ -112,9 +112,9 @@ Skeleton(variant="text", width="60%")               # text line
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `"rectangular" \| "circular" \| "text"` | `"rectangular"` | Shape variant |
-| `width` | `str \| int \| None` | `None` | Width (px or CSS string) |
-| `height` | `str \| int \| None` | `None` | Height (px or CSS string) |
+| `variant` | `"rectangular" | "circular" | "text"` | `"rectangular"` | Shape variant |
+| `width` | `str | int | None` | `None` | Width (px or CSS string) |
+| `height` | `str | int | None` | `None` | Height (px or CSS string) |
 
 ---
 
@@ -137,12 +137,12 @@ ConnectionStatus(
 |------|------|---------|-------------|
 | `children_connected` | `list` | `[]` | Content shown when connected |
 | `children_disconnected` | `list` | `[]` | Content shown when disconnected |
-| `position` | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right" \| None` | `None` | Fixed screen corner; `None` renders inline |
+| `position` | `"top-left" | "top-right" | "bottom-left" | "bottom-right" | None` | `None` | Fixed screen corner; `None` renders inline |
 | `debounce_ms` | `int` | `0` | Milliseconds to wait before updating state |
-| `on_disconnect` | `Callback \| None` | `None` | Python callback on disconnection |
-| `on_reconnect` | `Callback \| None` | `None` | Python callback on reconnection |
-| `js_on_disconnect` | `str \| None` | `None` | Raw JS expression run on disconnect |
-| `js_on_reconnect` | `str \| None` | `None` | Raw JS expression run on reconnect |
+| `on_disconnect` | `Callback | None` | `None` | Python callback on disconnection |
+| `on_reconnect` | `Callback | None` | `None` | Python callback on reconnection |
+| `js_on_disconnect` | `str | None` | `None` | Raw JS expression run on disconnect |
+| `js_on_reconnect` | `str | None` | `None` | Raw JS expression run on reconnect |
 
 ---
 
@@ -218,7 +218,7 @@ Sheet(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Which edge it slides from |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"right"` | Which edge it slides from |
 
 Other sub-components: `SheetTrigger`, `SheetClose`, `SheetHeader`,
 `SheetFooter`, `SheetTitle`, `SheetDescription`.
@@ -279,9 +279,9 @@ Popover(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred placement side |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred placement side |
 | `side_offset` | `int` | `4` | Pixel gap from trigger |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment along the side |
+| `align` | `"start" | "center" | "end"` | `"center"` | Alignment along the side |
 
 ---
 
@@ -313,7 +313,7 @@ HoverCard(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred placement |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment |
+| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred placement |
+| `align` | `"start" | "center" | "end"` | `"center"` | Alignment |
 | `side_offset` | `int` | `4` | Pixel gap from trigger |
 """

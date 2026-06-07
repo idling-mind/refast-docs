@@ -146,12 +146,12 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `code` | `str` | *(required)* | The code content to display |
-| `language` | `str \\| None` | `None` | Language for syntax highlighting (e.g. `"python"`) |
+| `language` | `str | None` | `None` | Language for syntax highlighting (e.g. `"python"`) |
 | `inline` | `bool` | `True` | `True` = inline `<code>`, `False` = block |
 | `show_line_numbers` | `bool` | `False` | Show line numbers (block mode only) |
-| `id` | `str \\| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict \\| None` | `None` | Inline CSS overrides |
+| `style` | `dict | None` | `None` | Inline CSS overrides |
 
 ## Inline vs Block
 

@@ -91,9 +91,9 @@ Every component automatically gets these from the base class:
 
 | Param | Type | Description |
 |-------|------|-------------|
-| `id` | `str \| None` | Component ID — auto-generated UUID if not provided |
+| `id` | `str | None` | Component ID — auto-generated UUID if not provided |
 | `class_name` | `str` | Tailwind CSS classes |
-| `style` | `dict \| None` | Inline styles for truly dynamic values |
+| `style` | `dict | None` | Inline styles for truly dynamic values |
 | `**props` | `Any` | Any additional props passed to the frontend |
 
 ### Implementing `render()`

@@ -80,7 +80,7 @@ Button("About", on_click=ctx.callback(go_to_about))
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `path` | `str` | required | Target page path, e.g. `"/docs/api"` |
-| `scroll_to` | `str \| None` | `"top"` | `"top"` to scroll to top, an element `id` to scroll that element into view, or `None` to leave position unchanged |
+| `scroll_to` | `str | None` | `"top"` | `"top"` to scroll to top, an element `id` to scroll that element into view, or `None` to leave position unchanged |
 | `scroll_behavior` | `str` | `"instant"` | `"instant"` (no animation) or `"smooth"` |
 
 ```python

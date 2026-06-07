@@ -193,10 +193,10 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `list[dict]` | *(required)* | Array of data objects |
-| `layout` | `"horizontal" \\| "vertical"` | `"horizontal"` | Chart orientation |
+| `layout` | `"horizontal" | "vertical"` | `"horizontal"` | Chart orientation |
 | `margin` | `dict` | `{top:10, right:10, left:10, bottom:0}` | Chart margins |
-| `sync_id` | `str \\| None` | `None` | Sync multiple charts by the same ID |
-| `on_click` | `Callback \\| None` | `None` | Click on the chart area |
+| `sync_id` | `str | None` | `None` | Sync multiple charts by the same ID |
+| `on_click` | `Callback | None` | `None` | Click on the chart area |
 | `children` | `list` | `[]` | Axes, lines, tooltip, legend |
 
 ## Line Props
@@ -207,19 +207,19 @@ REFERENCE = """
 | `type` | `str` | `"natural"` | Interpolation: `"linear"`, `"monotone"`, `"step"`, `"natural"`, `"basis"` |
 | `stroke` | `str` | *(auto from `data_key`)* | Line color; defaults to `var(--color-{data_key})` |
 | `stroke_width` | `int` | `2` | Line thickness in pixels |
-| `dot` | `bool \\| dict` | `True` | Show data-point dots; pass a dict for custom dot styling |
-| `active_dot` | `bool \\| dict` | `True` | Dot shown on hover |
+| `dot` | `bool | dict` | `True` | Show data-point dots; pass a dict for custom dot styling |
+| `active_dot` | `bool | dict` | `True` | Dot shown on hover |
 | `connect_nulls` | `bool` | `False` | Draw a line through `null` values |
-| `stroke_dasharray` | `str \\| None` | `None` | SVG dash pattern e.g. `"5 5"` for dashed lines |
-| `label` | `str \| None` | `None` | Human-readable series label shown in tooltip/legend |
-| `line_label` | `bool \| dict \| None` | `None` | Show value labels at each data point |
+| `stroke_dasharray` | `str | None` | `None` | SVG dash pattern e.g. `"5 5"` for dashed lines |
+| `label` | `str | None` | `None` | Human-readable series label shown in tooltip/legend |
+| `line_label` | `bool | dict | None` | `None` | Show value labels at each data point |
 | `hide` | `bool` | `False` | Hide this line series |
 
 ## XAxis / YAxis Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `data_key` | `str \\| None` | `None` | Key for axis values |
+| `data_key` | `str | None` | `None` | Key for axis values |
 | `tick_line` | `bool` | `True` | Show tick mark lines |
 | `axis_line` | `bool` | `True` | Show the axis baseline |
 

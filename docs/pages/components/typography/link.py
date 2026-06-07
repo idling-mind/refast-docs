@@ -170,12 +170,12 @@ REFERENCE = """
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Visible link text |
 | `href` | `str` | *(required)* | Link destination URL |
-| `target` | `"_self" \\| "_blank" \\| "_parent" \\| "_top"` | `"_self"` | Where to open the link |
+| `target` | `"_self" | "_blank" | "_parent" | "_top"` | `"_self"` | Where to open the link |
 | `external` | `bool` | `False` | Show an external-link icon |
-| `on_click` | `Callback \\| None` | `None` | Server callback on click |
-| `id` | `str \\| None` | `None` | Unique element ID |
+| `on_click` | `Callback | None` | `None` | Server callback on click |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict \\| None` | `None` | Inline CSS overrides |
+| `style` | `dict | None` | `None` | Inline CSS overrides |
 
 ## Notes
 

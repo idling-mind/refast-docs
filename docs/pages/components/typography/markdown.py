@@ -152,7 +152,7 @@ REFERENCE = """
 |------|------|---------|-------------|
 | `content` | `str` | *(required)* | Markdown string to render |
 | `allow_html` | `bool` | `False` | Allow raw HTML inside markdown (security risk) |
-| `id` | `str \\| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes on the wrapper |
 
 ## Features

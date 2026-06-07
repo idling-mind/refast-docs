@@ -89,13 +89,13 @@ Responsive wrapper that provides theming context and sizing.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `config` | `dict[str, ChartConfig] \| None` | `None` | Optional override map. Auto-built from series children when omitted |
+| `config` | `dict[str, ChartConfig] | None` | `None` | Optional override map. Auto-built from series children when omitted |
 | `class_name` | `str` | `""` | CSS classes (e.g., `"h-64 w-full"`) |
-| `width` | `str \| int` | `"100%"` | Container width |
-| `height` | `str \| int` | `"100%"` | Container height |
-| `min_height` | `str \| int \| None` | `200` | Minimum height |
-| `aspect` | `float \| None` | `None` | Aspect ratio (width/height) |
-| `on_resize` | `Callback \| None` | `None` | Fired when container is resized |
+| `width` | `str | int` | `"100%"` | Container width |
+| `height` | `str | int` | `"100%"` | Container height |
+| `min_height` | `str | int | None` | `200` | Minimum height |
+| `aspect` | `float | None` | `None` | Aspect ratio (width/height) |
+| `on_resize` | `Callback | None` | `None` | Fired when container is resized |
 
 ## ChartConfig (Pydantic model)
 
@@ -111,8 +111,8 @@ ChartConfig(label="Revenue", color=1)
 | Field | Type | Description |
 |-------|------|-------------|
 | `label` | `str` | Human-readable series label |
-| `color` | `str \| None` | CSS color value |
-| `icon` | `str \| None` | Lucide icon name for the legend |
+| `color` | `str | None` | CSS color value |
+| `icon` | `str | None` | Lucide icon name for the legend |
 
 ---
 
@@ -123,11 +123,11 @@ All chart components (`BarChart`, `LineChart`, etc.) accept:
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `list[dict]` | *(required)* | Array of data records |
-| `layout` | `"horizontal" \| "vertical"` | `"horizontal"` | Chart orientation |
-| `margin` | `dict[str, int] \| None` | `{top:10, right:10, left:10, bottom:0}` | Chart margins |
-| `on_click` | `Callback \| None` | `None` | Click on chart element |
-| `on_mouse_enter` | `Callback \| None` | `None` | Hover enter |
-| `on_mouse_leave` | `Callback \| None` | `None` | Hover leave |
+| `layout` | `"horizontal" | "vertical"` | `"horizontal"` | Chart orientation |
+| `margin` | `dict[str, int] | None` | `{top:10, right:10, left:10, bottom:0}` | Chart margins |
+| `on_click` | `Callback | None` | `None` | Click on chart element |
+| `on_mouse_enter` | `Callback | None` | `None` | Hover enter |
+| `on_mouse_leave` | `Callback | None` | `None` | Hover leave |
 
 ---
 
@@ -138,19 +138,19 @@ All chart components (`BarChart`, `LineChart`, etc.) accept:
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data_key` | `str` | *(required)* | Key in the data records for this series |
-| `fill` | `str \| None` | `None` | Bar fill colour (use `var(--color-<key>)`) |
-| `radius` | `int \| list[int]` | `0` | Border radius |
-| `stack_id` | `str \| None` | `None` | Stack identifier for stacked bars |
+| `fill` | `str | None` | `None` | Bar fill colour (use `var(--color-<key>)`) |
+| `radius` | `int | list[int]` | `0` | Border radius |
+| `stack_id` | `str | None` | `None` | Stack identifier for stacked bars |
 
 ### Line
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data_key` | `str` | *(required)* | Key in the data records |
-| `stroke` | `str \| None` | `None` | Line colour |
+| `stroke` | `str | None` | `None` | Line colour |
 | `stroke_width` | `int` | `2` | Line thickness |
 | `dot` | `bool` | `True` | Show data-point dots |
-| `type` | `"linear" \| "monotone" \| "step"` | `"linear"` | Interpolation |
+| `type` | `"linear" | "monotone" | "step"` | `"linear"` | Interpolation |
 
 ### Area
 
@@ -158,7 +158,7 @@ Same as `Line`, plus:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `fill` | `str \| None` | `None` | Area fill colour |
+| `fill` | `str | None` | `None` | Area fill colour |
 | `fill_opacity` | `float` | `0.4` | Fill opacity |
 
 ### Pie
@@ -167,9 +167,9 @@ Same as `Line`, plus:
 |------|------|---------|-------------|
 | `data_key` | `str` | *(required)* | Key for values |
 | `name_key` | `str` | `"name"` | Key for slice labels |
-| `inner_radius` | `int \| str` | `0` | Inner radius (set > 0 for donut) |
-| `outer_radius` | `int \| str` | `"80%"` | Outer radius |
-| `on_click` | `Callback \| None` | `None` | Click a slice |
+| `inner_radius` | `int | str` | `0` | Inner radius (set > 0 for donut) |
+| `outer_radius` | `int | str` | `"80%"` | Outer radius |
+| `on_click` | `Callback | None` | `None` | Click a slice |
 
 ---
 
@@ -179,7 +179,7 @@ Same as `Line`, plus:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `data_key` | `str \| None` | `None` | Key for axis values |
+| `data_key` | `str | None` | `None` | Key for axis values |
 | `tick_line` | `bool` | `True` | Show tick lines |
 | `axis_line` | `bool` | `True` | Show axis line |
 
@@ -199,16 +199,16 @@ Same as `Line`, plus:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `content` | `ChartTooltipContent \| None` | `None` | Custom content component |
+| `content` | `ChartTooltipContent | None` | `None` | Custom content component |
 | `cursor` | `bool` | `True` | Show cursor highlight |
 
 ### ChartTooltipContent
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `indicator` | `"line" \| "dot" \| "dashed"` | `"dot"` | Style of series indicator |
-| `name_key` | `str \| None` | `None` | Override key for series name |
-| `label_key` | `str \| None` | `None` | Override key for x-axis label |
+| `indicator` | `"line" | "dot" | "dashed"` | `"dot"` | Style of series indicator |
+| `name_key` | `str | None` | `None` | Override key for series name |
+| `label_key` | `str | None` | `None` | Override key for x-axis label |
 
 ### ChartLegend / ChartLegendContent
 

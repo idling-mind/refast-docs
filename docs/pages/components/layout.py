@@ -47,12 +47,12 @@ Row(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Child components |
-| `justify` | `"start" \| "end" \| "center" \| "between" \| "around" \| "evenly"` | `"start"` | `justify-content` |
-| `align` | `"start" \| "end" \| "center" \| "stretch" \| "baseline"` | `"start"` | `align-items` |
+| `children` | `list | Component | None` | `None` | Child components |
+| `justify` | `"start" | "end" | "center" | "between" | "around" | "evenly"` | `"start"` | `justify-content` |
+| `align` | `"start" | "end" | "center" | "stretch" | "baseline"` | `"start"` | `align-items` |
 | `gap` | `int` | `2` | Gap between children (Tailwind spacing unit × 0.25 rem) |
 | `wrap` | `bool` | `False` | Whether children wrap onto multiple lines |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -72,12 +72,12 @@ Column(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Child components |
-| `justify` | `"start" \| "end" \| "center" \| "between" \| "around" \| "evenly"` | `"start"` | `justify-content` |
-| `align` | `"start" \| "end" \| "center" \| "stretch" \| "baseline"` | `"stretch"` | `align-items` |
+| `children` | `list | Component | None` | `None` | Child components |
+| `justify` | `"start" | "end" | "center" | "between" | "around" | "evenly"` | `"start"` | `justify-content` |
+| `align` | `"start" | "end" | "center" | "stretch" | "baseline"` | `"stretch"` | `align-items` |
 | `gap` | `int` | `2` | Gap between children (Tailwind spacing unit × 0.25 rem) |
 | `wrap` | `bool` | `False` | Whether children wrap |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -98,11 +98,11 @@ Grid(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Grid cells |
-| `columns` | `int \| str` | `1` | Number of equal columns, or a `gridTemplateColumns` CSS string |
-| `rows` | `int \| str \| None` | `None` | Number of equal rows, or a `gridTemplateRows` CSS string |
+| `children` | `list | Component | None` | `None` | Grid cells |
+| `columns` | `int | str` | `1` | Number of equal columns, or a `gridTemplateColumns` CSS string |
+| `rows` | `int | str | None` | `None` | Number of equal rows, or a `gridTemplateRows` CSS string |
 | `gap` | `int` | `4` | Gap between cells (Tailwind spacing unit) |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -127,13 +127,13 @@ Flex(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Child components |
-| `direction` | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"` | Flex direction |
-| `justify` | `"start" \| "end" \| "center" \| "between" \| "around" \| "evenly"` | `"start"` | `justify-content` |
-| `align` | `"start" \| "end" \| "center" \| "stretch" \| "baseline"` | `"stretch"` | `align-items` |
+| `children` | `list | Component | None` | `None` | Child components |
+| `direction` | `"row" | "column" | "row-reverse" | "column-reverse"` | `"row"` | Flex direction |
+| `justify` | `"start" | "end" | "center" | "between" | "around" | "evenly"` | `"start"` | `justify-content` |
+| `align` | `"start" | "end" | "center" | "stretch" | "baseline"` | `"stretch"` | `align-items` |
 | `wrap` | `bool` | `False` | Whether children wrap |
 | `gap` | `int` | `2` | Gap (Tailwind spacing unit) |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ---
@@ -154,7 +154,7 @@ Center(
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list \| Component \| None` | `None` | Content to center |
-| `id` | `str \| None` | `None` | Unique element ID |
+| `children` | `list | Component | None` | `None` | Content to center |
+| `id` | `str | None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

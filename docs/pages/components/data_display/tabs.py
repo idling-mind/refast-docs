@@ -201,9 +201,9 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | `TabItem` components. |
-| `default_value` | `str \\| None` | `None` | Initially active tab value (uncontrolled). |
-| `value` | `str \\| None` | `None` | Controlled active tab value. |
-| `on_value_change` | `Callback \\| None` | `None` | Fired when the active tab changes. `ctx.event_data` is the new value string. |
+| `default_value` | `str | None` | `None` | Initially active tab value (uncontrolled). |
+| `value` | `str | None` | `None` | Controlled active tab value. |
+| `on_value_change` | `Callback | None` | `None` | Fired when the active tab changes. `ctx.event_data` is the new value string. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## TabItem Props
@@ -212,7 +212,7 @@ REFERENCE = """
 |------|------|---------|-------------|
 | `value` | `str` | *(required)* | Unique identifier within the `Tabs` group. |
 | `label` | `str` | *(required)* | Text displayed on the tab trigger button. |
-| `icon` | `str \\| None` | `None` | Lucide icon name shown before the label. |
+| `icon` | `str | None` | `None` | Lucide icon name shown before the label. |
 | `children` | `list` | `[]` | Panel content shown when this tab is active. |
 | `disabled` | `bool` | `False` | Grays out and disables the tab trigger. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |

@@ -238,14 +238,14 @@ REFERENCE = """
 | `label` | `str` | *(required)* | Page label text |
 | `href` | `str` | `"#"` | URL for the link |
 | `active` | `bool` | `False` | Highlights the current page |
-| `on_click` | `Callback \\| None` | `None` | Server click callback |
+| `on_click` | `Callback | None` | `None` | Server click callback |
 
 ### `PaginationPrevious` / `PaginationNext`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `href` | `str` | `"#"` | Navigation URL |
-| `on_click` | `Callback \\| None` | `None` | Server click callback |
+| `on_click` | `Callback | None` | `None` | Server click callback |
 
 ## Component Hierarchy
 

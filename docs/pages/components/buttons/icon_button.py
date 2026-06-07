@@ -209,11 +209,11 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `icon` | `str` | *(required)* | Lucide icon name (e.g. `"trash"`, `"edit"`, `"settings"`) |
-| `variant` | `"ghost" \\| "default" \\| "secondary" \\| "destructive" \\| "outline"` | `"ghost"` | Visual style |
-| `size` | `"xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"` | `"md"` | Button dimensions (also controls icon size) |
+| `variant` | `"ghost" | "default" | "secondary" | "destructive" | "outline"` | `"ghost"` | Visual style |
+| `size` | `"xs" | "sm" | "md" | "lg" | "xl"` | `"md"` | Button dimensions (also controls icon size) |
 | `disabled` | `bool` | `False` | Prevents interaction |
-| `aria_label` | `str \\| None` | `None` | Accessible label — defaults to icon name if omitted |
-| `on_click` | `Callback \\| None` | `None` | Server callback invoked on click |
+| `aria_label` | `str | None` | `None` | Accessible label — defaults to icon name if omitted |
+| `on_click` | `Callback | None` | `None` | Server callback invoked on click |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## All Variants
