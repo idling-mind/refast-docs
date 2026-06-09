@@ -238,6 +238,7 @@ from .pages.concepts import (  # noqa: E402
     background,
     bundle_splitting,
     callbacks,
+    desktop_notifications,
     file_transfers,
     js_interop,
     routing,
@@ -298,6 +299,7 @@ NAV_SECTIONS = [
             ("Theming", "/docs/concepts/theming", "palette"),
             ("Styling", "/docs/concepts/styling", "paintbrush"),
             ("Toast Notifications", "/docs/concepts/toasts", "bell"),
+            ("Desktop Notifications", "/docs/concepts/desktop-notifications", "bell"),
             ("JavaScript Interop", "/docs/concepts/js-interop", "code"),
             ("File Uploads & Downloads", "/docs/concepts/file-transfers", "upload"),
             ("Bundle Splitting", "/docs/concepts/bundle-splitting", "package"),
@@ -985,6 +987,11 @@ def page_concepts_theming(ctx: Context):
 @ui.page("/docs/concepts/toasts")
 def page_concepts_toasts(ctx: Context):
     return toasts.render(ctx)
+
+
+@ui.page("/docs/concepts/desktop-notifications")
+def page_concepts_desktop_notifications(ctx: Context):
+    return desktop_notifications.render(ctx)
 
 
 @ui.page("/docs/concepts/js-interop")
