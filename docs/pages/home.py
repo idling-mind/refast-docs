@@ -18,6 +18,8 @@ from refast.components import (
     Text,
 )
 
+from importlib.metadata import version
+
 PAGE_TITLE = "Home"
 PAGE_ROUTE = "/"
 
@@ -34,7 +36,7 @@ def render(ctx):
                 gap=4,
                 class_name="text-center py-12",
                 children=[
-                    Row([Badge(["v0.1.0"], variant="secondary")], justify="center"),
+                    Row([Badge([version("refast")], variant="secondary")], justify="center"),
                     Text(
                         "Refast",
                         style={

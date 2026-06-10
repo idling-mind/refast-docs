@@ -6,6 +6,7 @@ Run:
     cd <project_root>
     uvicorn docs.app:app --reload
 """
+from importlib.metadata import version
 
 from pathlib import Path
 
@@ -655,7 +656,7 @@ def _build_sidebar(ctx: Context, current_path: str):
                                     Row(
                                         [
                                             SidebarMenuButton(
-                                                "v0.1.0",
+                                                f"v{version('refast')}",
                                                 icon="tag",
                                                 size="sm",
                                             ),
