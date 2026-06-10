@@ -25,9 +25,28 @@ CONTENT = r"""
 ## Overview
 
 Utility components cover visual helpers and interactive primitives that are
-not strictly layout but still broadly reusable: separators, aspect-ratio
+not strictly layout but still broadly reusable: icons, separators, aspect-ratio
 boxes, scrollable areas, collapsibles, carousels, resizable split-panes,
 and UI feedback helpers.
+
+---
+
+## Icon
+
+Renders a Lucide icon by name, supporting custom sizing, coloring, and stroke widths.
+
+```python
+from refast.components import Icon
+
+Icon("home", size=24, color="blue")
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `str` | *(required)* | Lucide icon name or emoji fallback |
+| `size` | `int` | `16` | Icon height and width in pixels |
+| `color` | `str | None` | `None` | CSS color value (e.g. `"red"`, `"currentColor"`) |
+| `stroke_width` | `float` | `2.0` | Stroke line thickness |
 
 ---
 

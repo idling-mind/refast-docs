@@ -226,6 +226,9 @@ from .pages.components.utility import (
     carousel as carousel_page,
 )
 from .pages.components.utility import (
+    icon as icon_page,
+)
+from .pages.components.utility import (
     keyboard_shortcut as keyboard_shortcut_page,
 )
 from .pages.components.utility import (
@@ -429,6 +432,7 @@ NAV_SECTIONS = [
                 "label": "Utility",
                 "icon": "wrench",
                 "pages": [
+                    ("Icon", "/docs/components/icon", "star"),
                     ("Separator", "/docs/components/separator", "minus"),
                     ("Aspect Ratio", "/docs/components/aspect-ratio", "maximize"),
                     ("Carousel", "/docs/components/carousel", "image"),
@@ -1338,6 +1342,11 @@ def page_components_other_charts(ctx: Context):
 @ui.page("/docs/components/utility")
 def page_components_utility(ctx: Context):
     return utility.render(ctx)
+
+
+@ui.page("/docs/components/icon")
+def page_components_icon(ctx: Context):
+    return icon_page.render(ctx)
 
 
 @ui.page("/docs/components/separator")
