@@ -151,6 +151,7 @@ async def trigger_notification(
         ),
     )
 
+
 async def clear_logs(ctx: Context):
     """Clear the logs."""
     await ctx.update_props(
@@ -161,14 +162,17 @@ async def clear_logs(ctx: Context):
                 id="awaiting-msg",
                 class_name="text-xs text-muted-foreground italic",
             )
-        }
+        },
     )
+
 
 # ── Interactive Playground Component ──────────────────────────────────────────
 
 
 def _desktop_notifications_demo(ctx: Context):
-    ctx.store.local["notif_title"] = ctx.store.local.get("notif_title", "Refast Native Alert")
+    ctx.store.local["notif_title"] = ctx.store.local.get(
+        "notif_title", "Refast Native Alert"
+    )
     ctx.store.local["notif_body"] = ctx.store.local.get(
         "notif_body", "Backend-triggered system notification!"
     )
@@ -203,7 +207,10 @@ def _desktop_notifications_demo(ctx: Context):
                                     Column(
                                         gap=1.5,
                                         children=[
-                                            Text("Notification Title", class_name="text-sm font-semibold"),
+                                            Text(
+                                                "Notification Title",
+                                                class_name="text-sm font-semibold",
+                                            ),
                                             Input(
                                                 placeholder="Enter title...",
                                                 value=ctx.store.local["notif_title"],
@@ -252,10 +259,16 @@ def _desktop_notifications_demo(ctx: Context):
                                                 children=[
                                                     Checkbox(
                                                         id="notif-silent-chk",
-                                                        checked=ctx.store.local["notif_silent"],
-                                                        on_change=ctx.save_prop("notif_silent"),
+                                                        checked=ctx.store.local[
+                                                            "notif_silent"
+                                                        ],
+                                                        on_change=ctx.save_prop(
+                                                            "notif_silent"
+                                                        ),
                                                     ),
-                                                    Text("Silent", class_name="text-sm"),
+                                                    Text(
+                                                        "Silent", class_name="text-sm"
+                                                    ),
                                                 ],
                                             ),
                                             Row(
@@ -271,24 +284,49 @@ def _desktop_notifications_demo(ctx: Context):
                                                             "notif_require_interaction"
                                                         ),
                                                     ),
-                                                    Text("Require Interaction", class_name="text-sm"),
+                                                    Text(
+                                                        "Require Interaction",
+                                                        class_name="text-sm",
+                                                    ),
                                                 ],
                                             ),
                                         ],
                                     ),
                                     Button(
                                         "Trigger Notification",
-                                        on_click=ctx.callback(
-                                            trigger_notification,
-                                            props=[
-                                                "notif_title",
-                                                "notif_body",
-                                                "notif_tag",
-                                                "notif_silent",
-                                                "notif_require_interaction",
-                                            ],
+                                        on_click=ctx.chain(
+                                            [
+                                                ctx.js(
+                                                    """
+                                            if (!('Notification' in window)) {
+                                                alert('This browser does not support desktop notifications.');
+                                            } else if (Notification.permission === 'denied') {
+                                                console.log("[Refast] Notification permission denied")
+                                            } else {
+                                                Notification.requestPermission().then(function(p) {
+                                                    console.log("[Refast] Notification permission granted")
+                                                });
+                                            };
+                                            """
+                                                ),
+                                                ctx.callback(
+                                                    trigger_notification,
+                                                    props=[
+                                                        "notif_title",
+                                                        "notif_body",
+                                                        "notif_tag",
+                                                        "notif_silent",
+                                                        "notif_require_interaction",
+                                                    ],
+                                                ),
+                                            ]
                                         ),
                                         class_name="w-full mt-2 bg-primary hover:bg-primary/95 text-primary-foreground font-semibold py-2 rounded-md transition-colors",
+                                    ),
+                                    Button(
+                                        "Hidden Trigger",
+                                        id="hidden-trigger-btn",
+                                        class_name="hidden",
                                     ),
                                 ],
                             ),
@@ -298,7 +336,9 @@ def _desktop_notifications_demo(ctx: Context):
                                 class_name="flex-1 border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-6",
                                 children=[
                                     Heading(
-                                        "Real-time Event Logger", level=5, class_name="text-sm font-semibold"
+                                        "Real-time Event Logger",
+                                        level=5,
+                                        class_name="text-sm font-semibold",
                                     ),
                                     Text(
                                         "Browser permission prompts, notification triggers, user clicks, and dismissals will update below in real-time.",
@@ -421,6 +461,50 @@ await ctx.show_desktop_notification(
     on_permission_denied=ctx.callback(on_denied),
 )
 ```
+
+> [!WARNING]
+> **Production Latency & User Gesture Blocks**
+> 
+> Modern browsers enforce strict security policies regarding **User Gestures** (transient user activation) for permission prompts like `Notification.requestPermission()`.
+> 
+> Because Refast is a backend-driven framework, callbacks typically execute on the server over WebSockets. In production environments, the network latency (WebSocket hop) can cause the browser to consider the user gesture "expired" by the time the notification command returns. As a result, the browser will block the permission prompt and log a warning in the developer console.
+> 
+> *(Note: This works on `localhost` because browsers bypass or have loose gesture expiration rules for local loops).*
+
+#### Production-Safe Permission Workaround
+
+To ensure that the permission prompt is always triggered within a valid user gesture in production, you should request permission on the client side using a client-side JavaScript callback (`ctx.js`) *before* invoking the backend callback.
+
+You can accomplish this easily using `ctx.chain` to link a client-side JS check with your server-side callback:
+
+```python
+Button(
+    "Trigger Alert",
+    on_click=ctx.chain([
+        ctx.js(
+            \"""
+            if (!('Notification' in window)) {
+                alert('This browser does not support desktop notifications.');
+            } else if (Notification.permission === 'denied') {
+                console.log("[Refast] Notification permission denied");
+            } else {
+                // Requests permission client-side directly within the user click gesture
+                Notification.requestPermission().then(function(p) {
+                    console.log("[Refast] Notification permission: " + p);
+                });
+            }
+            \"""
+        ),
+        ctx.callback(
+            trigger_notification,
+            props=["notif_title", "notif_body"]
+        )
+    ])
+)
+```
+
+Once the user has granted permission on their first click, subsequent clicks will bypass the request phase and display the desktop alert instantly.
+
 
 ### De-duplication using Tags
 
