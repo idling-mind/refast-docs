@@ -126,7 +126,6 @@ async def trigger_notification(
     await ctx.show_desktop_notification(
         title=title_val,
         body=body_val,
-        icon="https://refast.dev/logo.png",
         tag=tag_val,
         silent=notif_silent,
         require_interaction=notif_require_interaction,
