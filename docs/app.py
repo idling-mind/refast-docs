@@ -271,6 +271,7 @@ ui = RefastApp(
     theme=default_theme,
     favicon="📖",
     custom_css="/styles/main.css",
+    preloaded_features=["markdown", "controls", "navigation", "overlay"],
 )
 
 # ── Navigation structure ─────────────────────────────────────────────────
