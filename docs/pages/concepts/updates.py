@@ -128,7 +128,7 @@ async def increment(ctx: Context):
 
 ## Targeted updates
 
-All methods below send a single WebSocket message that modifies one element.
+All methods below send a single event stream message that modifies one element.
 The target component **must have an `id` prop** — Refast uses that to locate the DOM node.
 
 ### `ctx.replace(id, component)`
@@ -239,7 +239,7 @@ async def run_task(ctx: Context):
 ## Live demo
 
 Try the targeted update operations below. Each button calls a Python callback that
-sends a focused WebSocket message — no full page re-render happens.
+sends a focused event stream message — no full page re-render happens.
 
 {{ updates_demo }}
 
@@ -249,7 +249,7 @@ sends a focused WebSocket message — no full page re-render happens.
 
 - **IDs must be unique** in the rendered tree. Duplicate ids cause undefined behaviour.
 - Targeted updates are **additive for the session** — items you append survive until the
-  WebSocket session ends (tab close / reload). Use `ctx.refresh(target_id=...)` or
+  connection session ends (tab close / reload). Use `ctx.refresh(target_id=...)` or
   `ctx.update_props(..., {"children": [...]})` to restore a known state.
 - `ctx.update_props()` with `"children"` **replaces** all children of the target; it is
   not the same as appending.
@@ -276,7 +276,7 @@ def render(ctx):
         children=[
             Heading("Live demo: targeted updates", level=3, class_name="text-lg font-semibold"),
             Text(
-                "Each button sends one targeted WebSocket message. Watch the operation log below the list.",
+                "Each button sends one targeted event stream message. Watch the operation log below the list.",
                 class_name="text-sm text-muted-foreground",
             ),
             # The list container — append/prepend/remove target this id

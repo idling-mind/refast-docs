@@ -138,12 +138,12 @@ def render(ctx):
 ### Callouts
 Use Alert components for important notes:
 ```python
-Alert(title="Note", description="State is only available in WebSocket context.")
+Alert(title="Note", description="State is only available within an active connection session.")
 ```
 
 Or use blockquotes in Markdown:
 ```markdown
-> **Note:** State is only available within callback/WebSocket context.
+> **Note:** State is only available within callback/active connection context.
 ```
 
 ## Component Defaults to Know

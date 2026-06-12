@@ -27,7 +27,7 @@ CONTENT = r"""
 ## Overview
 
 Refast provides server-side session management for persisting data across requests
-beyond the WebSocket connection lifetime.
+beyond the connection context lifetime.
 
 ## Session Object
 
@@ -87,7 +87,7 @@ app.add_middleware(
 | | `ctx.state` | `ctx.session` | `ctx.store` |
 |---|---|---|---|
 | **Location** | Server memory | Server store | Browser storage |
-| **Lifetime** | WebSocket connection | Configurable TTL | Until cleared |
+| **Lifetime** | Connection session | Configurable TTL | Until cleared |
 | **Shared across tabs** | No | Yes (same cookie) | Yes (same origin) |
 | **Survives reload** | No | Yes | Yes |
 

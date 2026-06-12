@@ -223,7 +223,7 @@ Column(gap=4, children=[
 **Components to document:**
 - `Icon` — Lucide icon (name, size). List all available icon names.
 - `ThemeSwitcher` — light/dark/system toggle
-- `ConnectionStatus` — WebSocket connection indicator
+- `ConnectionStatus` — SSE connection indicator
 - `Slot` — dynamic content placeholder (id, fallback)
 - `Empty` — renders nothing
 - `LoadingOverlay` — full-screen loading overlay

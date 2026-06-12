@@ -6,16 +6,12 @@ Interactive reference page for the Avatar component.
 from refast import Context
 from refast.components import (
     Avatar,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
     Container,
     Heading,
     Input,
     Markdown,
-    Row,
     Select,
     Separator,
     Text,

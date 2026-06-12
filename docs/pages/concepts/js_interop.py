@@ -160,7 +160,7 @@ four JavaScript interop methods on the `Context` object, split into two categori
   assigned to component event props. They run in the browser when the user interacts
   with the component, with no server roundtrip.
 - **Imperative calls** (`ctx.call_js()`, `ctx.call_bound_js()`) — called with `await`
-  inside an async Python callback. They send a WebSocket message that the browser
+  inside an async Python callback. They send an event stream message that the browser
   executes immediately.
 
 ---
@@ -271,7 +271,7 @@ element.
 
 ## ctx.call_js() — Imperatively Execute JS from Python
 
-Awaitable. Sends a `js_exec` WebSocket message that the browser executes
+Awaitable. Sends a `js_exec` event stream message that the browser executes
 immediately. Use this inside async Python callbacks when you need to trigger
 browser-side behaviour after processing server-side logic.
 
@@ -300,7 +300,7 @@ async def focus_search(ctx: Context):
 
 ## ctx.call_bound_js() — Imperatively Call a Component Method from Python
 
-Awaitable. Sends a `bound_method_call` WebSocket message that calls a named method
+Awaitable. Sends a `bound_method_call` event stream message that calls a named method
 on a component's DOM element. Use inside async Python callbacks when the method call
 depends on server-side data.
 
@@ -331,8 +331,8 @@ async def draw_shape(ctx: Context):
 |--------|------|---------|-------------------|
 | `ctx.js(code, **bound_args)` | Event-handler prop | `JsCallback` | No |
 | `ctx.bound_js(id, method, *args)` | Event-handler prop | `BoundJsCallback` | No |
-| `await ctx.call_js(code, **args)` | Imperative (in callback) | `None` | No — sent via WS |
-| `await ctx.call_bound_js(id, method)` | Imperative (in callback) | `None` | No — sent via WS |
+| `await ctx.call_js(code, **args)` | Imperative (in callback) | `None` | No — sent via event stream |
+| `await ctx.call_bound_js(id, method)` | Imperative (in callback) | `None` | No — sent via event stream |
 | `ctx.callback(fn)` | Event-handler prop | `Callback` | Yes |
 
 ---

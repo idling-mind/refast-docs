@@ -1,0 +1,14 @@
+# Project Instructions and Guidelines
+
+Always adhere to the following rules when working on this project:
+
+## Python Environment & Tools
+- **Use `uv` for all Python-related tasks**:
+  - Installing packages: `uv pip install` or `uv add`
+  - Running tools/scripts: `uv run <command>` or `uvx <tool>`
+  - Running tests: `uv run pytest`
+  - Running linter: `uv run ruff check`
+  - Never use raw `pip`, `python`, `poetry`, or `hatch` directly unless explicitly required by the command environment.
+
+## Quality Control & Verification
+- **Linter**: Ensure all `ruff` linting and formatting checks pass completely before concluding any task (`uv run ruff check`).

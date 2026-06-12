@@ -40,7 +40,7 @@ Refast is built on a **Server-Driven UI** architecture. The Python backend is th
 
 ```mermaid
 graph TD
-    User((User)) <--> |HTTP/WS| FastAPI[FastAPI App]
+    User((User)) <--> |HTTP/SSE| FastAPI[FastAPI App]
     subgraph Server [Refast Backend]
         FastAPI --> RefastApp
         RefastApp --> Router
@@ -73,13 +73,15 @@ When a user visits a Refast application:
    - Theme CSS variables.
 6. The browser loads the HTML, executes the React bundle, and hydrates the view.
 
-### 2. WebSocket Connection
+### 2. Server-Sent Events (SSE) & Client Events
 
-Immediately after hydration, the React client establishes a **WebSocket connection** back to the server. This persistent connection enables:
+Immediately after hydration, the React client establishes a **Server-Sent Events (SSE) connection** back to the server via the `GET /api/events` endpoint. For sending user interactions and events to the server, the client sends HTTP POST requests to `/api/event`.
 
-- **Real-time Updates**: The server can push UI changes to the client at any time.
-- **Event Handling**: User interactions (clicks, input changes) are sent as events to the server.
-- **State Synchronization**: Client-side state (like form inputs) can be synced to the server.
+This dual-channel transport layer enables:
+
+- **Real-time Updates**: The server can push UI changes to the client at any time using the persistent SSE stream.
+- **Event Handling**: User interactions (clicks, input changes) are posted to the server to trigger Python callbacks.
+- **State Synchronization**: Client-side state (like form inputs) is synced to the server.
 
 ### 3. SPA Navigation
 

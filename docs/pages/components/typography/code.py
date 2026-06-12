@@ -3,16 +3,12 @@
 from refast import Context
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Code,
     Column,
     Container,
     Heading,
     Markdown,
-    Paragraph,
     Row,
     Select,
     Separator,

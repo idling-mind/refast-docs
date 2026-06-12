@@ -6,9 +6,6 @@ Interactive reference page for the HoverCard component family.
 from refast import Context
 from refast.components import (
     Avatar,
-    Card,
-    CardContent,
-    CardHeader,
     Column,
     Container,
     Heading,

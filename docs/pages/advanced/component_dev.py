@@ -29,7 +29,7 @@ This guide walks through creating your own components from scratch.
 ## Architecture Overview
 
 ```
-Python Component → render() → JSON dict → WebSocket → React ComponentRenderer → React Component → DOM
+Python Component → render() → JSON dict → Server-Sent Events / HTTP → React ComponentRenderer → React Component → DOM
 ```
 
 Every component has:
@@ -268,7 +268,7 @@ def home(ctx: Context):
 ### JavaScript Callbacks with `ctx.js()`
 
 For interactions that don't require server-side processing, use `ctx.js()` to run
-JavaScript directly in the browser — no WebSocket roundtrip:
+JavaScript directly in the browser — no server roundtrip:
 
 ```python
 Button(

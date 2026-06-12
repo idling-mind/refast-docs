@@ -121,7 +121,7 @@ Skeleton(variant="text", width="60%")               # text line
 ## ConnectionStatus
 
 Shows connection state to the user. Renders different content depending on
-whether the WebSocket connection is active.
+whether the connection stream is active.
 
 ```python
 ConnectionStatus(

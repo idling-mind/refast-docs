@@ -141,7 +141,7 @@ EXAMPLES = [
     },
     {
         "title": "Connection Status",
-        "desc": "WebSocket connection monitoring component.",
+        "desc": "SSE connection monitoring component.",
         "icon": "wifi",
         "file": "examples/connection_status/app.py",
     },

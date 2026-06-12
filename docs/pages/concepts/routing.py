@@ -25,11 +25,11 @@ CONTENT = r"""
 ## Overview
 
 Refast supports **multi-page single-page applications** (SPAs). Each page is a Python
-function registered with `@ui.page()`. Navigation happens over the existing WebSocket
-connection — no full page reloads, no lost state, no flash of unstyled content.
+function registered with `@ui.page()`. Navigation happens over the existing connection
+context — no full page reloads, no lost state, no flash of unstyled content.
 
 Key benefits:
-- **State persistence** — `ctx.state` survives navigation since the WebSocket stays connected
+- **State persistence** — `ctx.state` survives navigation since the connection context stays active
 - **Instant transitions** — only the component tree is swapped, the HTML shell never reloads
 - **Python-first** — pages are plain Python functions; no framework-specific file conventions
 
@@ -119,14 +119,14 @@ await ctx.redirect("https://example.com", target="_blank")
 ```
 
 Unlike `ctx.load()`, `ctx.redirect()` causes a full browser navigation and does **not**
-preserve WebSocket state.
+preserve connection context state.
 
 ---
 
 ## Refreshing a Page
 
 `ctx.refresh()` re-renders the current page with the latest state, sending the updated
-component tree over the existing WebSocket connection:
+component tree over the existing connection stream:
 
 ```python
 # Re-render the current page
@@ -150,11 +150,11 @@ await ctx.refresh(target_id="sidebar")
 
 When you call `ctx.load("/about")`:
 
-1. The server sends a `navigate` WebSocket message with the new path
+1. The server sends a `navigate` event stream message with the new path
 2. The frontend updates the browser URL via the History API (no page reload)
 3. The server immediately calls the target page's handler function
 4. A `page_render` message is sent with the new component tree
-5. React swaps the component tree in place — the HTML shell, WebSocket, and JS state all stay intact
+5. React swaps the component tree in place — the HTML shell, SSE stream, and JS state all stay intact
 
 ```
 Browser                         Server
@@ -310,7 +310,7 @@ not worth exposing as URLs (e.g. a multi-step wizard).
 
 - **No wildcard routes** — Refast does not support catch-all `/*` patterns. Every URL
   must be registered explicitly with `@ui.page()`.
-- **`ctx.state` persists, `ctx.store` also persists** — WebSocket state survives
+- **`ctx.state` persists, `ctx.store` also persists** — connection context state survives
   `ctx.load()` calls. Browser storage (`ctx.store`) survives full F5 reloads but
   `ctx.state` does not.
 - **Order of registration does not matter** for exact routes, but parameterised routes

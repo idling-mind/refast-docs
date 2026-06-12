@@ -91,7 +91,7 @@ pip install refast
                     _feature_card(
                         "Reactive Updates",
                         "refresh-cw",
-                        "Push real-time updates via WebSocket. Targeted DOM updates without full page reloads.",
+                        "Push real-time updates via Server-Sent Events (SSE). Targeted DOM updates without full page reloads.",
                     ),
                     _feature_card(
                         "FastAPI Native",

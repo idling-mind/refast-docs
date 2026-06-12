@@ -28,7 +28,7 @@ CONTENT = r"""
 
 Refast gives you two complementary state layers:
 
-- `ctx.state`: server-side, per-WebSocket-session state for app logic and UI rendering
+- `ctx.state`: server-side, per-connection-session state for app logic and UI rendering
 - `ctx.store`: browser storage (`localStorage` + `sessionStorage`) for values that should survive refreshes
 
 Use both intentionally: keep authoritative runtime state on the server, and persist user/device preferences in browser storage.
@@ -141,14 +141,14 @@ Why this helps:
 | | `ctx.state` | `ctx.store.local` / `ctx.store.session` |
 |---|---|---|
 | **Location** | Server (Python process) | Browser storage |
-| **Lifetime** | WebSocket session | Across refreshes (`local`), until tab closes (`session`) |
+| **Lifetime** | Connection session | Across refreshes (`local`), until tab closes (`session`) |
 | **Scope** | Single connection/tab | Browser origin (`local`) or single tab (`session`) |
 | **Best for** | Runtime UI/app logic | Persistence and user preferences |
 | **Sync behavior** | Immediate in memory | Cached in Python, optionally refreshed via `await ctx.store.sync()` |
 
 ## Important Notes
 
-- `ctx.state` is reset when the WebSocket session ends (tab close/reload/disconnect).
+- `ctx.state` is reset when the connection session ends (tab close/reload/disconnect).
 - State is not shared between tabs unless you explicitly broadcast and synchronize.
 - Store writes are queued and synced to browser automatically after updates.
 - Call `await ctx.store.sync()` before reading values that may have changed directly in JavaScript.

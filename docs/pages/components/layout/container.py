@@ -2,11 +2,7 @@
 
 from refast import Context
 from refast.components import (
-    Badge,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
     Container,
@@ -91,8 +87,8 @@ def _playground(ctx: Context):
                     Text("Background", class_name="text-sm font-medium"),
                     Select(
                         options=[
-                            {"value": v, "label": l}
-                            for v, l in [
+                            {"value": v, "label": lbl}
+                            for v, lbl in [
                                 ("none", "none"),
                                 ("muted", "bg-muted"),
                                 ("muted/30", "bg-muted/30"),

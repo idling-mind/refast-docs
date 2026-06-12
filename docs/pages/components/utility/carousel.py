@@ -2,9 +2,6 @@
 from refast import Context
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Carousel,
     CarouselContent,
     CarouselItem,
@@ -15,7 +12,6 @@ from refast.components import (
     Container,
     Heading,
     Markdown,
-    Row,
     Select,
     Separator,
     Text,

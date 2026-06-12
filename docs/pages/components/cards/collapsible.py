@@ -5,9 +5,6 @@ Interactive reference page for the Collapsible component family.
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Collapsible,
     CollapsibleContent,
@@ -16,7 +13,6 @@ from refast.components import (
     Container,
     Heading,
     Markdown,
-    Row,
     Separator,
     Text,
 )

@@ -4,16 +4,12 @@ Interactive reference page for the Slider component.
 """
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
     Container,
     Heading,
     Input,
     Markdown,
-    Row,
     Select,
     Separator,
     Text,

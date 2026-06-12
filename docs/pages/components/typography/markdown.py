@@ -4,7 +4,6 @@ from refast import Context
 from refast.components import (
     Badge,
     Button,
-    Column,
     Container,
     Heading,
     Markdown,
