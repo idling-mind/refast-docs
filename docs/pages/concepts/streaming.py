@@ -3,7 +3,8 @@
 import asyncio
 import random
 
-from refast.components import Badge, Button, Container, Heading, Markdown, Row, Separator
+from refast.components import Badge, Button, Calendar, Container, Heading, Markdown, Row, Separator
+from refast.components.shadcn.charts import Bar, BarChart, ChartContainer
 from refast.context import Context
 
 from ..utils import render_markdown_with_demo_apps
@@ -19,6 +20,13 @@ _SAMPLE_RESPONSE = """\
 # Streaming works!
 
 This text is being delivered **token by token**, just like a large language model.
+
+Here are some custom components rendered inline:
+
+* **Badge:** <Badge label="Streaming Success" variant="success" />
+* **Calendar:** <Calendar />
+* **Simple Bar Chart:**
+<SimpleBarChart />
 
 ## Why streaming matters
 
@@ -45,6 +53,37 @@ Streaming is complete. ✓\
 
 _streaming_flags: dict[int, bool] = {}
 
+def make_badge(label: str, variant: str = "default"):
+    return Badge(label, variant=variant)
+
+def make_calendar():
+    return Calendar(mode="single")
+
+def make_bar_chart():
+    data = [
+        {"name": "Jan", "value": 400},
+        {"name": "Feb", "value": 300},
+        {"name": "Mar", "value": 600},
+        {"name": "Apr", "value": 800},
+        {"name": "May", "value": 500},
+    ]
+    return ChartContainer(
+        class_name="h-48 w-full max-w-sm mt-2",
+        children=[
+            BarChart(
+                data=data,
+                children=[
+                    Bar(data_key="value", label="Sales", radius=4)
+                ]
+            )
+        ]
+    )
+
+custom_tags = {
+    "Badge": make_badge,
+    "Calendar": make_calendar,
+    "SimpleBarChart": make_bar_chart,
+}
 
 async def demo_start_stream(ctx: Context) -> None:
     """Stream the sample text word-by-word into the Markdown component."""
@@ -58,13 +97,20 @@ async def demo_start_stream(ctx: Context) -> None:
     await ctx.update_props("stream-start-btn", {"disabled": True})
 
     words = _SAMPLE_RESPONSE.split(" ")
+    current_text = ""
     for i, word in enumerate(words):
         if not _streaming_flags.get(session_id, False):
             await ctx.update_text("stream-status", "Stopped")
             await ctx.update_props("stream-status", {"variant": "secondary"})
             break
         chunk = word if i == 0 else " " + word
-        await ctx.append_prop("stream-output", "content", chunk)
+        current_text += chunk
+        temp_md = Markdown(content=current_text, custom_tags=custom_tags)
+        rendered = temp_md.render()
+        await ctx.update_props("stream-output", {
+            "content": rendered["props"]["content"],
+            "custom_components": rendered["props"]["custom_components"],
+        })
         await asyncio.sleep(random.uniform(0.03, 0.09))
     else:
         await ctx.update_text("stream-status", "Complete ✓")
@@ -130,6 +176,65 @@ Markdown(content="", id="ai-output")
 
 `append_prop` **concatenates** string props, so each chunk is appended to whatever
 is already in `content`.
+
+---
+
+## Custom Tags with Markdown
+
+Refast allows embedding interactive components directly inside standard Markdown text blocks using HTML-like tags (e.g. `<Badge label="New" />`).
+
+### 1. Without Streaming
+
+To use custom tags on a static or fully re-rendered component:
+1. Define a dictionary mapping tag names to component callables.
+2. Pass the dictionary to `custom_tags` when instantiating the `Markdown` component.
+
+```python
+from refast.components import Badge, Markdown
+
+def make_badge(label: str, variant: str = "default"):
+    return Badge(label, variant=variant)
+
+custom_tags = {
+    "StatusBadge": make_badge,
+}
+
+Markdown(
+    content="This is a static text containing a custom tag: <StatusBadge label='New' />",
+    custom_tags=custom_tags
+)
+```
+
+### 2. With Streaming
+
+When streaming text token-by-token (e.g., from an LLM), standard string concatenation via `ctx.append_prop("my-md", "content", chunk)` **does not work** for custom tags. 
+
+This is because the `Markdown` component parses custom tags on the server and serializes their component definitions into a separate `custom_components` prop. If you only append to `"content"`, the client won't receive the definitions of the newly streamed tags, and they will fail to render.
+
+To stream custom tags correctly:
+1. Accumulate the streamed text in a string variable on the server.
+2. Instantiate a temporary `Markdown` component on the server for each step and call `.render()` to extract both `content` and `custom_components`.
+3. Use `ctx.update_props` to update both properties on the target component simultaneously.
+
+```python
+async def stream_with_tags(ctx: Context):
+    # Reset target Markdown component
+    await ctx.update_props("stream-output", {"content": "", "custom_components": []})
+
+    current_text = ""
+    async for chunk in llm.stream(prompt):
+        current_text += chunk
+        
+        # Instantiate a temporary Markdown component to parse custom tags
+        temp_md = Markdown(content=current_text, custom_tags=custom_tags)
+        rendered = temp_md.render()
+        
+        # Update both the content string and serialized custom components
+        await ctx.update_props("stream-output", {
+            "content": rendered["props"]["content"],
+            "custom_components": rendered["props"]["custom_components"],
+        })
+```
 
 ---
 
@@ -309,6 +414,7 @@ def render(ctx: Context):
                     Markdown(
                         id="stream-output",
                         content="Output will appear here…",
+                        custom_tags=custom_tags,
                     ),
                 ],
             ),
