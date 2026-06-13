@@ -3,6 +3,9 @@
 from refast import Context
 from docs.pages.components.playground import playground_card
 from refast.components import (
+    Card,
+    CardContent,
+    CardHeader,
     Checkbox,
     Column,
     Container,
@@ -56,11 +59,11 @@ def _playground(ctx: Context):
     color = ctx.state.get("tx_color", "")
     size = ctx.state.get("tx_size", "text-base")
     weight = ctx.state.get("tx_weight", "font-normal")
-    ctx.state.get("tx_lead", False)
-    ctx.state.get("tx_muted", False)
+    lead = ctx.state.get("tx_lead", False)
+    muted = ctx.state.get("tx_muted", False)
 
     text_class = " ".join(filter(None, [color, size, weight]))
-    " ".join(filter(None, [color, size, weight]))
+    para_class = " ".join(filter(None, [color, size, weight]))
 
     return playground_card(
         title="Interactive Playground — Text",
@@ -71,8 +74,8 @@ def _playground(ctx: Context):
                     Text("color", class_name="text-sm font-medium"),
                     Select(
                         options=[
-                            {"value": v, "label": lbl}
-                            for v, lbl in [
+                            {"value": v, "label": l}
+                            for v, l in [
                                 ("", "default"),
                                 ("text-muted-foreground", "muted"),
                                 ("text-primary", "primary"),

@@ -34,10 +34,10 @@ These pages should be welcoming, practical, and code-heavy with working examples
 ### 2. `architecture.py` — Architecture (`/docs/architecture`)
 
 **Content Requirements:**
-- High-level diagram: Python → JSON → React → Server-Sent Events / HTTP → Python
+- High-level diagram: Python → JSON → React → WebSocket → Python
 - The HTML shell: what's in it (theme CSS, client bundle, component tree JSON)
 - Initial page load flow (HTTP GET)
-- SSE connection, POST events, and event loop
+- WebSocket connection and event loop
 - SPA navigation flow (ctx.load → JSON fetch → tree swap)
 - Static asset serving (`/static/refast-client.js`, `/static/refast-client.css`)
 - Component serialization: Python objects → JSON → React rendering
@@ -45,9 +45,9 @@ These pages should be welcoming, practical, and code-heavy with working examples
 
 **Source files to read:**
 - `src/refast/app.py` — `_render_page()` method, HTML template
-- `src/refast/router.py` — Route registration, SSE and POST handler
+- `src/refast/router.py` — Route registration, WebSocket handler
 - `src/refast/context.py` — Context class overview
-- `src/refast/events/stream.py` — Connection stream management
+- `src/refast/events/stream.py` — WebSocket stream management
 - `src/refast/components/base.py` — Component.render() → dict
 
 **Live examples to include:**

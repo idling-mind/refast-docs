@@ -25,7 +25,7 @@ CONTENT = r"""
 ## Overview
 
 Refast apps can run **background tasks** that push updates to connected clients in real time,
-and **broadcast** those updates to every connected client session. This is the foundation for
+and **broadcast** those updates to every connected WebSocket. This is the foundation for
 dashboards, notifications, progress indicators, and multi-user collaboration features.
 
 Two main patterns exist:
@@ -40,7 +40,7 @@ Two main patterns exist:
 ## Per-Client Background Tasks
 
 Use `asyncio.create_task()` inside a callback to run work in the background without
-blocking the server event loop. The task holds onto the same `ctx` object so it can
+blocking the WebSocket event loop. The task holds onto the same `ctx` object so it can
 push incremental updates to that client.
 
 ```python
@@ -94,7 +94,7 @@ def home(ctx: Context):
 - `asyncio.create_task()` returns immediately so the button click is acknowledged right away.
 - The task communicates back only via `ctx` methods (`update_text`, `update_props`,
   `show_toast`, `refresh`, …).
-- Always wrap the task body in `try/except` — the connection may close before the task finishes.
+- Always wrap the task body in `try/except` — the WebSocket may close before the task finishes.
 - Use `ctx.state` as a stop-flag channel between the event handler and the running task.
 
 ---
@@ -223,8 +223,8 @@ async def data_ready(ctx: Context):
 ## Important Notes
 
 - **Hold `ctx` carefully** — Background tasks keep a reference to `ctx` alive. If the
-  connection closes (the SSE stream disconnects), subsequent `await ctx.…()` calls will raise
-  because the send will fail. Always wrap in `try/except`.
+  WebSocket closes, subsequent `await ctx.…()` calls will raise because the send will
+  fail. Always wrap in `try/except`.
 - **`ctx.state` is not thread-safe** — Background tasks run in the same event loop thread,
   so `asyncio`-based access is safe. Never use `threading.Thread` to mutate state.
 - **Heavy CPU work** — For CPU-bound tasks, offload to a process pool:

@@ -466,7 +466,7 @@ await ctx.show_desktop_notification(
 > 
 > Modern browsers enforce strict security policies regarding **User Gestures** (transient user activation) for permission prompts like `Notification.requestPermission()`.
 > 
-> Because Refast is a backend-driven framework, callbacks typically execute on the server over HTTP POST events. In production environments, the network latency (HTTP roundtrip hop) can cause the browser to consider the user gesture "expired" by the time the notification command returns. As a result, the browser will block the permission prompt and log a warning in the developer console.
+> Because Refast is a backend-driven framework, callbacks typically execute on the server over WebSockets. In production environments, the network latency (WebSocket hop) can cause the browser to consider the user gesture "expired" by the time the notification command returns. As a result, the browser will block the permission prompt and log a warning in the developer console.
 > 
 > *(Note: This works on `localhost` because browsers bypass or have loose gesture expiration rules for local loops).*
 

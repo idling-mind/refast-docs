@@ -6,11 +6,15 @@ Interactive reference page for the Tooltip component.
 from refast import Context
 from refast.components import (
     Button,
+    Card,
+    CardContent,
+    CardHeader,
     Column,
     Container,
     Heading,
     Input,
     Markdown,
+    Row,
     Select,
     Separator,
     Text,

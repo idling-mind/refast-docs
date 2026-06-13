@@ -5,12 +5,16 @@ Interactive reference page for the List and ListItem components.
 
 from refast import Context
 from refast.components import (
+    Card,
+    CardContent,
+    CardHeader,
     Checkbox,
     Column,
     Container,
     Heading,
     List,
     Markdown,
+    Row,
     Separator,
     Text,
 )

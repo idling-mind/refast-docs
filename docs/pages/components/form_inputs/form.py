@@ -4,15 +4,20 @@ from refast import Context
 from refast.components import (
     Badge,
     Button,
+    Card,
+    CardContent,
+    CardHeader,
+    Checkbox,
     Column,
     Container,
     Heading,
     Input,
     Markdown,
+    Row,
     Separator,
     Text,
 )
-from refast.components.shadcn.form import Form, FormField
+from refast.components.shadcn.form import Form, FormField, Label
 from docs.pages.components.playground import playground_card
 
 PAGE_TITLE = "Form"
@@ -140,7 +145,7 @@ def render(ctx: Context):
 
 INTRO = """
 Form wrapper components that intercept the browser submit event and route all data over
-an HTTP POST request to a server callback. Also includes `FormField` for labelled field wrappers
+the WebSocket to a server callback. Also includes `FormField` for labelled field wrappers
 and `Label` for standalone label elements.
 
 ```python
@@ -215,7 +220,7 @@ REFERENCE = """
 | `id` | `str | None` | auto | Component ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
-> **Note:** `method` and `enctype` are not configurable — all data is sent to the server via the event POST endpoint.
+> **Note:** `method` and `enctype` are not configurable — all data is sent over the WebSocket.
 
 ## FormField Props
 

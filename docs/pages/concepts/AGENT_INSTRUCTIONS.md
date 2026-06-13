@@ -45,7 +45,7 @@ live interactive demos using real Refast components.
 - `ctx.callback(func)` — creating a callback
 - Bound arguments: `ctx.callback(func, item_id="abc")`
 - Event props: `on_click`, `on_change`, `on_submit`, `on_checked_change`, `on_value_change`, `on_open_change`
-- The callback lifecycle: user action → HTTP POST → Python → response/SSE
+- The callback lifecycle: user action → WebSocket → Python → response
 - `save_prop` parameter — client-side form state without roundtrips. Reference prop in another callback.
 - `js`, `bound_js` as callbacks
 - Methods of ctx object like 
@@ -83,7 +83,7 @@ live interactive demos using real Refast components.
 - `await ctx.store.sync()` to pull latest browser values
 - Pattern: modify state → `ctx.refresh()` or `ctx.refresh(target_id="...")`
 - Why stable component `id` values (including parent containers) are required for targeted updates
-- Lifecycle: state exists only within the active connection session
+- Lifecycle: state exists only within the WebSocket session
 - State is NOT shared across tabs
 - State vs Store comparison table
 
@@ -120,7 +120,7 @@ live interactive demos using real Refast components.
 - `ctx.load("/path")` — SPA navigation
 - `ctx.refresh()` / `ctx.refresh("/path")` — re-rendering
 - How SPA navigation works internally (JSON fetch + tree swap)
-- State persistence across navigations (same connection context)
+- State persistence across navigations (same WebSocket)
 - `Link` component for declarative navigation
 - No wildcard routes — each page registered explicitly
 
@@ -147,7 +147,7 @@ live interactive demos using real Refast components.
 
 **Cover:**
 - `asyncio.create_task()` for background work
-- `ui.active_contexts` — all active connection contexts
+- `ui.active_contexts` — all connected WebSocket contexts
 - Broadcasting pattern: iterate contexts, push updates to each
 - FastAPI lifespan for app-lifetime tasks
 - `ctx.broadcast(event_type, data)` — broadcast custom events

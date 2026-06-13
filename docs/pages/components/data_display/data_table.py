@@ -5,11 +5,16 @@ Interactive reference page for the DataTable component.
 
 from refast import Context
 from refast.components import (
+    Badge,
+    Card,
+    CardContent,
+    CardHeader,
     Column,
     Container,
     DataTable,
     Heading,
     Markdown,
+    Row,
     Select,
     Separator,
     Text,

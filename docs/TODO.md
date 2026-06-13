@@ -27,8 +27,8 @@ or document them as known limitations.
 - **Action:** Document as a known limitation. Consider implementing wildcard routes.
 
 ### 5. `ctx.state` unavailable on initial HTTP GET
-- **Evidence:** Page handlers run for both HTTP GET (initial load) and within the active connection session. On HTTP GET, there's no persistent state — `ctx.state` is empty.
-- **Action:** Document clearly that state is only meaningful within the active connection session (SSE and callback/event contexts). Recommend using `ctx.store` for initial-load-required values.
+- **Evidence:** Page handlers run for both HTTP GET (initial load) and within WebSocket context. On HTTP GET, there's no persistent state — `ctx.state` is empty.
+- **Action:** Document clearly that state is only meaningful within callback/WebSocket context. Recommend using `ctx.store` for initial-load-required values.
 
 ### 6. Markdown component capabilities underdocumented
 - **Evidence:** The `Markdown` component supports GFM (tables, strikethrough), syntax highlighting (via react-syntax-highlighter), and KaTeX math equations. None of this is mentioned in existing documentation.

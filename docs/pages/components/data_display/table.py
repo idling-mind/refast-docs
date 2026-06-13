@@ -5,11 +5,15 @@ Interactive reference page for the Table component family.
 
 from refast import Context
 from refast.components import (
+    Card,
+    CardContent,
+    CardHeader,
     Checkbox,
     Column,
     Container,
     Heading,
     Markdown,
+    Row,
     Select,
     Separator,
     Table,

@@ -13,7 +13,7 @@ PAGE_ROUTE = "/docs/concepts/callbacks"
 CONTENT = r"""
 ## Overview
 
-Callbacks bridge browser events and Python over HTTP. Each event sends the callback
+Callbacks bridge browser events and Python over WebSocket. Each event sends the callback
 ID, bound kwargs, optional prop values, and raw event data to the server before invoking
 your function.
 

@@ -10,6 +10,7 @@ from refast.components import (
     Heading,
     Kbd,
     Markdown,
+    Paragraph,
     Row,
     Separator,
     Text,

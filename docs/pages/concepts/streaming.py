@@ -334,7 +334,7 @@ async def stop(ctx: Context):
 
 ## Performance tips
 
-- **Chunk size** — very small chunks (single characters) produce more event stream messages.
+- **Chunk size** — very small chunks (single characters) produce more WebSocket messages.
   Streaming word-by-word is a good balance for LLM output.
 - **High-frequency data** — if you receive >30 updates/second, buffer and flush on a timer:
 
