@@ -15,7 +15,7 @@ from refast.components import (
     Input,
     Row,
     Separator,
-    Text, Column,
+    Text, Column, Link,
 )
 
 PAGE_TITLE = "Examples Gallery"
@@ -464,44 +464,51 @@ def render(ctx):
             columns="repeat(auto-fit, minmax(280px, 1fr))",
             gap=4,
             children=[
-                Card(
-                    on_click=ctx.callback(_nav, path=ex["file"]),
-                    class_name="cursor-pointer hover:border-primary/40 hover:shadow-md transition-all duration-200 bg-card/65 flex flex-col h-full",
+                Link(
+                    href=f"https://github.com/idling-mind/refast/tree/main/{ex['file']}",
+                    target="_blank",
+                    variant="unstyled",
+                    class_name="block h-full hover:no-underline",
                     children=[
-                        CardHeader(
-                            class_name="pb-2 flex-grow-0",
+                        Card(
+                            class_name="hover:border-primary hover:shadow-md transition-all duration-200 bg-card/65 flex flex-col h-full",
                             children=[
-                                Row(
-                                    gap=2,
-                                    align="center",
+                                CardHeader(
+                                    class_name="pb-2 flex-grow-0",
                                     children=[
-                                        Icon(ex["icon"], size=16, class_name="text-primary"),
-                                        CardTitle(ex["title"], class_name="text-base font-semibold"),
+                                        Row(
+                                            gap=2,
+                                            align="center",
+                                            children=[
+                                                Icon(ex["icon"], size=16, class_name="text-primary"),
+                                                CardTitle(ex["title"], class_name="text-base font-semibold"),
+                                            ],
+                                        ),
+                                    ],
+                                ),
+                                CardContent(
+                                    class_name="flex-1 flex flex-col justify-between pt-0 pb-4",
+                                    children=[
+                                        Text(
+                                            ex["desc"],
+                                            class_name="text-xs text-muted-foreground leading-relaxed flex-1 mb-4",
+                                        ),
+                                        Row(
+                                            gap=1.5,
+                                            class_name="flex-wrap mt-auto pt-3 border-t border-muted/30",
+                                            children=[
+                                                Badge(
+                                                    tag,
+                                                    variant="secondary",
+                                                    class_name="text-[10px] px-2 py-0 font-normal bg-secondary/60 text-secondary-foreground border-0",
+                                                )
+                                                for tag in ex["tags"]
+                                            ],
+                                        ),
                                     ],
                                 ),
                             ],
-                        ),
-                        CardContent(
-                            class_name="flex-1 flex flex-col justify-between pt-0 pb-4",
-                            children=[
-                                Text(
-                                    ex["desc"],
-                                    class_name="text-xs text-muted-foreground leading-relaxed flex-1 mb-4",
-                                ),
-                                Row(
-                                    gap=1.5,
-                                    class_name="flex-wrap mt-auto pt-3 border-t border-muted/30",
-                                    children=[
-                                        Badge(
-                                            tag,
-                                            variant="secondary",
-                                            class_name="text-[10px] px-2 py-0 font-normal bg-secondary/60 text-secondary-foreground border-0",
-                                        )
-                                        for tag in ex["tags"]
-                                    ],
-                                ),
-                            ],
-                        ),
+                        )
                     ],
                 )
                 for ex in filtered
