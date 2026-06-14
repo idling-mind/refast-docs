@@ -1,13 +1,15 @@
 """Markdown — /docs/components/markdown."""
 
+from typing import Any
+
 from refast import Context
 from refast.components import (
     Badge,
     Button,
-    Column,
     Container,
     Heading,
     Markdown,
+    Row,
     Separator,
 )
 
@@ -35,9 +37,16 @@ def render(ctx: Context):
     def make_button(label: str):
         return Button(label, on_click=ctx.callback(handle_click))
 
+    def make_button_row(children: Any):
+        return Row(
+            class_name="flex flex-row gap-2 items-center p-2 border rounded bg-muted/10 my-2",
+            children=children
+        )
+
     custom_tags = {
         "StatusBadge": make_badge,
         "ClickButton": make_button,
+        "ButtonRow": make_button_row,
     }
 
     demo_content = f"""
@@ -47,6 +56,12 @@ Below is a live render of interactive Refast components embedded directly inside
 
 * **Self-closing tag with attributes:** A warning label: <StatusBadge label="Warning" variant="warning" />
 * **State & callback binding:** <ClickButton label="Click Me" /> (Clicked **{click_count}** times)
+
+**Container tags (horizontal row of buttons):**
+<ButtonRow>
+  <ClickButton label="Row Button 1" />
+  <ClickButton label="Row Button 2" />
+</ButtonRow>
 
 ---
 """
@@ -196,9 +211,9 @@ Refast's `Markdown` component allows you to embed **interactive Refast component
 Here is how you define and use custom tags:
 
 ```python
-from typing import Literal
+from typing import Any, Literal
 from refast import Context
-from refast.components import Badge, Button, Markdown
+from refast.components import Badge, Button, Markdown, Row
 
 # 1. Define a module-level callback
 async def increment_counter(ctx: Context):
@@ -218,10 +233,17 @@ def my_page(ctx: Context):
     def make_button(label: str):
         return Button(label, on_click=ctx.callback(increment_counter))
 
+    def make_button_row(children: Any):
+        return Row(
+            class_name="flex flex-row gap-2 items-center p-2 border rounded bg-muted/10 my-2",
+            children=children
+        )
+
     # Register the tags
     custom_tags = {
         "StatusBadge": make_badge,
         "ClickButton": make_button,
+        "ButtonRow": make_button_row,
     }
 
     markdown_text = f\"\"\"
@@ -233,6 +255,12 @@ Click the button below to update:
 <ClickButton label="Click Me" />
 
 Total Clicks: **{counter_val}**
+
+Or use a container tag to group buttons horizontally:
+<ButtonRow>
+  <ClickButton label="Yes" />
+  <ClickButton label="No" />
+</ButtonRow>
 \"\"\"
 
     return Markdown(content=markdown_text, custom_tags=custom_tags)
