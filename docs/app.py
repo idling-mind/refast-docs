@@ -831,21 +831,17 @@ def _build_topbar(ctx: Context, current_path: str):
                     Row(
                         [
                             SidebarTrigger(),
-                            Separator(orientation="vertical", class_name="h-6"),
-                            Breadcrumb(children=[BreadcrumbList(children=breadcrumb_items)]),
+                            Separator(orientation="vertical", class_name="h-6 hidden md:block"),
+                            Breadcrumb(children=[BreadcrumbList(children=breadcrumb_items)], class_name="hidden md:block"),
                         ],
                         align="center",
                         gap=4,
                     ),
                     Row(
                         [
-                            Button(
-                                "Search docs...(Ctrl+K)",
+                            IconButton(
                                 icon="search",
-                                variant="outline",
                                 size="sm",
-                                class_name="text-muted-foreground justify-start font-normal",
-                                style={"width": "180px"},
                                 on_click=ctx.callback(open_search, current_path=current_path),
                             ),
                             ThemeSwitcher(),
