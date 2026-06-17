@@ -156,11 +156,11 @@ Supported properties: `bg-`, `text-`, `border-` (with `hover:` variant) and `rin
 
 ```python
 # Good — adapts to theme and dark mode
-Div(class_name="bg-card text-card-foreground border rounded-lg p-6")
+Container(class_name="bg-card text-card-foreground border rounded-lg p-6")
 Button("Delete", class_name="bg-destructive text-foreground hover:bg-destructive")
 
 # Bad — hard-coded, breaks dark mode
-Div(class_name="bg-white text-black")
+Container(class_name="bg-white text-black")
 ```
 
 ### Palette Colors
@@ -198,20 +198,20 @@ bundle small. Use the `style` prop for these:
 
 ```python
 # ✅ Correct
-Div(
+Container(
     class_name="bg-muted rounded-md overflow-hidden",
     style={"width": "100%", "height": "300px"},
 )
 
-# Tooltip positioned relative to parent
-Div(
+# Container positioned relative to parent
+Container(
     class_name="absolute bg-popover border p-2 rounded shadow-md",
     style={"top": "50px", "right": "20px", "maxWidth": "200px"},
 )
 
 # ❌ Wrong — these classes are not in the bundle
-Div(class_name="w-full h-[300px]")
-Div(class_name="top-4 right-8")
+Container(class_name="w-full h-[300px]")
+Container(class_name="top-4 right-8")
 ```
 
 > **Rule of thumb:** Use `class_name` for structural, spacing, and semantic
@@ -235,10 +235,10 @@ standard Tailwind breakpoint prefixes:
 
 ```python
 # 1 column on mobile, 3 on medium screens, 4 on large
-Div(class_name="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6")
+Container(class_name="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6")
 
 # Full-width sidebar on mobile, fixed width via style on desktop
-Div(
+Container(
     class_name="flex-1 md:flex-none",
     style={"width": "16rem"},  # md breakpoint width handled by style
 )
@@ -278,7 +278,7 @@ Container(
     class_name="bg-muted rounded-full overflow-hidden",
     style={"height": "8px"},
     children=[
-        Div(
+        Container(
             class_name="bg-primary h-full transition-all duration-300",
             style={"width": f"{percent}%"},
         )
@@ -311,7 +311,7 @@ ui = RefastApp(title="My App", custom_css="/static/styles.css")
 ### Themed Card
 
 ```python
-Div(
+Container(
     class_name="bg-card text-card-foreground border rounded-lg p-6 shadow-sm",
     children=[
         Text("Title", class_name="text-lg font-semibold"),
@@ -323,7 +323,7 @@ Div(
 ### Responsive Dashboard Grid
 
 ```python
-Div(
+Container(
     class_name="grid grid-cols-1 md:grid-cols-3 gap-6 p-6",
     children=[stat_card(title, value) for title, value in metrics],
 )
