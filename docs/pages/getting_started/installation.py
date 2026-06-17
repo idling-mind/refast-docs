@@ -96,6 +96,19 @@ Open [http://localhost:8000](http://localhost:8000) in your browser. You should 
 5. **`app.include_router(ui.router)`**: Refast integrates seamlessly into any FastAPI application by exposing a standard APIRouter.
 
 
+## Debug Mode
+
+You can enable debug mode by setting `debug=True` when initializing `RefastApp`:
+
+```python
+ui = RefastApp(title="Hello Refast", debug=True)
+```
+
+Enabling debug mode activates client-side developer tools and helpful diagnostics:
+* **Interactive Debug Panel**: Displays a floating developer panel in the browser, showing detailed real-time logs of all incoming and outgoing **WebSocket messages** (such as events, UI updates, and actions).
+* **Missing Component Popovers**: If the frontend encounters a component type that has not been registered or imported on the client, it will render a **popover button** (e.g. `Unknown: component_name`) instead of failing silently. Clicking the button opens a popover showing the missing component's details and serialized JSON structure.
+
+
 ## Next Steps
 
 Now that you have Refast running, take the **Quick Tour** to build an interactive application.
