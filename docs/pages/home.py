@@ -127,25 +127,31 @@ pip install refast
 ```python
 from fastapi import FastAPI
 from refast import RefastApp, Context
-from refast.components import Container, Button, Text
+from refast.components import Column, Button, Heading
 
 ui = RefastApp(title="My App")
 
+async def on_click(ctx: Context):
+    await ctx.show_toast("Hello from Refast!", variant="success")
+
 @ui.page("/")
 def home(ctx: Context):
-    async def on_click(ctx: Context):
-        await ctx.show_toast("Hello from Refast!", variant="success")
-
-    return Container(
-        class_name="p-8",
+    return Column(
+        class_name="p-8 h-screen",
+        align="center",
+        justify="center",
         children=[
-            Text("Welcome to Refast!"),
+            Heading("Welcome to Refast!"),
             Button("Click Me", on_click=ctx.callback(on_click)),
         ],
     )
 
 app = FastAPI()
 app.include_router(ui.router)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app)
 ```
 """
                     ),
