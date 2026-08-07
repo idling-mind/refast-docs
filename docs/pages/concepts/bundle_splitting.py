@@ -124,11 +124,22 @@ app = RefastApp(title="My App", preloaded_features=["charts", "markdown", "katex
 
 # Explicitly empty — same as the default, confirms no chunks are preloaded
 app = RefastApp(title="My App", preloaded_features=[])
+
+# Core-only client mode — ultra-minimal initial payload (excludes pre-registered component registries)
+app = RefastApp(title="My App", client_mode="core")
 ```
 
 Chunks **not** listed in `preloaded_features` are still downloaded the first time
 a component from that chunk is rendered — the difference is *when* the download
 happens (initial load vs. on demand).
+
+## Client Mode (`client_mode`)
+
+Refast supports two client loading modes via `client_mode`:
+
+- `"full"` (default) — Loads the standard Refast client bundle with full pre-registered component support.
+- `"core"` — Loads an optimized, lightweight core client bundle designed for custom asset deployments and headless core environments.
+
 
 ## Always-loaded core components
 

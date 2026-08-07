@@ -35,295 +35,9 @@ EXAMPLES = [
         "title": "Hello World",
         "desc": "Minimal Refast app — one page, one component.",
         "icon": "hand-metal",
-        "file": "examples/hello.py",
+        "route": "/examples/hello",
+        "code_url": "https://github.com/idling-mind/refast-docs/blob/main/docs/examples/hello.py",
         "tags": ["Basic"],
-    },
-    {
-        "title": "Basic App",
-        "desc": "Counter with state management and callbacks.",
-        "icon": "play",
-        "file": "examples/basic/app.py",
-        "tags": ["Basic"],
-    },
-    {
-        "title": "Todo App",
-        "desc": "Classic todo list with add, toggle, and delete.",
-        "icon": "check-square",
-        "file": "examples/todo_app/app.py",
-        "tags": ["Basic"],
-    },
-    {
-        "title": "Todo App (Single-file)",
-        "desc": "Single-file implementation of the classic task management Todo app.",
-        "icon": "clipboard-check",
-        "file": "examples/todoapp.py",
-        "tags": ["Basic"],
-    },
-    {
-        "title": "Input Features",
-        "desc": "Showcase of advanced Input component attributes including required states, descriptions, and error message rendering.",
-        "icon": "text-cursor-input",
-        "file": "examples/input_features/app.py",
-        "tags": ["Basic"],
-    },
-    {
-        "title": "Prop Store",
-        "desc": "Client-side form state with store_as and prop_store.",
-        "icon": "hard-drive",
-        "file": "examples/prop_store/app.py",
-        "tags": ["Basic"],
-    },
-    {
-        "title": "Form Validation",
-        "desc": "Input validation patterns and error display.",
-        "icon": "shield-check",
-        "file": "examples/form_validation/app.py",
-        "tags": ["Basic"],
-    },
-    {
-        "title": "Refresh Counter",
-        "desc": "A basic counter exhibiting periodic background execution and asynchronous client state synchronization.",
-        "icon": "timer",
-        "file": "examples/refresh_counter.py",
-        "tags": ["Basic", "Real-time"],
-    },
-    {
-        "title": "Multi-Page SPA",
-        "desc": "SPA navigation with shared layout and ctx.load().",
-        "icon": "route",
-        "file": "examples/multi_page/app.py",
-        "tags": ["Navigation"],
-    },
-    {
-        "title": "URL Parameters",
-        "desc": "Handles path variables, query parameters, current URL parsing, and history-preserving routing transitions.",
-        "icon": "link",
-        "file": "examples/url_params/app.py",
-        "tags": ["Navigation"],
-    },
-    {
-        "title": "Navigation Showcase",
-        "desc": "Breadcrumbs, menus, pagination, and command palette.",
-        "icon": "compass",
-        "file": "examples/navigation_showcase/app.py",
-        "tags": ["Navigation"],
-    },
-    {
-        "title": "Sidebar Layout",
-        "desc": "Full sidebar navigation with groups and submenus.",
-        "icon": "panel-left",
-        "file": "examples/sidebar_showcase/app.py",
-        "tags": ["Navigation", "Layout"],
-    },
-    {
-        "title": "Dashboard",
-        "desc": "Multi-section dashboard with cards and charts.",
-        "icon": "layout-dashboard",
-        "file": "examples/dashboard/app.py",
-        "tags": ["Layout", "Charts"],
-    },
-    {
-        "title": "Kanban Board",
-        "desc": "Drag-style column board with task management.",
-        "icon": "columns",
-        "file": "examples/kanban_board/app.py",
-        "tags": ["Layout", "Data"],
-    },
-    {
-        "title": "File Manager",
-        "desc": "Tree-style file browser with context menus.",
-        "icon": "folder",
-        "file": "examples/file_manager/app.py",
-        "tags": ["Layout", "Data"],
-    },
-    {
-        "title": "Settings Panel",
-        "desc": "Settings form with tabs, switches, and selects.",
-        "icon": "settings",
-        "file": "examples/settings_panel/app.py",
-        "tags": ["Layout"],
-    },
-    {
-        "title": "Resizable Panels",
-        "desc": "Imperative client-side and server-side control (collapse, expand, resize) over resizable grid/panel boundaries.",
-        "icon": "grip-horizontal",
-        "file": "examples/resizable_panels/app.py",
-        "tags": ["Layout"],
-    },
-    {
-        "title": "Component Showcase",
-        "desc": "Kitchen sink demo of all available components.",
-        "icon": "component",
-        "file": "examples/component_showcase/app.py",
-        "tags": ["Layout"],
-    },
-    {
-        "title": "E-Commerce Product",
-        "desc": "Product page with images, variants, and cart.",
-        "icon": "shopping-cart",
-        "file": "examples/ecommerce_product/app.py",
-        "tags": ["Layout"],
-    },
-    {
-        "title": "Weather Dashboard",
-        "desc": "A beautiful weather report UI featuring styled cards, layout columns, and dynamically updating weather metrics.",
-        "icon": "sun",
-        "file": "examples/weather_dashboard/app.py",
-        "tags": ["Layout"],
-    },
-    {
-        "title": "AI Chat",
-        "desc": "Interactive chat client with sidebar history, tags, resizable panels, and custom tooltips.",
-        "icon": "message-square",
-        "file": "examples/aichat/app.py",
-        "tags": ["Real-time", "Layout"],
-    },
-    {
-        "title": "Analytics Dashboard",
-        "desc": "Sleek, modern dashboard featuring sparkline metrics, area/bar/pie charts, and interactive transaction data tables.",
-        "icon": "line-chart",
-        "file": "examples/analytics_dashboard/app.py",
-        "tags": ["Layout", "Charts", "Data"],
-    },
-    {
-        "title": "Chat App",
-        "desc": "Real-time chat with broadcasting to connected clients.",
-        "icon": "message-square",
-        "file": "examples/chat_app/app.py",
-        "tags": ["Real-time"],
-    },
-    {
-        "title": "Streaming",
-        "desc": "Incremental text streaming with ctx.stream().",
-        "icon": "radio",
-        "file": "examples/streaming/app.py",
-        "tags": ["Real-time"],
-    },
-    {
-        "title": "Real-time Dashboard",
-        "desc": "Background tasks broadcasting to all clients.",
-        "icon": "activity",
-        "file": "examples/realtime_dashboard/app.py",
-        "tags": ["Real-time", "Charts"],
-    },
-    {
-        "title": "Scroll Stream",
-        "desc": "Renders real-time text streaming inside a scrollable area with sticky-bottom auto-scrolling.",
-        "icon": "arrow-down",
-        "file": "examples/scroll_stream/app.py",
-        "tags": ["Real-time", "Markdown"],
-    },
-    {
-        "title": "Markdown Features",
-        "desc": "Renders Markdown text with math formulas (LaTeX) and interactive structural diagrams (Mermaid).",
-        "icon": "file-text",
-        "file": "examples/markdown_features/app.py",
-        "tags": ["Markdown"],
-    },
-    {
-        "title": "Markdown Custom Tags",
-        "desc": "Renders custom inline Refast components inside Markdown text with Pydantic type coercion and validation.",
-        "icon": "tag",
-        "file": "examples/markdown_custom_tags/app.py",
-        "tags": ["Markdown", "Advanced"],
-    },
-    {
-        "title": "Charts Showcase",
-        "desc": "Bar, line, area, pie, radar, and radial charts.",
-        "icon": "bar-chart-3",
-        "file": "examples/charts_showcase/app.py",
-        "tags": ["Charts"],
-    },
-    {
-        "title": "Data Table",
-        "desc": "Sortable, filterable table with pagination.",
-        "icon": "table",
-        "file": "examples/data_table/app.py",
-        "tags": ["Data"],
-    },
-    {
-        "title": "Rich Table",
-        "desc": "Combines tables with inline components (badges, progress bars) and DataTable cell component serialization.",
-        "icon": "layout-grid",
-        "file": "examples/rich_table/app.py",
-        "tags": ["Data"],
-    },
-    {
-        "title": "Toast Showcase",
-        "desc": "All toast variants, positions, and configurations.",
-        "icon": "bell",
-        "file": "examples/toast_showcase/app.py",
-        "tags": ["Utility"],
-    },
-    {
-        "title": "Theme Showcase",
-        "desc": "Theme switching, presets, and custom themes.",
-        "icon": "palette",
-        "file": "examples/theme_showcase/app.py",
-        "tags": ["Utility"],
-    },
-    {
-        "title": "Connection Status",
-        "desc": "WebSocket connection monitoring component.",
-        "icon": "wifi",
-        "file": "examples/connection_status/app.py",
-        "tags": ["Utility"],
-    },
-    {
-        "title": "Colors Showcase",
-        "desc": "All semantic color tokens and their usage.",
-        "icon": "paintbrush",
-        "file": "examples/colors_showcase/app.py",
-        "tags": ["Utility"],
-    },
-    {
-        "title": "JS Callbacks",
-        "desc": "Client-side JS without server roundtrip.",
-        "icon": "code",
-        "file": "examples/js_callbacks/app.py",
-        "tags": ["Advanced"],
-    },
-    {
-        "title": "Long Running Tasks",
-        "desc": "Background job with progress and targeted DOM updates.",
-        "icon": "clock",
-        "file": "examples/longrunning.py",
-        "tags": ["Advanced", "Real-time"],
-    },
-    {
-        "title": "Component Refresh",
-        "desc": "Demonstrates full page vs. targeted partial DOM refreshes using target_id in callbacks.",
-        "icon": "refresh-cw",
-        "file": "examples/component_refresh/app.py",
-        "tags": ["Advanced"],
-    },
-    {
-        "title": "File Transfer",
-        "desc": "Dropzone uploader, progress indicators, CSV exports, and programmatic downloads via trigger_download.",
-        "icon": "upload-cloud",
-        "file": "examples/file_transfer/app.py",
-        "tags": ["Advanced"],
-    },
-    {
-        "title": "Lazy Loading",
-        "desc": "Refast bundle size optimization by configuring on-demand chunk loading (preloaded_features) for heavy components.",
-        "icon": "zap",
-        "file": "examples/lazy_loading/app.py",
-        "tags": ["Advanced"],
-    },
-    {
-        "title": "Desktop App Wrapper",
-        "desc": "Wraps a Refast application inside a pywebview frame to run as a native desktop application with OS dialog integrations.",
-        "icon": "monitor",
-        "file": "examples/desktop_app.py",
-        "tags": ["Desktop", "Advanced"],
-    },
-    {
-        "title": "Desktop Notifications",
-        "desc": "Triggers and configures native desktop notifications with interactive click and dismissal callbacks.",
-        "icon": "bell",
-        "file": "examples/desktop_notifications.py",
-        "tags": ["Desktop", "Utility"],
     },
 ]
 
@@ -379,7 +93,7 @@ def matches_search(ex, query):
     return (
         q in ex["title"].lower()
         or q in ex["desc"].lower()
-        or q in ex["file"].lower()
+        or q in ex.get("route", "").lower()
         or any(q in tag.lower() for tag in ex.get("tags", []))
     )
 
@@ -464,38 +178,39 @@ def render(ctx):
             columns="repeat(auto-fit, minmax(280px, 1fr))",
             gap=4,
             children=[
-                Link(
-                    href=f"https://github.com/idling-mind/refast/tree/main/{ex['file']}",
-                    target="_blank",
-                    variant="unstyled",
-                    class_name="block h-full hover:no-underline",
+                Card(
+                    class_name="hover:border-primary hover:shadow-md transition-all duration-200 bg-card/65 flex flex-col h-full",
                     children=[
-                        Card(
-                            class_name="hover:border-primary hover:shadow-md transition-all duration-200 bg-card/65 flex flex-col h-full",
+                        CardHeader(
+                            class_name="pb-2 flex-grow-0",
                             children=[
-                                CardHeader(
-                                    class_name="pb-2 flex-grow-0",
+                                Row(
+                                    gap=2,
+                                    align="center",
                                     children=[
-                                        Row(
-                                            gap=2,
-                                            align="center",
-                                            children=[
-                                                Icon(ex["icon"], size=16, class_name="text-primary"),
-                                                CardTitle(ex["title"], class_name="text-base font-semibold"),
-                                            ],
-                                        ),
+                                        Icon(ex["icon"], size=16, class_name="text-primary"),
+                                        CardTitle(ex["title"], class_name="text-base font-semibold"),
                                     ],
                                 ),
-                                CardContent(
-                                    class_name="flex-1 flex flex-col justify-between pt-0 pb-4",
+                            ],
+                        ),
+                        CardContent(
+                            class_name="flex-1 flex flex-col justify-between pt-0 pb-4",
+                            children=[
+                                Text(
+                                    ex["desc"],
+                                    class_name="text-xs text-muted-foreground leading-relaxed flex-1 mb-4",
+                                ),
+                                Row(
+                                    gap=4,
+                                    justify="between",
+                                    align="center",
+                                    class_name="mt-auto pt-3 border-t border-muted/30",
                                     children=[
-                                        Text(
-                                            ex["desc"],
-                                            class_name="text-xs text-muted-foreground leading-relaxed flex-1 mb-4",
-                                        ),
+                                        # Left side: tags
                                         Row(
                                             gap=1.5,
-                                            class_name="flex-wrap mt-auto pt-3 border-t border-muted/30",
+                                            class_name="flex-wrap",
                                             children=[
                                                 Badge(
                                                     tag,
@@ -505,10 +220,28 @@ def render(ctx):
                                                 for tag in ex["tags"]
                                             ],
                                         ),
+                                        # Right side: Action links
+                                        Row(
+                                            gap=3,
+                                            children=[
+                                                Link(
+                                                    text="Launch Demo",
+                                                    href=ex["route"],
+                                                    target="_blank",
+                                                    class_name="inline-flex items-center justify-center rounded-md text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 h-8 px-3 transition-colors shadow-sm cursor-pointer",
+                                                ),
+                                                Link(
+                                                    text="View Code",
+                                                    href=ex["code_url"],
+                                                    target="_blank",
+                                                    class_name="inline-flex items-center justify-center rounded-md text-xs font-semibold border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-3 transition-colors shadow-sm cursor-pointer",
+                                                ),
+                                            ],
+                                        ),
                                     ],
                                 ),
                             ],
-                        )
+                        ),
                     ],
                 )
                 for ex in filtered

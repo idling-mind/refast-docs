@@ -145,12 +145,58 @@ Button(
 {{ chain_demo }}
 
 
+## Typed Events & Payload Validation
+
+Refast supports Pydantic models for structured event validation. You can type-annotate callbacks with Pydantic models, or listen for custom events via `@ui.on()`. If validation fails, Refast catches the validation error and can invoke custom error handlers or notify the user.
+
+### 1. Typed Callbacks with Pydantic Models
+
+Annotate your callback's parameter with a Pydantic model. Refast will parse and validate the incoming client payload automatically before executing the handler function.
+
+```python
+from pydantic import BaseModel, Field
+from refast import Context
+
+class SearchQueryPayload(BaseModel):
+    query: str = Field(..., min_length=2, description="Search query text")
+    limit: int = Field(10, ge=1, le=50, description="Max results")
+
+async def run_search(ctx: Context, payload: SearchQueryPayload):
+    # payload is guaranteed to be a valid SearchQueryPayload instance
+    query = payload.query
+    limit = payload.limit
+    await ctx.show_toast(f"Searching for '{query}' (limit: {limit})", variant="success")
+```
+
+### 2. Custom Event Listeners (`@ui.on`) and Custom Error Handlers
+
+Register event listeners with `@ui.on()` for custom socket events and attach custom error handling functions using `on_error`:
+
+```python
+from refast.events.types import Event
+
+async def event_error_handler(ctx: Context, error: Exception, event: Event):
+    await ctx.show_toast(
+        message="Validation Failed",
+        description="Check your inputs. Query must be at least 2 characters.",
+        variant="warning",
+    )
+
+@ui.on("search:query_event", on_error=event_error_handler)
+async def handle_search_event(ctx: Context, event: Event[SearchQueryPayload]):
+    query = event.data.query
+    limit = event.data.limit
+    await ctx.show_toast(f"Typed Event Validated: {query} (Limit: {limit})")
+```
+
+
 ## Next steps
 
 - [State Management](/docs/concepts/state) — Persist data across callbacks
 - [DOM Updates](/docs/concepts/updates) — Targeted replacements, appends, and prop updates
 - [JavaScript Interop](/docs/concepts/js-interop) — Run browser code and call component methods
 """
+
 
 
 def render(ctx):

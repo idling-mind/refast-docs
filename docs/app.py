@@ -76,21 +76,10 @@ from .pages.advanced import (  # noqa: E402
     security,
     sessions,
 )
-from .pages.components import (  # noqa: E402
-    base,
-    buttons,
-    cards,
-    charts,
-    data_display,
-    feedback,
-    inputs,
-    layout,
-    navigation,
-    typography,
-    utility,
-)
+from .pages.components import base  # noqa: E402
 from .pages.components.buttons import (  # noqa: E402
     button,
+    button_group,
     context_menu,
     dropdown_menu,
     icon_button,
@@ -353,6 +342,7 @@ NAV_SECTIONS = [
                 "icon": "mouse-pointer-click",
                 "pages": [
                     ("Button", "/docs/components/button", "square"),
+                    ("Button Group", "/docs/components/button-group", "rows"),
                     ("Icon Button", "/docs/components/icon-button", "circle"),
                     ("Toggle", "/docs/components/toggle", "check-square"),
                     ("Switch", "/docs/components/switch", "check-circle"),
@@ -1017,10 +1007,6 @@ def page_components_base(ctx: Context):
     return base.render(ctx)
 
 
-@ui.page("/docs/components/layout")
-def page_components_layout(ctx: Context):
-    return layout.render(ctx)
-
 
 @ui.page("/docs/components/container")
 def page_components_container(ctx: Context):
@@ -1056,10 +1042,6 @@ def page_components_scroll_area(ctx: Context):
 def page_components_resizable(ctx: Context):
     return resizable.render(ctx)
 
-
-@ui.page("/docs/components/typography")
-def page_components_typography(ctx: Context):
-    return typography.render(ctx)
 
 
 @ui.page("/docs/components/heading")
@@ -1102,14 +1084,15 @@ def page_components_kbd(ctx: Context):
     return kbd_page.render(ctx)
 
 
-@ui.page("/docs/components/buttons")
-def page_components_buttons(ctx: Context):
-    return buttons.render(ctx)
-
 
 @ui.page("/docs/components/button")
 def page_components_button(ctx: Context):
     return button.render(ctx)
+
+
+@ui.page("/docs/components/button-group")
+def page_components_button_group(ctx: Context):
+    return button_group.render(ctx)
 
 
 @ui.page("/docs/components/icon-button")
@@ -1141,10 +1124,6 @@ def page_components_dropdown_menu(ctx: Context):
 def page_components_context_menu(ctx: Context):
     return context_menu.render(ctx)
 
-
-@ui.page("/docs/components/inputs")
-def page_components_inputs(ctx: Context):
-    return inputs.render(ctx)
 
 
 @ui.page("/docs/components/input")
@@ -1192,10 +1171,6 @@ def page_components_form(ctx: Context):
     return form_input_page.render(ctx)
 
 
-@ui.page("/docs/components/cards")
-def page_components_cards(ctx: Context):
-    return cards.render(ctx)
-
 
 @ui.page("/docs/components/card")
 def page_components_card(ctx: Context):
@@ -1206,10 +1181,6 @@ def page_components_card(ctx: Context):
 def page_components_collapsible(ctx: Context):
     return collapsible_page.render(ctx)
 
-
-@ui.page("/docs/components/data-display")
-def page_components_data_display(ctx: Context):
-    return data_display.render(ctx)
 
 
 @ui.page("/docs/components/table")
@@ -1252,10 +1223,6 @@ def page_components_hover_card(ctx: Context):
     return hover_card_page.render(ctx)
 
 
-@ui.page("/docs/components/navigation")
-def page_components_navigation(ctx: Context):
-    return navigation.render(ctx)
-
 
 @ui.page("/docs/components/breadcrumb")
 def page_components_breadcrumb(ctx: Context):
@@ -1276,10 +1243,6 @@ def page_components_pagination(ctx: Context):
 def page_components_navigation_menu(ctx: Context):
     return navigation_menu_page.render(ctx)
 
-
-@ui.page("/docs/components/feedback")
-def page_components_feedback(ctx: Context):
-    return feedback.render(ctx)
 
 
 @ui.page("/docs/components/alert")
@@ -1307,10 +1270,6 @@ def page_components_popover(ctx: Context):
     return popover_page.render(ctx)
 
 
-@ui.page("/docs/components/charts")
-def page_components_charts(ctx: Context):
-    return charts.render(ctx)
-
 
 @ui.page("/docs/components/bar-chart")
 def page_components_bar_chart(ctx: Context):
@@ -1336,10 +1295,6 @@ def page_components_pie_chart(ctx: Context):
 def page_components_other_charts(ctx: Context):
     return other_charts_page.render(ctx)
 
-
-@ui.page("/docs/components/utility")
-def page_components_utility(ctx: Context):
-    return utility.render(ctx)
 
 
 @ui.page("/docs/components/icon")
@@ -1398,6 +1353,14 @@ def page_concepts_styling(ctx: Context):
     return styling.render(ctx)
 
 
+# ── Standalone Examples ──────────────────────────────────────────────────
+
+@ui.page("/examples/hello")
+def page_examples_hello(ctx: Context):
+    from docs.examples.hello import hello_world_page
+    return hello_world_page(ctx)
+
+
 # ── FastAPI app ──────────────────────────────────────────────────────────
 
 app = FastAPI(title="Refast Documentation")
@@ -1410,3 +1373,4 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+

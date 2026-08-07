@@ -284,6 +284,8 @@ REFERENCE = """
 | `open` | `bool | None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
 | `on_open_change` | `Callback | None` | `None` | Called when open state changes |
+| `backdrop` | `bool` | `True` | Whether to render the semi-transparent overlay backdrop |
+| `modal` | `bool | None` | `None` | Enables modal interaction mode (traps focus, disables body scroll) |
 | `title` | `str | None` | `None` | Shorthand title (skips `DialogHeader`) |
 | `description` | `str | None` | `None` | Shorthand description |
 | `confirm_label` | `str` | `"Continue"` | Label for the confirm button |
@@ -292,6 +294,7 @@ REFERENCE = """
 | `on_cancel` | `Callback | None` | `None` | Cancel callback |
 | `variant` | `"default" | "destructive"` | `"default"` | Visual style |
 | `trigger` | `Component | None` | `None` | Shorthand trigger component |
+
 
 ### `DialogAction`
 
