@@ -19,7 +19,7 @@ from refast.components import (
     Text,
 )
 from refast.components.shadcn.button import IconButton
-from docs.pages.components.playground import playground_card
+from docs.pages.components.playground import make_state_setter, playground_card
 
 PAGE_TITLE = "IconButton"
 PAGE_ROUTE = "/docs/components/icon-button"
@@ -27,25 +27,11 @@ PAGE_ROUTE = "/docs/components/icon-button"
 
 # ── Playground callbacks ──────────────────────────────────────────────────
 
+_set_icon = make_state_setter("ib_icon")
+_set_variant = make_state_setter("ib_variant")
+_set_size = make_state_setter("ib_size")
+_set_disabled = make_state_setter("ib_disabled")
 
-async def _set_icon(ctx: Context, value: str):
-    ctx.state.set("ib_icon", value)
-    await ctx.refresh()
-
-
-async def _set_variant(ctx: Context, value: str):
-    ctx.state.set("ib_variant", value)
-    await ctx.refresh()
-
-
-async def _set_size(ctx: Context, value: str):
-    ctx.state.set("ib_size", value)
-    await ctx.refresh()
-
-
-async def _set_disabled(ctx: Context, value: bool):
-    ctx.state.set("ib_disabled", value)
-    await ctx.refresh()
 
 
 async def _noop(ctx: Context):

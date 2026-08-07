@@ -20,7 +20,7 @@ from refast.components import (
     Separator,
     Text,
 )
-from docs.pages.components.playground import playground_card
+from docs.pages.components.playground import make_state_setter, playground_card
 
 PAGE_TITLE = "Button"
 PAGE_ROUTE = "/docs/components/button"
@@ -28,25 +28,11 @@ PAGE_ROUTE = "/docs/components/button"
 
 # ── Playground callbacks ──────────────────────────────────────────────────
 
+_set_variant = make_state_setter("btn_variant")
+_set_size = make_state_setter("btn_size")
+_set_disabled = make_state_setter("btn_disabled")
+_set_loading = make_state_setter("btn_loading")
 
-async def _set_variant(ctx: Context, value: str):
-    ctx.state.set("btn_variant", value)
-    await ctx.refresh()
-
-
-async def _set_size(ctx: Context, value: str):
-    ctx.state.set("btn_size", value)
-    await ctx.refresh()
-
-
-async def _set_disabled(ctx: Context, value: bool):
-    ctx.state.set("btn_disabled", value)
-    await ctx.refresh()
-
-
-async def _set_loading(ctx: Context, value: bool):
-    ctx.state.set("btn_loading", value)
-    await ctx.refresh()
 
 
 async def _noop(ctx: Context):

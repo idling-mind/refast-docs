@@ -24,31 +24,19 @@ from refast.components import (
     Text,
 )
 
+from docs.pages.components.playground import make_state_setter, playground_card
+
 PAGE_TITLE = "Card"
 PAGE_ROUTE = "/docs/components/card"
 
 
+
 # ── Playground callbacks ──────────────────────────────────────────────────
 
-
-async def _set_show_header(ctx: Context, value: bool):
-    ctx.state.set("crd_show_header", value)
-    await ctx.refresh()
-
-
-async def _set_title(ctx: Context, value: str):
-    ctx.state.set("crd_title", value)
-    await ctx.refresh()
-
-
-async def _set_description(ctx: Context, value: str):
-    ctx.state.set("crd_description", value)
-    await ctx.refresh()
-
-
-async def _set_show_footer(ctx: Context, value: bool):
-    ctx.state.set("crd_show_footer", value)
-    await ctx.refresh()
+_set_show_header = make_state_setter("crd_show_header")
+_set_title = make_state_setter("crd_title")
+_set_description = make_state_setter("crd_description")
+_set_show_footer = make_state_setter("crd_show_footer")
 
 
 async def _noop(ctx: Context):

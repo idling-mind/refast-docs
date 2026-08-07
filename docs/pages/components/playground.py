@@ -1,5 +1,6 @@
-"""Shared playground layout helper for component docs pages."""
+from typing import Any, Callable
 
+from refast import Context
 from refast.components import (
     Card,
     CardContent,
@@ -8,6 +9,34 @@ from refast.components import (
     Container,
     Row,
 )
+
+
+def make_state_setter(key: str) -> Callable:
+    """Return an async callback that sets ctx.state[key] = value and refreshes.
+
+    Args:
+        key: The state key to set in ctx.state.
+    """
+    async def _setter(ctx: Context, value: Any):
+        ctx.state.set(key, value)
+        await ctx.refresh()
+
+    return _setter
+
+
+def make_state_toggle(key: str) -> Callable:
+    """Return an async callback that toggles a boolean state value and refreshes.
+
+    Args:
+        key: The state key to toggle in ctx.state.
+    """
+    async def _toggle(ctx: Context):
+        current = ctx.state.get(key, False)
+        ctx.state.set(key, not current)
+        await ctx.refresh()
+
+    return _toggle
+
 
 
 def playground_card(

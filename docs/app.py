@@ -272,31 +272,31 @@ NAV_SECTIONS = [
         "label": "Getting Started",
         "icon": "rocket",
         "pages": [
-            ("Installation", "/docs/getting-started", "download"),
-            ("Architecture", "/docs/architecture", "layers"),
-            ("Quick Tour", "/docs/quick-tour", "zap"),
-            ("Live Todo Demo", "/docs/todo-live", "check-circle"),
-            ("Examples Gallery", "/docs/examples", "grid-3x3"),
+            ("Installation", "/docs/getting-started", "download", installation.render),
+            ("Architecture", "/docs/architecture", "layers", architecture.render),
+            ("Quick Tour", "/docs/quick-tour", "zap", quick_tour.render),
+            ("Live Todo Demo", "/docs/todo-live", "check-circle", todo_app_live.render),
+            ("Examples Gallery", "/docs/examples", "grid-3x3", examples_gallery.render),
         ],
     },
     {
         "label": "Core Concepts",
         "icon": "layers",
         "pages": [
-            ("Components", "/docs/concepts/components", "box"),
-            ("Callbacks & Events", "/docs/concepts/callbacks", "mouse-pointer-click"),
-            ("State & Store", "/docs/concepts/state", "database"),
-            ("DOM Updates", "/docs/concepts/updates", "refresh-cw"),
-            ("Routing & Navigation", "/docs/concepts/routing", "route"),
-            ("Streaming", "/docs/concepts/streaming", "radio"),
-            ("Background Jobs", "/docs/concepts/background", "clock"),
-            ("Theming", "/docs/concepts/theming", "palette"),
-            ("Styling", "/docs/concepts/styling", "paintbrush"),
-            ("Toast Notifications", "/docs/concepts/toasts", "bell"),
-            ("Desktop Notifications", "/docs/concepts/desktop-notifications", "bell"),
-            ("JavaScript Interop", "/docs/concepts/js-interop", "code"),
-            ("File Uploads & Downloads", "/docs/concepts/file-transfers", "upload"),
-            ("Bundle Splitting", "/docs/concepts/bundle-splitting", "package"),
+            ("Components", "/docs/concepts/components", "box", concepts_components.render),
+            ("Callbacks & Events", "/docs/concepts/callbacks", "mouse-pointer-click", callbacks.render),
+            ("State & Store", "/docs/concepts/state", "database", state.render),
+            ("DOM Updates", "/docs/concepts/updates", "refresh-cw", updates.render),
+            ("Routing & Navigation", "/docs/concepts/routing", "route", routing.render),
+            ("Streaming", "/docs/concepts/streaming", "radio", streaming.render),
+            ("Background Jobs", "/docs/concepts/background", "clock", background.render),
+            ("Theming", "/docs/concepts/theming", "palette", theming.render),
+            ("Styling", "/docs/concepts/styling", "paintbrush", styling.render),
+            ("Toast Notifications", "/docs/concepts/toasts", "bell", toasts.render),
+            ("Desktop Notifications", "/docs/concepts/desktop-notifications", "bell", desktop_notifications.render),
+            ("JavaScript Interop", "/docs/concepts/js-interop", "code", js_interop.render),
+            ("File Uploads & Downloads", "/docs/concepts/file-transfers", "upload", file_transfers.render),
+            ("Bundle Splitting", "/docs/concepts/bundle-splitting", "package", bundle_splitting.render),
         ],
     },
     {
@@ -307,129 +307,129 @@ NAV_SECTIONS = [
                 "label": "Foundations",
                 "icon": "box",
                 "pages": [
-                    ("Base", "/docs/components/base", "box"),
-                    ("Container", "/docs/components/container", "panel-left"),
+                    ("Base", "/docs/components/base", "box", base.render),
+                    ("Container", "/docs/components/container", "panel-left", container.render),
                 ],
             },
             {
                 "label": "Layout",
                 "icon": "layout",
                 "pages": [
-                    ("Row", "/docs/components/row", "rows"),
-                    ("Column", "/docs/components/column", "columns"),
-                    ("Flex", "/docs/components/flex", "expand"),
-                    ("Grid", "/docs/components/grid", "layout-grid"),
-                    ("Scroll Area", "/docs/components/scroll-area", "layout-list"),
-                    ("Resizable", "/docs/components/resizable", "grip-horizontal"),
+                    ("Row", "/docs/components/row", "rows", row.render),
+                    ("Column", "/docs/components/column", "columns", column.render),
+                    ("Flex", "/docs/components/flex", "expand", flex.render),
+                    ("Grid", "/docs/components/grid", "layout-grid", grid.render),
+                    ("Scroll Area", "/docs/components/scroll-area", "layout-list", scroll_area.render),
+                    ("Resizable", "/docs/components/resizable", "grip-horizontal", resizable.render),
                 ],
             },
             {
                 "label": "Typography",
                 "icon": "type",
                 "pages": [
-                    ("Heading", "/docs/components/heading", "type"),
-                    ("Text & Paragraph", "/docs/components/text", "type"),
-                    ("Code", "/docs/components/code", "code"),
-                    ("Link", "/docs/components/link", "link"),
-                    ("Markdown", "/docs/components/markdown", "file-text"),
-                    ("BlockQuote", "/docs/components/blockquote", "quote"),
-                    ("Badge", "/docs/components/badge", "tag"),
-                    ("Kbd", "/docs/components/kbd", "terminal"),
+                    ("Heading", "/docs/components/heading", "type", heading.render),
+                    ("Text & Paragraph", "/docs/components/text", "type", text_page.render),
+                    ("Code", "/docs/components/code", "code", code_page.render),
+                    ("Link", "/docs/components/link", "link", link_page.render),
+                    ("Markdown", "/docs/components/markdown", "file-text", markdown_page.render),
+                    ("BlockQuote", "/docs/components/blockquote", "quote", blockquote_page.render),
+                    ("Badge", "/docs/components/badge", "tag", badge_page.render),
+                    ("Kbd", "/docs/components/kbd", "terminal", kbd_page.render),
                 ],
             },
             {
                 "label": "Buttons & Actions",
                 "icon": "mouse-pointer-click",
                 "pages": [
-                    ("Button", "/docs/components/button", "square"),
-                    ("Button Group", "/docs/components/button-group", "rows"),
-                    ("Icon Button", "/docs/components/icon-button", "circle"),
-                    ("Toggle", "/docs/components/toggle", "check-square"),
-                    ("Switch", "/docs/components/switch", "check-circle"),
-                    ("Slider", "/docs/components/slider", "sliders"),
-                    ("Dropdown Menu", "/docs/components/dropdown-menu", "chevron-down"),
-                    ("Context Menu", "/docs/components/context-menu", "mouse-pointer-click"),
+                    ("Button", "/docs/components/button", "square", button.render),
+                    ("Button Group", "/docs/components/button-group", "rows", button_group.render),
+                    ("Icon Button", "/docs/components/icon-button", "circle", icon_button.render),
+                    ("Toggle", "/docs/components/toggle", "check-square", toggle.render),
+                    ("Switch", "/docs/components/switch", "check-circle", switch.render),
+                    ("Slider", "/docs/components/slider", "sliders", slider.render),
+                    ("Dropdown Menu", "/docs/components/dropdown-menu", "chevron-down", dropdown_menu.render),
+                    ("Context Menu", "/docs/components/context-menu", "mouse-pointer-click", context_menu.render),
                 ],
             },
             {
                 "label": "Form Inputs",
                 "icon": "text-cursor-input",
                 "pages": [
-                    ("Input", "/docs/components/input", "text-cursor-input"),
-                    ("Textarea", "/docs/components/textarea", "edit"),
-                    ("Select", "/docs/components/select", "chevrons-down"),
-                    ("Checkbox", "/docs/components/checkbox", "check-square"),
-                    ("Radio", "/docs/components/radio", "circle-dot"),
-                    ("Combobox", "/docs/components/combobox", "search"),
-                    ("Date Picker", "/docs/components/date-picker", "calendar"),
-                    ("Input OTP", "/docs/components/input-otp", "shield-check"),
-                    ("Form", "/docs/components/form", "clipboard"),
+                    ("Input", "/docs/components/input", "text-cursor-input", input_page.render),
+                    ("Textarea", "/docs/components/textarea", "edit", textarea.render),
+                    ("Select", "/docs/components/select", "chevrons-down", select_page.render),
+                    ("Checkbox", "/docs/components/checkbox", "check-square", checkbox.render),
+                    ("Radio", "/docs/components/radio", "circle-dot", radio.render),
+                    ("Combobox", "/docs/components/combobox", "search", combobox.render),
+                    ("Date Picker", "/docs/components/date-picker", "calendar", date_picker.render),
+                    ("Input OTP", "/docs/components/input-otp", "shield-check", input_otp.render),
+                    ("Form", "/docs/components/form", "clipboard", form_input_page.render),
                 ],
             },
             {
                 "label": "Cards & Containers",
                 "icon": "credit-card",
                 "pages": [
-                    ("Card", "/docs/components/card", "credit-card"),
-                    ("Collapsible", "/docs/components/collapsible", "chevron-down"),
+                    ("Card", "/docs/components/card", "credit-card", card_page.render),
+                    ("Collapsible", "/docs/components/collapsible", "chevron-down", collapsible_page.render),
                 ],
             },
             {
                 "label": "Data Display",
                 "icon": "table",
                 "pages": [
-                    ("Table", "/docs/components/table", "table"),
-                    ("Data Table", "/docs/components/data-table", "table"),
-                    ("Tabs", "/docs/components/tabs", "panel-top"),
-                    ("Accordion", "/docs/components/accordion", "layout-list"),
-                    ("Avatar", "/docs/components/avatar", "user"),
-                    ("Tooltip", "/docs/components/tooltip", "info"),
-                    ("Hover Card", "/docs/components/hover-card", "credit-card"),
-                    ("List", "/docs/components/list", "layout-list"),
+                    ("Table", "/docs/components/table", "table", table_page.render),
+                    ("Data Table", "/docs/components/data-table", "table", data_table_page.render),
+                    ("Tabs", "/docs/components/tabs", "panel-top", tabs_page.render),
+                    ("Accordion", "/docs/components/accordion", "layout-list", accordion_page.render),
+                    ("Avatar", "/docs/components/avatar", "user", avatar_page.render),
+                    ("Tooltip", "/docs/components/tooltip", "info", tooltip_page.render),
+                    ("Hover Card", "/docs/components/hover-card", "credit-card", hover_card_page.render),
+                    ("List", "/docs/components/list", "layout-list", list_page.render),
                 ],
             },
             {
                 "label": "Navigation",
                 "icon": "compass",
                 "pages": [
-                    ("Breadcrumb", "/docs/components/breadcrumb", "more-horizontal"),
-                    ("Sidebar", "/docs/components/sidebar-nav", "panel-left"),
-                    ("Pagination", "/docs/components/pagination", "more-horizontal"),
-                    ("Navigation Menu", "/docs/components/navigation-menu", "menu"),
+                    ("Breadcrumb", "/docs/components/breadcrumb", "more-horizontal", breadcrumb_page.render),
+                    ("Sidebar", "/docs/components/sidebar-nav", "panel-left", sidebar_nav_page.render),
+                    ("Pagination", "/docs/components/pagination", "more-horizontal", pagination_page.render),
+                    ("Navigation Menu", "/docs/components/navigation-menu", "menu", navigation_menu_page.render),
                 ],
             },
             {
                 "label": "Feedback & Overlay",
                 "icon": "message-square",
                 "pages": [
-                    ("Alert", "/docs/components/alert", "alert-triangle"),
-                    ("Progress & Spinner", "/docs/components/progress", "loader"),
-                    ("Dialog", "/docs/components/dialog", "x-circle"),
-                    ("Sheet", "/docs/components/sheet", "panel-right"),
-                    ("Popover", "/docs/components/popover", "message-square"),
+                    ("Alert", "/docs/components/alert", "alert-triangle", alert_page.render),
+                    ("Progress & Spinner", "/docs/components/progress", "loader", progress_page.render),
+                    ("Dialog", "/docs/components/dialog", "x-circle", dialog_page.render),
+                    ("Sheet", "/docs/components/sheet", "panel-right", sheet_page.render),
+                    ("Popover", "/docs/components/popover", "message-square", popover_page.render),
                 ],
             },
             {
                 "label": "Charts",
                 "icon": "bar-chart-3",
                 "pages": [
-                    ("Bar Chart", "/docs/components/bar-chart", "bar-chart"),
-                    ("Line Chart", "/docs/components/line-chart", "line-chart"),
-                    ("Area Chart", "/docs/components/area-chart", "activity"),
-                    ("Pie Chart", "/docs/components/pie-chart", "pie-chart"),
-                    ("Other Charts", "/docs/components/other-charts", "bar-chart-2"),
+                    ("Bar Chart", "/docs/components/bar-chart", "bar-chart", bar_chart_page.render),
+                    ("Line Chart", "/docs/components/line-chart", "line-chart", line_chart_page.render),
+                    ("Area Chart", "/docs/components/area-chart", "activity", area_chart_page.render),
+                    ("Pie Chart", "/docs/components/pie-chart", "pie-chart", pie_chart_page.render),
+                    ("Other Charts", "/docs/components/other-charts", "bar-chart-2", other_charts_page.render),
                 ],
             },
             {
                 "label": "Utility",
                 "icon": "wrench",
                 "pages": [
-                    ("Icon", "/docs/components/icon", "star"),
-                    ("Separator", "/docs/components/separator", "minus"),
-                    ("Aspect Ratio", "/docs/components/aspect-ratio", "maximize"),
-                    ("Carousel", "/docs/components/carousel", "image"),
-                    ("Keyboard Shortcut", "/docs/components/keyboard-shortcut", "keyboard"),
-                    ("Timer", "/docs/components/timer", "timer"),
+                    ("Icon", "/docs/components/icon", "star", icon_page.render),
+                    ("Separator", "/docs/components/separator", "minus", separator_page.render),
+                    ("Aspect Ratio", "/docs/components/aspect-ratio", "maximize", aspect_ratio_page.render),
+                    ("Carousel", "/docs/components/carousel", "image", carousel_page.render),
+                    ("Keyboard Shortcut", "/docs/components/keyboard-shortcut", "keyboard", keyboard_shortcut_page.render),
+                    ("Timer", "/docs/components/timer", "timer", timer_page.render),
                 ],
             },
         ],
@@ -438,10 +438,10 @@ NAV_SECTIONS = [
         "label": "Advanced",
         "icon": "settings",
         "pages": [
-            ("Building Components", "/docs/advanced/component-dev", "hammer"),
-            ("Building Extensions", "/docs/advanced/extension-dev", "puzzle"),
-            ("Security", "/docs/advanced/security", "shield"),
-            ("Sessions", "/docs/advanced/sessions", "key"),
+            ("Building Components", "/docs/advanced/component-dev", "hammer", component_dev.render),
+            ("Building Extensions", "/docs/advanced/extension-dev", "puzzle", extension_dev.render),
+            ("Security", "/docs/advanced/security", "shield", security.render),
+            ("Sessions", "/docs/advanced/sessions", "key", sessions.render),
         ],
     },
 ]
@@ -451,10 +451,10 @@ _PAGE_LOOKUP: dict[str, tuple[str, str]] = {}
 for _section in NAV_SECTIONS:
     if "groups" in _section:
         for _group in _section["groups"]:
-            for _label, _route, _icon in _group["pages"]:
+            for _label, _route, *_ in _group["pages"]:
                 _PAGE_LOOKUP[_route] = (_section["label"], _label)
     else:
-        for _label, _route, _icon in _section["pages"]:
+        for _label, _route, *_ in _section["pages"]:
             _PAGE_LOOKUP[_route] = (_section["label"], _label)
 
 
@@ -495,12 +495,13 @@ def _get_search_items() -> list[dict]:
         group_label = section["label"]
         if "groups" in section:
             for group in section["groups"]:
-                for label, route, icon in group["pages"]:
+                for label, route, icon, *_ in group["pages"]:
                     items.append({"label": label, "route": route, "icon": icon, "group": group_label})
         else:
-            for label, route, icon in section["pages"]:
+            for label, route, icon, *_ in section["pages"]:
                 items.append({"label": label, "route": route, "icon": icon, "group": group_label})
     return items
+
 
 
 _SEARCH_ITEMS = _get_search_items()
@@ -709,7 +710,7 @@ def _build_nav_group(ctx: Context, section: dict, current_path: str):
                                     )
                                 ],
                             )
-                            for label, route, icon in section["pages"]
+                            for label, route, icon, *_ in section["pages"]
                         ],
                     ),
                 ],
@@ -721,7 +722,7 @@ def _build_nav_group(ctx: Context, section: dict, current_path: str):
 def _build_nav_subgroup(ctx: Context, group: dict, current_path: str):
     """Build a collapsible sub-group with SidebarMenuSub items."""
     group_id = group["label"].lower().replace(" ", "-")
-    is_any_active = any(route == current_path for _, route, _ in group["pages"])
+    is_any_active = any(page[1] == current_path for page in group["pages"])
 
     return SidebarMenuItem(
         id=f"nav-subgroup-{group_id}",
@@ -743,7 +744,7 @@ def _build_nav_subgroup(ctx: Context, group: dict, current_path: str):
                             )
                         ],
                     )
-                    for label, route, _ in group["pages"]
+                    for label, route, *_ in group["pages"]
                 ],
             ),
         ],
@@ -857,10 +858,10 @@ def _build_footer(ctx: Context, current_path: str):
     for section in NAV_SECTIONS:
         if "groups" in section:
             for group in section["groups"]:
-                for label, route, _icon in group["pages"]:
+                for label, route, *_ in group["pages"]:
                     all_pages.append((label, route))
         else:
-            for label, route, _icon in section["pages"]:
+            for label, route, *_ in section["pages"]:
                 all_pages.append((label, route))
 
     current_idx = None
@@ -904,282 +905,34 @@ def _build_footer(ctx: Context, current_path: str):
 # ── Register all pages ───────────────────────────────────────────────────
 
 
-@ui.page("/")
-def page_home(ctx: Context):
-    return home.render(ctx)
+def register_page(ui_app: RefastApp, route: str, render_fn):
+    """Register a single page route handler on the RefastApp instance."""
 
+    @ui_app.page(route)
+    def _page_handler(ctx: Context):
+        return render_fn(ctx)
 
-# Getting Started
-@ui.page("/docs/getting-started")
-def page_getting_started(ctx: Context):
-    return installation.render(ctx)
 
+def register_nav_routes(ui_app: RefastApp, nav_sections: list[dict]):
+    """Dynamically register page handlers for all pages defined in NAV_SECTIONS."""
+    for section in nav_sections:
+        if "groups" in section:
+            for group in section["groups"]:
+                for page in group["pages"]:
+                    route, render_fn = page[1], page[3]
+                    register_page(ui_app, route, render_fn)
+        else:
+            for page in section["pages"]:
+                route, render_fn = page[1], page[3]
+                register_page(ui_app, route, render_fn)
 
-@ui.page("/docs/architecture")
-def page_architecture(ctx: Context):
-    return architecture.render(ctx)
 
+# Standalone / root page
+register_page(ui, "/", home.render)
 
-@ui.page("/docs/quick-tour")
-def page_quick_tour(ctx: Context):
-    return quick_tour.render(ctx)
+# Register all navigation section pages dynamically
+register_nav_routes(ui, NAV_SECTIONS)
 
-
-@ui.page("/docs/todo-live")
-def page_todo_live(ctx: Context):
-    return todo_app_live.render(ctx)
-
-
-@ui.page("/docs/examples")
-def page_examples(ctx: Context):
-    return examples_gallery.render(ctx)
-
-
-# Core Concepts
-@ui.page("/docs/concepts/components")
-def page_concepts_components(ctx: Context):
-    return concepts_components.render(ctx)
-
-
-@ui.page("/docs/concepts/callbacks")
-def page_concepts_callbacks(ctx: Context):
-    return callbacks.render(ctx)
-
-
-@ui.page("/docs/concepts/state")
-def page_concepts_state(ctx: Context):
-    return state.render(ctx)
-
-
-@ui.page("/docs/concepts/updates")
-def page_concepts_updates(ctx: Context):
-    return updates.render(ctx)
-
-
-@ui.page("/docs/concepts/routing")
-def page_concepts_routing(ctx: Context):
-    return routing.render(ctx)
-
-
-@ui.page("/docs/concepts/streaming")
-def page_concepts_streaming(ctx: Context):
-    return streaming.render(ctx)
-
-
-@ui.page("/docs/concepts/background")
-def page_concepts_background(ctx: Context):
-    return background.render(ctx)
-
-
-@ui.page("/docs/concepts/theming")
-def page_concepts_theming(ctx: Context):
-    return theming.render(ctx)
-
-
-@ui.page("/docs/concepts/toasts")
-def page_concepts_toasts(ctx: Context):
-    return toasts.render(ctx)
-
-
-@ui.page("/docs/concepts/desktop-notifications")
-def page_concepts_desktop_notifications(ctx: Context):
-    return desktop_notifications.render(ctx)
-
-
-@ui.page("/docs/concepts/js-interop")
-def page_concepts_js_interop(ctx: Context):
-    return js_interop.render(ctx)
-
-
-@ui.page("/docs/concepts/file-transfers")
-def page_concepts_file_transfers(ctx: Context):
-    return file_transfers.render(ctx)
-
-
-@ui.page("/docs/concepts/bundle-splitting")
-def page_concepts_bundle_splitting(ctx: Context):
-    return bundle_splitting.render(ctx)
-
-
-# Component Reference
-@ui.page("/docs/components/base")
-def page_components_base(ctx: Context):
-    return base.render(ctx)
-
-
-
-@ui.page("/docs/components/container")
-def page_components_container(ctx: Context):
-    return container.render(ctx)
-
-
-@ui.page("/docs/components/row")
-def page_components_row(ctx: Context):
-    return row.render(ctx)
-
-
-@ui.page("/docs/components/column")
-def page_components_column(ctx: Context):
-    return column.render(ctx)
-
-
-@ui.page("/docs/components/flex")
-def page_components_flex(ctx: Context):
-    return flex.render(ctx)
-
-
-@ui.page("/docs/components/grid")
-def page_components_grid(ctx: Context):
-    return grid.render(ctx)
-
-
-@ui.page("/docs/components/scroll-area")
-def page_components_scroll_area(ctx: Context):
-    return scroll_area.render(ctx)
-
-
-@ui.page("/docs/components/resizable")
-def page_components_resizable(ctx: Context):
-    return resizable.render(ctx)
-
-
-
-@ui.page("/docs/components/heading")
-def page_components_heading(ctx: Context):
-    return heading.render(ctx)
-
-
-@ui.page("/docs/components/text")
-def page_components_text(ctx: Context):
-    return text_page.render(ctx)
-
-
-@ui.page("/docs/components/code")
-def page_components_code(ctx: Context):
-    return code_page.render(ctx)
-
-
-@ui.page("/docs/components/link")
-def page_components_link(ctx: Context):
-    return link_page.render(ctx)
-
-
-@ui.page("/docs/components/markdown")
-def page_components_markdown(ctx: Context):
-    return markdown_page.render(ctx)
-
-
-@ui.page("/docs/components/badge")
-def page_components_badge(ctx: Context):
-    return badge_page.render(ctx)
-
-
-@ui.page("/docs/components/blockquote")
-def page_components_blockquote(ctx: Context):
-    return blockquote_page.render(ctx)
-
-
-@ui.page("/docs/components/kbd")
-def page_components_kbd(ctx: Context):
-    return kbd_page.render(ctx)
-
-
-
-@ui.page("/docs/components/button")
-def page_components_button(ctx: Context):
-    return button.render(ctx)
-
-
-@ui.page("/docs/components/button-group")
-def page_components_button_group(ctx: Context):
-    return button_group.render(ctx)
-
-
-@ui.page("/docs/components/icon-button")
-def page_components_icon_button(ctx: Context):
-    return icon_button.render(ctx)
-
-
-@ui.page("/docs/components/toggle")
-def page_components_toggle(ctx: Context):
-    return toggle.render(ctx)
-
-
-@ui.page("/docs/components/switch")
-def page_components_switch(ctx: Context):
-    return switch.render(ctx)
-
-
-@ui.page("/docs/components/slider")
-def page_components_slider(ctx: Context):
-    return slider.render(ctx)
-
-
-@ui.page("/docs/components/dropdown-menu")
-def page_components_dropdown_menu(ctx: Context):
-    return dropdown_menu.render(ctx)
-
-
-@ui.page("/docs/components/context-menu")
-def page_components_context_menu(ctx: Context):
-    return context_menu.render(ctx)
-
-
-
-@ui.page("/docs/components/input")
-def page_components_input(ctx: Context):
-    return input_page.render(ctx)
-
-
-@ui.page("/docs/components/textarea")
-def page_components_textarea(ctx: Context):
-    return textarea.render(ctx)
-
-
-@ui.page("/docs/components/select")
-def page_components_select(ctx: Context):
-    return select_page.render(ctx)
-
-
-@ui.page("/docs/components/checkbox")
-def page_components_checkbox(ctx: Context):
-    return checkbox.render(ctx)
-
-
-@ui.page("/docs/components/radio")
-def page_components_radio(ctx: Context):
-    return radio.render(ctx)
-
-
-@ui.page("/docs/components/combobox")
-def page_components_combobox(ctx: Context):
-    return combobox.render(ctx)
-
-
-@ui.page("/docs/components/date-picker")
-def page_components_date_picker(ctx: Context):
-    return date_picker.render(ctx)
-
-
-@ui.page("/docs/components/input-otp")
-def page_components_input_otp(ctx: Context):
-    return input_otp.render(ctx)
-
-
-@ui.page("/docs/components/form")
-def page_components_form(ctx: Context):
-    return form_input_page.render(ctx)
-
-
-
-@ui.page("/docs/components/card")
-def page_components_card(ctx: Context):
-    return card_page.render(ctx)
-
-
-@ui.page("/docs/components/collapsible")
-def page_components_collapsible(ctx: Context):
-    return collapsible_page.render(ctx)
 
 
 
