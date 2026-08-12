@@ -1,6 +1,7 @@
 """Kbd — /docs/components/kbd."""
 
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from refast.components import (
     Card,
     CardContent,
@@ -16,24 +17,27 @@ from refast.components import (
     Text,
 )
 
-PAGE_TITLE = "Kbd"
-PAGE_ROUTE = "/docs/components/kbd"
+PAGE_METADATA = {
+    "title": "Kbd",
+    "route": "/docs/components/kbd",
+    "icon": "terminal",
+    "group": "Typography",
+    "order": 8,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 def render(ctx: Context):
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
-            _showcase(),
-            Markdown(content=REFERENCE),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        playground=_showcase(),
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 def _showcase():

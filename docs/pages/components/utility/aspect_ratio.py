@@ -1,6 +1,7 @@
 """AspectRatio — /docs/components/aspect-ratio."""
 
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
     AspectRatio,
@@ -17,8 +18,16 @@ from refast.components import (
     Text,
 )
 
-PAGE_TITLE = "AspectRatio"
-PAGE_ROUTE = "/docs/components/aspect-ratio"
+PAGE_METADATA = {
+    "title": "Aspect Ratio",
+    "route": "/docs/components/aspect-ratio",
+    "icon": "maximize",
+    "group": "Utility",
+    "order": 3,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 _RATIO_OPTIONS = [
     {"value": "16/9", "label": "16:9 (Widescreen)"},
@@ -102,20 +111,14 @@ def _playground(ctx: Context):
 
 
 def render(ctx: Context):
-    """Render the AspectRatio component reference page."""
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
-            _playground(ctx),
-            Markdown(content=REFERENCE),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        playground=_playground(ctx),
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 # ── Content ───────────────────────────────────────────────────────────────

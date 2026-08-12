@@ -18,10 +18,19 @@ from refast.components import (
     Spinner,
     Text,
 )
+from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 
-PAGE_TITLE = "Progress, Spinner & Skeleton"
-PAGE_ROUTE = "/docs/components/progress"
+PAGE_METADATA = {
+    "title": "Progress & Spinner",
+    "route": "/docs/components/progress",
+    "icon": "loader",
+    "group": "Feedback & Overlay",
+    "order": 2,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 # ── Playground callbacks ──────────────────────────────────────────────────
@@ -226,21 +235,15 @@ def _skeleton_section():
 
 def render(ctx: Context):
     """Render the Progress/Spinner/Skeleton reference page."""
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
-            _playground(ctx),
-            _spinner_section(),
-            _skeleton_section(),
-            Markdown(content=REFERENCE),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        playground=_playground(ctx),
+        sections=[_spinner_section(), _skeleton_section()],
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 # ── Content ───────────────────────────────────────────────────────────────

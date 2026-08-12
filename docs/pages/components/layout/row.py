@@ -15,10 +15,19 @@ from refast.components import (
     Separator,
     Text,
 )
+from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 
-PAGE_TITLE = "Row"
-PAGE_ROUTE = "/docs/components/row"
+PAGE_METADATA = {
+    "title": "Row",
+    "route": "/docs/components/row",
+    "icon": "rows",
+    "group": "Layout",
+    "order": 1,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 # ── Playground callbacks ──────────────────────────────────────────────────
@@ -122,19 +131,14 @@ def _playground(ctx: Context):
 
 
 def render(ctx: Context):
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
-            _playground(ctx),
-            Markdown(content=REFERENCE),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        playground=_playground(ctx),
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 INTRO = """

@@ -1,26 +1,30 @@
+from docs.pages.components.common import render_doc_page
 """Base components — /docs/components/base."""
 
 from refast.components import Container, Heading, Separator
 
 from ..utils import render_markdown_with_demo_apps
 
-PAGE_TITLE = "Base Components"
-PAGE_ROUTE = "/docs/components/base"
+PAGE_METADATA = {
+    "title": "Base",
+    "route": "/docs/components/base",
+    "icon": "box",
+    "group": "Foundations",
+    "order": 1,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 def render(ctx):
     """Render the base components page."""
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            render_markdown_with_demo_apps(CONTENT, locals()),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        sections=[render_markdown_with_demo_apps(CONTENT, locals())],
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 CONTENT = r"""

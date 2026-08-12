@@ -26,10 +26,19 @@ from refast.components.shadcn.charts import (
     ChartTooltipContent,
     XAxis,
 )
+from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 
-PAGE_TITLE = "Bar Chart"
-PAGE_ROUTE = "/docs/components/bar-chart"
+PAGE_METADATA = {
+    "title": "Bar Chart",
+    "route": "/docs/components/bar-chart",
+    "icon": "bar-chart",
+    "group": "Charts",
+    "order": 1,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 SAMPLE_DATA = [
     {"month": "January",  "desktop": 186, "mobile": 80},
@@ -111,19 +120,14 @@ def _playground(ctx: Context):
 
 
 def render(ctx: Context):
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
-            _playground(ctx),
-            Markdown(content=REFERENCE),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        playground=_playground(ctx),
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 # ── Content ───────────────────────────────────────────────────────────────

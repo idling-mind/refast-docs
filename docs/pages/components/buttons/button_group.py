@@ -4,6 +4,7 @@ Interactive reference page for ButtonGroup component.
 """
 
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from refast.components import (
     Button,
     Card,
@@ -17,25 +18,28 @@ from refast.components import (
 )
 from refast.components.shadcn.button import ButtonGroup
 
-PAGE_TITLE = "ButtonGroup"
-PAGE_ROUTE = "/docs/components/button-group"
+PAGE_METADATA = {
+    "title": "Button Group",
+    "route": "/docs/components/button-group",
+    "icon": "rows",
+    "group": "Buttons & Actions",
+    "order": 2,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 def render(ctx: Context):
     """Render the ButtonGroup component reference page."""
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6 space-y-8",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
-            _demo_card(ctx),
-            Markdown(content=REFERENCE),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        playground=_demo_card(ctx),
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 def _demo_card(ctx: Context):

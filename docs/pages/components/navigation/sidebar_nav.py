@@ -4,6 +4,7 @@ Reference page for the Sidebar component family.
 """
 
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from refast.components import (
     Container,
     Heading,
@@ -11,8 +12,16 @@ from refast.components import (
     Separator,
 )
 
-PAGE_TITLE = "Sidebar"
-PAGE_ROUTE = "/docs/components/sidebar-nav"
+PAGE_METADATA = {
+    "title": "Sidebar",
+    "route": "/docs/components/sidebar-nav",
+    "icon": "panel-left",
+    "group": "Navigation",
+    "order": 2,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 # ── Render ────────────────────────────────────────────────────────────────
@@ -20,17 +29,12 @@ PAGE_ROUTE = "/docs/components/sidebar-nav"
 
 def render(ctx: Context):
     """Render the Sidebar component reference page."""
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=CONTENT),
-        ],
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=CONTENT,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 # ── Content ───────────────────────────────────────────────────────────────

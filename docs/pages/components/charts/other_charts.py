@@ -1,6 +1,7 @@
 """Other Charts — /docs/components/other-charts."""
 
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from refast.components import (
     Card,
     CardContent,
@@ -26,8 +27,16 @@ from refast.components.shadcn.charts import (
     YAxis,
 )
 
-PAGE_TITLE = "Other Charts"
-PAGE_ROUTE = "/docs/components/other-charts"
+PAGE_METADATA = {
+    "title": "Other Charts",
+    "route": "/docs/components/other-charts",
+    "icon": "bar-chart-2",
+    "group": "Charts",
+    "order": 5,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 # ── Sample data ───────────────────────────────────────────────────────────
 
@@ -158,24 +167,21 @@ def _scatter_chart():
 
 
 def render(ctx: Context):
-    from docs.app import docs_layout
-
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO),
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        intro=INTRO,
+        sections=[
             Markdown(content=RADAR_SECTION),
             _radar_chart(),
             Markdown(content=RADIAL_SECTION),
             _radial_bar_chart(),
             Markdown(content=SCATTER_SECTION),
             _scatter_chart(),
-            Markdown(content=REFERENCE),
         ],
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 # ── Content ───────────────────────────────────────────────────────────────

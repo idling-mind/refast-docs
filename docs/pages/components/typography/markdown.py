@@ -3,6 +3,7 @@
 from typing import Any
 
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from refast.components import (
     Badge,
     Button,
@@ -13,8 +14,16 @@ from refast.components import (
     Separator,
 )
 
-PAGE_TITLE = "Markdown"
-PAGE_ROUTE = "/docs/components/markdown"
+PAGE_METADATA = {
+    "title": "Markdown",
+    "route": "/docs/components/markdown",
+    "icon": "file-text",
+    "group": "Typography",
+    "order": 5,
+}
+
+PAGE_TITLE = PAGE_METADATA["title"]
+PAGE_ROUTE = PAGE_METADATA["route"]
 
 
 async def handle_click(ctx: Context):
@@ -25,7 +34,6 @@ async def handle_click(ctx: Context):
 
 
 def render(ctx: Context):
-    from docs.app import docs_layout
 
     if "click_count" not in ctx.store.local:
         ctx.store.local["click_count"] = 0
@@ -66,20 +74,20 @@ Below is a live render of interactive Refast components embedded directly inside
 ---
 """
 
-    content = Container(
-        class_name="max-w-4xl mx-auto p-6",
-        children=[
-            Heading(PAGE_TITLE, level=1),
-            Separator(class_name="my-4"),
-            Markdown(content=INTRO, enable_latex=True),
-            Markdown(content=SHOWCASE, enable_latex=True),
-            Heading("Custom Tags Demo", level=2, class_name="mt-8 mb-4"),
-            Markdown(content=demo_content, custom_tags=custom_tags),
-            Markdown(content=CUSTOM_COMPONENTS_DOC),
-            Markdown(content=REFERENCE),
-        ],
+    sections = [
+        Markdown(content=INTRO, enable_latex=True),
+        Markdown(content=SHOWCASE, enable_latex=True),
+        Heading("Custom Tags Demo", level=2, class_name="mt-8 mb-4"),
+        Markdown(content=demo_content, custom_tags=custom_tags),
+        Markdown(content=CUSTOM_COMPONENTS_DOC),
+    ]
+    return render_doc_page(
+        ctx,
+        title=PAGE_TITLE,
+        route=PAGE_ROUTE,
+        sections=sections,
+        reference=REFERENCE,
     )
-    return docs_layout(ctx, content, PAGE_ROUTE)
 
 
 INTRO = """
@@ -213,6 +221,7 @@ Here is how you define and use custom tags:
 ```python
 from typing import Any, Literal
 from refast import Context
+from docs.pages.components.common import render_doc_page
 from refast.components import Badge, Button, Markdown, Row
 
 # 1. Define a module-level callback
