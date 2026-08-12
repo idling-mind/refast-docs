@@ -207,7 +207,14 @@ REFERENCE = """
 | `default_value` | `str | None` | `None` | Initially active tab value (uncontrolled). |
 | `value` | `str | None` | `None` | Controlled active tab value. |
 | `on_value_change` | `Callback | None` | `None` | Fired when the active tab changes. `ctx.event_data` is the new value string. |
-| `class_name` | `str` | `""` | Extra Tailwind classes. |
+| `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction of the tabs. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Size of the tab triggers. |
+| `gap` | `int | None` | `None` | Gap in pixels between tab buttons. |
+| `tab_list_class_name` | `str` | `""` | Extra Tailwind classes for the tab buttons list container. |
+| `tab_list_style` | `dict | None` | `None` | Inline styles for the tab buttons list container. |
+| `stretch` | `bool` | `False` | Whether triggers should stretch to fill the horizontal width (horizontal layout) or vertical list container width. |
+| `class_name` | `str` | `""` | Extra Tailwind classes for the outer wrapper. |
+| `style` | `dict | None` | `None` | Inline styles for the outer wrapper. |
 
 ## TabItem Props
 
@@ -219,6 +226,14 @@ REFERENCE = """
 | `children` | `list` | `[]` | Panel content shown when this tab is active. |
 | `disabled` | `bool` | `False` | Grays out and disables the tab trigger. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
+
+## Setting the Width of Tabs
+
+There are three main ways you might want to control the width when using tabs:
+1. **The overall Tabs component width**: Customize this by setting `class_name` (e.g. `class_name="w-full"` or `class_name="w-[500px]"`) or using `style` (e.g. `style={"width": "500px"}`).
+2. **The tab buttons sidebar (tab list) width (Vertical Layout)**: Customize this using `tab_list_class_name` (e.g. `tab_list_class_name="w-48"`) or `tab_list_style` (e.g. `tab_list_style={"width": "200px"}`).
+3. **Stretching triggers to full width (Horizontal Layout)**: Set `stretch=True` to make the horizontal tab buttons list full width (`w-full flex`) and force the buttons to stretch equally to fill the space (`flex-1`).
+
 
 ## Uncontrolled (browser state)
 

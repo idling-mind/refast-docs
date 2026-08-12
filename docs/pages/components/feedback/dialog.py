@@ -298,7 +298,19 @@ REFERENCE = """
 | `on_cancel` | `Callback | None` | `None` | Cancel callback |
 | `variant` | `"default" | "destructive"` | `"default"` | Visual style |
 | `trigger` | `Component | None` | `None` | Shorthand trigger component |
+| `width` | `str | None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
+| `height` | `str | None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
+| `max_width` | `str | None` | `None` | Custom max-width limit (e.g., `"1000px"`) |
+| `max_height` | `str | None` | `None` | Custom max-height limit |
 
+### `DialogContent`
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `str | None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
+| `height` | `str | None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
+| `max_width` | `str | None` | `None` | Custom max-width limit (e.g., `"1000px"`) |
+| `max_height` | `str | None` | `None` | Custom max-height limit |
 
 ### `DialogAction`
 
