@@ -142,6 +142,30 @@ def _playground(ctx: Context):
         "bell",
         "rocket",
         "zap",
+        # AI & ML
+        "brain",
+        "bot",
+        "sparkles",
+        # Productivity & Business
+        "briefcase",
+        "graduation-cap",
+        "list-todo",
+        "scale",
+        "presentation",
+        # Fintech
+        "coins",
+        "wallet",
+        # Developer & Code
+        "bug",
+        "code-2",
+        "braces",
+        # General UI / Utilities
+        "lightbulb",
+        "history",
+        "fingerprint",
+        "flame",
+        "gauge",
+        "heart-handshake",
     ]
 
     options = [
