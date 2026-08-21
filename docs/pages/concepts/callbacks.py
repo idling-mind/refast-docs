@@ -145,6 +145,49 @@ Button(
 {{ chain_demo }}
 
 
+## Event Modifiers
+
+You can control event behavior (such as bubbling and default browser actions) natively by passing `stop_propagation=True` or `prevent_default=True` when creating callbacks and actions. 
+
+This works for `ctx.callback()`, `ctx.js()`, `ctx.bound_js()`, `ctx.save_prop()`, and `ctx.chain()`.
+
+### stop_propagation
+
+By default, DOM events bubble up through nested components. Use `stop_propagation=True` to prevent the event from bubbling up to parent handlers.
+
+```python
+# Clicking the inner button will execute handle_inner but NOT bubble to the container's handle_outer
+Container(
+    on_click=ctx.callback(handle_outer),
+    children=[
+        Button(
+            "Inner Button",
+            on_click=ctx.callback(handle_inner, stop_propagation=True)
+        )
+    ]
+)
+```
+
+### prevent_default
+
+Suppresses the browser's default action associated with the event (e.g. following a link or submitting a form on enter).
+
+```python
+# Suppresses navigation to Google, running the Python callback instead
+Link(
+    "Custom Action Link",
+    href="https://google.com",
+    on_click=ctx.callback(handle_link_click, prevent_default=True)
+)
+```
+
+### Inspecting modifier state
+
+During event bubbling, parent components can inspect whether nested children have called `preventDefault` or `stopPropagation`:
+* **Python side**: Check the boolean flags `ctx.event_data.get("default_prevented")` and `ctx.event_data.get("propagation_stopped")`.
+* **JS side**: Access `event.defaultPrevented` and `event.propagationStopped` properties.
+
+
 ## Typed Events & Payload Validation
 
 Refast supports Pydantic models for structured event validation. You can type-annotate callbacks with Pydantic models, or listen for custom events via `@ui.on()`. If validation fails, Refast catches the validation error and can invoke custom error handlers or notify the user.
