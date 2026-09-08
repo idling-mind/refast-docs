@@ -684,10 +684,9 @@ def page_concepts_styling(ctx: Context):
 
 # ── Standalone Examples ──────────────────────────────────────────────────
 
-@ui.page("/examples/hello")
-def page_examples_hello(ctx: Context):
-    from docs.examples.hello import hello_world_page
-    return hello_world_page(ctx)
+from docs.examples.routes import register_example_routes
+
+register_example_routes(ui)
 
 
 # ── FastAPI app ──────────────────────────────────────────────────────────
