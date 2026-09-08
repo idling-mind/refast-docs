@@ -28,6 +28,7 @@ CATEGORIES = [
     "Data & Charts",
     "Real-time & Markdown",
     "Advanced & Desktop",
+    "Extensions",
 ]
 
 EXAMPLES = [
@@ -344,6 +345,32 @@ EXAMPLES = [
         "code_url": "https://github.com/idling-mind/refast/tree/main/examples/custom_extension",
         "tags": ["Advanced"],
     },
+
+    # ── Official Extensions ───────────────────────────────────────────────
+    {
+        "title": "ECharts Visualizations",
+        "desc": "Apache ECharts integration with 20+ interactive chart types, real-time setOption updates, and mouse events.",
+        "icon": "bar-chart-2",
+        "route": "/examples/echarts",
+        "code_url": "https://github.com/idling-mind/refast-echarts",
+        "tags": ["Extensions", "Data & Charts"],
+    },
+    {
+        "title": "Spreadsheet Data Grid",
+        "desc": "Excel-like spreadsheet component based on ReactGrid with 15+ cell types, inline editing, and sticky totals.",
+        "icon": "grid-3x3",
+        "route": "/examples/grid",
+        "code_url": "https://github.com/idling-mind/refast_grid",
+        "tags": ["Extensions", "Advanced"],
+    },
+    {
+        "title": "3D VTK.js Visualization",
+        "desc": "Hardware-accelerated 3D rendering with react-vtk-js: polygonal meshes, volume rendering, and coordinate picking.",
+        "icon": "box",
+        "route": "/examples/vtk-js",
+        "code_url": "https://github.com/idling-mind/refast_vtk_js",
+        "tags": ["Extensions", "Advanced"],
+    },
 ]
 
 
@@ -388,6 +415,8 @@ def matches_category(example_tags, selected_category):
         return "Real-time" in example_tags or "Markdown" in example_tags or "AI" in example_tags
     elif selected_category == "Advanced & Desktop":
         return "Advanced" in example_tags or "Desktop" in example_tags or "Performance" in example_tags
+    elif selected_category == "Extensions":
+        return "Extensions" in example_tags or "Extension" in example_tags
     return False
 
 
@@ -397,10 +426,10 @@ def matches_search(ex, query):
         return True
     q = query.lower()
     return (
-        q in ex["title"].lower()
-        or q in ex["desc"].lower()
-        or q in ex.get("route", "").lower()
-        or any(q in tag.lower() for tag in ex.get("tags", []))
+        q in (ex.get("title") or "").lower()
+        or q in (ex.get("desc") or "").lower()
+        or q in (ex.get("route") or "").lower()
+        or any(q in (tag or "").lower() for tag in ex.get("tags", []) if tag)
     )
 
 

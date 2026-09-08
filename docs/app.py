@@ -95,6 +95,12 @@ from .pages.concepts import (  # noqa: E402
 from .pages.concepts import (
     components as concepts_components,
 )
+from .pages.extensions import (  # noqa: E402
+    echarts as extensions_echarts,
+    grid as extensions_grid,
+    overview as extensions_overview,
+    vtk_js as extensions_vtk_js,
+)
 from .pages.getting_started import (  # noqa: E402
     architecture,
     examples_gallery,
@@ -153,6 +159,16 @@ NAV_SECTIONS = [
         "label": "Components",
         "icon": "component",
         "groups": discover_component_groups(),
+    },
+    {
+        "label": "Extensions",
+        "icon": "puzzle",
+        "pages": [
+            ("Overview", "/docs/extensions", "puzzle", extensions_overview.render),
+            ("ECharts", "/docs/extensions/echarts", "bar-chart-2", extensions_echarts.render),
+            ("Spreadsheet Grid", "/docs/extensions/grid", "grid-3x3", extensions_grid.render),
+            ("3D VTK.js", "/docs/extensions/vtk-js", "box", extensions_vtk_js.render),
+        ],
     },
     {
         "label": "Advanced",

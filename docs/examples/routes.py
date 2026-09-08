@@ -66,3 +66,18 @@ def register_example_routes(ui: RefastApp):
         from docs.examples.settings_panel import settings_panel_page
         return settings_panel_page(ctx)
 
+    @ui.page("/examples/echarts")
+    def page_examples_echarts(ctx: Context):
+        from docs.examples.echarts_example import echarts_page
+        return echarts_page(ctx)
+
+    @ui.page("/examples/grid")
+    def page_examples_grid(ctx: Context):
+        from docs.examples.grid_example import grid_page
+        return grid_page(ctx)
+
+    @ui.page("/examples/vtk-js")
+    def page_examples_vtk(ctx: Context):
+        from docs.examples.vtk_example import vtk_page
+        return vtk_page(ctx)
+

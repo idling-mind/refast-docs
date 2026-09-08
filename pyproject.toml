@@ -6,4 +6,7 @@ dependencies = [
     "refast>=0.7.0",
     "uvicorn",
     "fastapi[standard]",
+    "refast-grid>=0.3.0",
+    "refast-vtk-js>=0.3.1",
+    "refast-echarts>=0.2.0",
 ]

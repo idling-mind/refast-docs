@@ -290,16 +290,15 @@ Extension static files are served at `/static/ext/{extension_name}/{filename}`.
 
 ---
 
-## Real-World Example
+## Real-World Examples
+Several production extensions follow the exact pattern described here:
 
-[refast-echarts](https://github.com/idling-mind/refast-echarts) is a published
-extension that wraps Apache ECharts. It follows the same pattern described here
-and is a good reference when building your own extension.
+- [**refast-echarts**](/docs/extensions/echarts) ([GitHub](https://github.com/idling-mind/refast-echarts)) — Wraps Apache ECharts 5 with bound JS methods (`setOption`), 20+ chart types, and mouse event handling.
+- [**refast_grid**](/docs/extensions/grid) — Wraps Silevis ReactGrid to provide an Excel-like spreadsheet component with rich cell types, virtual scrolling, and sticky headers.
 
----
+- [Extensions Overview](/docs/extensions) — Explore available official extensions
+- [ECharts Extension](/docs/extensions/echarts) — Apache ECharts integration
+- [Spreadsheet Grid Extension](/docs/extensions/grid) — Silevis ReactGrid spreadsheet component
+- [3D VTK.js Extension](/docs/extensions/vtk-js) — Scientific 3D visualization
 
-## Next Steps
-
-- [Building Components](/docs/advanced/component-dev) — Detailed component development patterns
-- [Security](/docs/advanced/security) — Securing your app
 """
