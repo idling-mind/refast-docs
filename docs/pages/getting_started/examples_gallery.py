@@ -331,9 +331,9 @@ EXAMPLES = [
     },
     {
         "title": "Event Modifiers",
-        "desc": "Optimizing user input latency and server load using event debounce, throttle, and preventDefault decorators.",
+        "desc": "Controlling event bubbling with stop_propagation, suppressing native browser actions with prevent_default, and inspecting modifier state.",
         "icon": "mouse-pointer-click",
-        "route": None,
+        "route": "/examples/event-modifiers",
         "code_url": "https://github.com/idling-mind/refast/tree/main/examples/event_modifiers",
         "tags": ["Advanced"],
     },

@@ -177,6 +177,8 @@ def js(
     *,
     debounce: int = 0,
     throttle: int = 0,
+    stop_propagation: bool = False,
+    prevent_default: bool = False,
     **bound_args,
 ) -> JsCallback:
 ```
@@ -185,7 +187,7 @@ Inside `code` the following globals are available:
 
 | Name | Description |
 |------|-------------|
-| `event` | Event data — `value`, `checked`, `key`, `name`, etc. |
+| `event` | Event data — `value`, `checked`, `key`, `name`, `defaultPrevented`, etc. |
 | `args` | Any `bound_args` passed from Python |
 | `element` | The DOM element that triggered the event |
 | `refast` | Helper object — `refast.invoke(callback, data)` calls a Python callback |
@@ -218,6 +220,27 @@ Input(
     on_change=ctx.js("console.log(event.value)", debounce=300),
 )
 ```
+
+**Event modifiers (`stop_propagation` & `prevent_default`):**
+
+Pass `prevent_default=True` or `stop_propagation=True` directly into `ctx.js()`. For example, suppress the browser's default `Enter` key handling while invoking a Python callback:
+
+```python
+Input(
+    placeholder="Press Enter...",
+    on_keydown=ctx.js(
+        '''
+        if (event.key === 'Enter') {
+            refast.invoke(args.on_enter, { value: event.value });
+        }
+        ''',
+        on_enter=ctx.callback(handle_enter),
+        prevent_default=True,
+    ),
+)
+```
+
+Inside JavaScript `code`, you can also check `event.defaultPrevented` and `event.propagationStopped`.
 
 **Bridging back to Python with `refast.invoke`:**
 
@@ -254,18 +277,20 @@ def bound_js(
     *args,
     debounce: int = 0,
     throttle: int = 0,
+    stop_propagation: bool = False,
+    prevent_default: bool = False,
     **kwargs,
 ) -> BoundJsCallback:
 ```
 
 ```python
 Button("Play", on_click=ctx.bound_js("my-video", "play"))
-Button("Show Dialog", on_click=ctx.bound_js("my-dialog", "showModal"))
+Button("Show Dialog", on_click=ctx.bound_js("my-dialog", "showModal", stop_propagation=True))
 Button("Eraser", on_click=ctx.bound_js("my-canvas", "setMode", "erase"))
 ```
 
 Positional `args` and keyword `kwargs` are forwarded to the method call on the
-element.
+element. Like `ctx.js()`, `ctx.bound_js()` also supports `stop_propagation=True` and `prevent_default=True`.
 
 ---
 
@@ -327,13 +352,15 @@ async def draw_shape(ctx: Context):
 
 ## Summary
 
-| Method | Type | Returns | Server Roundtrip? |
-|--------|------|---------|-------------------|
-| `ctx.js(code, **bound_args)` | Event-handler prop | `JsCallback` | No |
-| `ctx.bound_js(id, method, *args)` | Event-handler prop | `BoundJsCallback` | No |
-| `await ctx.call_js(code, **args)` | Imperative (in callback) | `None` | No — sent via WS |
-| `await ctx.call_bound_js(id, method)` | Imperative (in callback) | `None` | No — sent via WS |
-| `ctx.callback(fn)` | Event-handler prop | `Callback` | Yes |
+| Method | Type | Returns | Server Roundtrip? | Modifiers Supported |
+|--------|------|---------|-------------------|---------------------|
+| `ctx.js(code, ...)` | Event-handler prop | `JsCallback` | No | `stop_propagation`, `prevent_default` |
+| `ctx.bound_js(id, method, ...)` | Event-handler prop | `BoundJsCallback` | No | `stop_propagation`, `prevent_default` |
+| `await ctx.call_js(code, **args)` | Imperative (in callback) | `None` | No — sent via WS | N/A (runs imperatively) |
+| `await ctx.call_bound_js(id, method)` | Imperative (in callback) | `None` | No — sent via WS | N/A (runs imperatively) |
+| `ctx.callback(fn, ...)` | Event-handler prop | `Callback` | Yes | `stop_propagation`, `prevent_default` |
+| `ctx.save_prop(name, ...)` | Event-handler prop | `SaveProp` | No | `stop_propagation`, `prevent_default` |
+| `ctx.chain(actions, ...)` | Event-handler prop | `ChainedAction` | Depends | `stop_propagation`, `prevent_default` |
 
 ---
 

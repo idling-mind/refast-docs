@@ -81,3 +81,9 @@ def register_example_routes(ui: RefastApp):
         from docs.examples.vtk_example import vtk_page
         return vtk_page(ctx)
 
+    @ui.page("/examples/event-modifiers")
+    def page_examples_event_modifiers(ctx: Context):
+        from docs.examples.event_modifiers import event_modifiers_page
+        return event_modifiers_page(ctx)
+
+

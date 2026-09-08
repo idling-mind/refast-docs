@@ -157,11 +157,11 @@ Link("Go to Docs", href="/docs")
 # External link with icon
 Link("GitHub", href="https://github.com", target="_blank", external=True)
 
-# Link with click callback
+# Link with click callback and navigation suppressed
 Link(
-    "Load more",
-    href="#",
-    on_click=ctx.callback(handle_load_more),
+    "Execute action",
+    href="https://example.com",
+    on_click=ctx.callback(handle_action, prevent_default=True),
     class_name="text-primary hover:underline",
 )
 ```
@@ -186,4 +186,6 @@ REFERENCE = """
 Use `class_name="underline underline-offset-4"` to match the default link
 styling convention. For navigation within the app prefer `href="/<route>"` —
 these are handled by the SPA router automatically.
+
+To execute Python or JavaScript actions from a `Link` without navigating away from the page, pass `prevent_default=True` when creating the callback (e.g., `on_click=ctx.callback(handle_action, prevent_default=True)`).
 """

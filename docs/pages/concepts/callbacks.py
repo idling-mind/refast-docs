@@ -2,7 +2,22 @@
 
 import asyncio
 
-from refast.components import Button, Container, Heading, Input, Separator, Text
+from refast.components import (
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Column,
+    Container,
+    Heading,
+    Input,
+    Link,
+    Row,
+    Separator,
+    Text,
+)
 from refast.context import Context
 
 from ..utils import render_markdown_with_demo_apps
@@ -145,47 +160,109 @@ Button(
 {{ chain_demo }}
 
 
-## Event Modifiers
+## Event Modifiers — `stop_propagation` & `prevent_default`
 
-You can control event behavior (such as bubbling and default browser actions) natively by passing `stop_propagation=True` or `prevent_default=True` when creating callbacks and actions. 
+By default, DOM interactions follow standard browser rules: click events bubble up through ancestor components, anchor tags navigate to their `href`, and pressing `Enter` in text inputs can trigger form submissions.
 
-This works for `ctx.callback()`, `ctx.js()`, `ctx.bound_js()`, `ctx.save_prop()`, and `ctx.chain()`.
+Refast provides native boolean modifiers on callback and action definitions so you can control event bubbling and default browser behaviors without complex JavaScript boilerplate:
 
-### stop_propagation
+- **`stop_propagation=True`**: Prevents the event from bubbling up through the DOM tree (invokes `event.stopPropagation()` on the client). Parent components will not receive or fire handlers for this event.
+- **`prevent_default=True`**: Suppresses the browser's default action for the event (invokes `event.preventDefault()` on the client). For example, prevents `<a>` links from navigating, forms from submitting on `Enter`, or page scrolling. Your Refast callback or JS action still executes normally.
 
-By default, DOM events bubble up through nested components. Use `stop_propagation=True` to prevent the event from bubbling up to parent handlers.
+### Supported Action Types
+
+Modifiers can be set on **all five** Refast action creation methods:
+
+| Method | Usage Example |
+|--------|---------------|
+| `ctx.callback()` | `ctx.callback(my_func, stop_propagation=True, prevent_default=True)` |
+| `ctx.js()` | `ctx.js("alert('hi')", stop_propagation=True, prevent_default=True)` |
+| `ctx.bound_js()` | `ctx.bound_js("my-id", "method", stop_propagation=True)` |
+| `ctx.save_prop()` | `ctx.save_prop("field", stop_propagation=True)` |
+| `ctx.chain()` | `ctx.chain([...], stop_propagation=True, prevent_default=True)` |
+
+> [!NOTE]
+> **Action Chains (`ctx.chain`)**: Modifiers can be set on the outer `ctx.chain()` or on any nested action inside the chain. Refast recursively inspects the entire action hierarchy — if any action in the chain specifies `stopPropagation` or `preventDefault`, that modifier is applied before execution.
+
+---
+
+### Core Patterns
+
+#### 1. Controlling Event Bubbling (`stop_propagation`)
+When an inner component is nested inside an outer clickable container (e.g. a button inside a clickable card), clicks on the inner component bubble up to trigger the parent's handler unless propagation is halted:
 
 ```python
-# Clicking the inner button will execute handle_inner but NOT bubble to the container's handle_outer
+# The outer Container handler triggers for any clicks inside it
 Container(
-    on_click=ctx.callback(handle_outer),
+    on_click=ctx.callback(handle_outer_click),
+    class_name="p-4 border rounded",
     children=[
+        # Bubbles: fires handle_inner_bubble THEN handle_outer_click
+        Button("Normal Click (Bubbles)", on_click=ctx.callback(handle_inner_bubble)),
+        
+        # Stops propagation: fires ONLY handle_inner_stop
         Button(
-            "Inner Button",
-            on_click=ctx.callback(handle_inner, stop_propagation=True)
-        )
-    ]
+            "Stop Propagation",
+            on_click=ctx.callback(handle_inner_stop, stop_propagation=True),
+        ),
+    ],
 )
 ```
 
-### prevent_default
-
-Suppresses the browser's default action associated with the event (e.g. following a link or submitting a form on enter).
+#### 2. Suppressing Default Browser Actions (`prevent_default`)
+Intercept link clicks or form submissions to run server-side Python logic or client JS without leaving the page or triggering a reload:
 
 ```python
-# Suppresses navigation to Google, running the Python callback instead
+# Normal navigation occurs: browser opens https://example.com
+Link("Visit Example", href="https://example.com")
+
+# Suppresses navigation: browser stays on page, Python callback runs
 Link(
-    "Custom Action Link",
-    href="https://google.com",
-    on_click=ctx.callback(handle_link_click, prevent_default=True)
+    "Execute Server Callback Only",
+    href="https://example.com",
+    on_click=ctx.callback(handle_link_action, prevent_default=True),
 )
 ```
 
-### Inspecting modifier state
+#### 3. Inspecting Modifier State in Parent Handlers
+When an event bubbles up to a parent container, the parent handler can inspect whether child elements prevented default behavior or stopped propagation:
 
-During event bubbling, parent components can inspect whether nested children have called `preventDefault` or `stopPropagation`:
-* **Python side**: Check the boolean flags `ctx.event_data.get("default_prevented")` and `ctx.event_data.get("propagation_stopped")`.
-* **JS side**: Access `event.defaultPrevented` and `event.propagationStopped` properties.
+- **Python (`ctx.event_data`)**:
+  ```python
+  async def handle_parent_click(ctx: Context):
+      # True if a child event handler set prevent_default=True
+      default_prevented = ctx.event_data.get("default_prevented", False)
+      # True if a child event handler set stop_propagation=True
+      propagation_stopped = ctx.event_data.get("propagation_stopped", False)
+      
+      print(f"Parent received event: default_prevented={default_prevented}")
+  ```
+
+- **JavaScript (`ctx.js`)**:
+  ```javascript
+  if (event.defaultPrevented) {
+      console.log("Child prevented default action");
+  }
+  if (event.propagationStopped) {
+      console.log("Child stopped propagation");
+  }
+  ```
+
+#### 4. Keyboard KeyDown Interception (`ctx.js`)
+Suppress default form submission or newline behaviors on key presses (such as `Enter`):
+
+```python
+Input(
+    placeholder="Press Enter here...",
+    on_keydown=ctx.js(
+        "if (event.key === 'Enter') { refast.invoke(args.on_enter); }",
+        on_enter=ctx.callback(handle_keydown_enter),
+        prevent_default=True,
+    ),
+)
+```
+
+{{ event_modifiers_demo }}
 
 
 ## Typed Events & Payload Validation
@@ -450,6 +527,88 @@ def render(ctx):
         ],
     )
 
+    event_modifiers_demo = Container(
+        id="callbacks-event-modifiers",
+        class_name="space-y-4",
+        children=[
+            Heading(
+                "Live demo: stop_propagation and prevent_default",
+                level=3,
+                class_name="text-lg font-semibold",
+            ),
+            Text(
+                "Click the dashed card area, the buttons inside it, or the link to test propagation and default action suppression.",
+                class_name="text-sm text-muted-foreground",
+            ),
+            Container(
+                id="mod-outer-card",
+                on_click=ctx.callback(handle_mod_outer_click),
+                class_name="p-4 rounded-md border-2 border-dashed border-border hover:bg-muted/30 transition-colors cursor-pointer space-y-3",
+                children=[
+                    Row(
+                        [
+                            Text(
+                                "Outer Container (Click anywhere inside this dashed area)",
+                                class_name="text-xs font-semibold text-muted-foreground",
+                            ),
+                        ],
+                        justify="between",
+                    ),
+                    Row(
+                        [
+                            Button(
+                                "Normal Click (Bubbles)",
+                                on_click=ctx.callback(handle_mod_inner_bubble),
+                                variant="outline",
+                                size="sm",
+                            ),
+                            Button(
+                                "Stop Propagation",
+                                on_click=ctx.callback(
+                                    handle_mod_inner_stop, stop_propagation=True
+                                ),
+                                variant="default",
+                                size="sm",
+                            ),
+                            Link(
+                                text="Prevent Default Link",
+                                href="https://example.com",
+                                on_click=ctx.callback(
+                                    handle_mod_link, prevent_default=True
+                                ),
+                                class_name="text-xs text-primary underline font-medium hover:opacity-80 transition-opacity self-center cursor-pointer",
+                            ),
+                        ],
+                        gap=3,
+                        class_name="flex-wrap items-center",
+                    ),
+                ],
+            ),
+            Container(
+                id="mod-log-console",
+                class_name="min-h-16 space-y-1 rounded-md border border-border bg-muted/20 p-3",
+                children=[
+                    Text(
+                        "Event log: click any interactive element above to see events fire.",
+                        id="mod-log-status",
+                        class_name="text-xs font-mono text-muted-foreground",
+                    )
+                ],
+            ),
+            Row(
+                [
+                    Button(
+                        "Clear Event Log",
+                        on_click=ctx.callback(clear_mod_logs),
+                        variant="ghost",
+                        size="xs",
+                    ),
+                ],
+                justify="end",
+            ),
+        ],
+    )
+
     content = Container(
         class_name="max-w-4xl mx-auto p-6 space-y-8",
         children=[
@@ -510,3 +669,67 @@ async def chain_record(ctx: Context, message: str, delay: float = 0.0) -> None:
         await asyncio.sleep(delay)
     await ctx.append("chain-log", Text(message, class_name="text-sm font-mono"))
     await ctx.show_toast(message, variant="secondary")
+
+
+async def handle_mod_outer_click(ctx: Context) -> None:
+    """Outer container click handler which inspects event modifiers."""
+    default_prevented = ctx.event_data.get("default_prevented", False)
+    propagation_stopped = ctx.event_data.get("propagation_stopped", False)
+    msg = (
+        f"💥 Outer Container received click "
+        f"[default_prevented={default_prevented}, propagation_stopped={propagation_stopped}]"
+    )
+    await ctx.append(
+        "mod-log-console",
+        Text(msg, class_name="text-xs font-mono text-amber-500 dark:text-amber-400 block"),
+    )
+    await ctx.show_toast("Outer Container click fired (bubbled up)", variant="warning")
+
+
+async def handle_mod_inner_bubble(ctx: Context) -> None:
+    """Inner button with normal bubbling."""
+    msg = "🔵 Inner Button clicked (Normal — bubbling to outer container)"
+    await ctx.append(
+        "mod-log-console",
+        Text(msg, class_name="text-xs font-mono text-blue-500 dark:text-blue-400 block"),
+    )
+    await ctx.show_toast("Inner Button clicked (Bubbles)", variant="info")
+
+
+async def handle_mod_inner_stop(ctx: Context) -> None:
+    """Inner button with stop_propagation=True."""
+    msg = "🔒 Inner Button clicked (stop_propagation=True — propagation stopped!)"
+    await ctx.append(
+        "mod-log-console",
+        Text(msg, class_name="text-xs font-mono text-emerald-500 dark:text-emerald-400 block"),
+    )
+    await ctx.show_toast("Inner Button clicked (Propagation stopped)", variant="success")
+
+
+async def handle_mod_link(ctx: Context) -> None:
+    """Link with prevent_default=True."""
+    msg = "🔗 Link clicked (prevent_default=True — browser navigation suppressed, server callback executed!)"
+    await ctx.append(
+        "mod-log-console",
+        Text(msg, class_name="text-xs font-mono text-purple-500 dark:text-purple-400 block"),
+    )
+    await ctx.show_toast("Link clicked (Navigation suppressed)", variant="success")
+
+
+async def clear_mod_logs(ctx: Context) -> None:
+    """Reset the event modifier log console."""
+    await ctx.replace(
+        "mod-log-console",
+        Container(
+            id="mod-log-console",
+            class_name="min-h-16 space-y-1 rounded-md border border-border bg-muted/20 p-3",
+            children=[
+                Text(
+                    "Event log reset. Click an interactive element above to see events fire.",
+                    id="mod-log-status",
+                    class_name="text-xs font-mono text-muted-foreground",
+                )
+            ],
+        ),
+    )
+
