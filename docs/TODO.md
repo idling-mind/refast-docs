@@ -67,3 +67,32 @@ rendered alongside their code snippets). Priority:
 ### Search
 
 - [ ] Implement in-page search using `Command*` components (client-side filtering of sidebar items)
+  - Current state: `⌘K` filters page *titles* only (`_get_search_items()` in `app.py`); page
+    bodies are not indexed.
+
+---
+
+## Quality Gates
+
+CI (`.github/workflows/ci.yml`) runs `tests/`, which guard the docs against upstream
+refast releases:
+
+| Test | Catches |
+|------|---------|
+| `test_docs_pages_render.py` | a page function that raises while building its tree (bad props, bad imports, bad return) |
+| `test_docs_component_props.py` | a prop passed to a component that does not accept it |
+| `test_docs_links.py` | links to unregistered routes and "View source" URLs that 404 |
+| `test_docs_markdown_tables.py` | Markdown tables that render with the wrong number of columns |
+
+Open items:
+
+- [ ] **Import hygiene sweep** — `ruff check` currently ignores `F401` under `docs/**` (see
+      `[tool.ruff.lint.per-file-ignores]`). Several component pages import the full
+      component set but only reference those names inside their Markdown samples, so
+      ~400 imports look unused to the linter. Run `ruff check --select F401 --fix docs`
+      on a machine with a working environment, re-run the test suite to confirm nothing
+      was needed at runtime, then drop the ignore.
+- [ ] Add `[dependency-groups] dev = ["pytest", "httpx", "ruff"]` once `uv lock` can be
+      re-run; CI currently installs the tools ephemerally so the lockfile stays valid.
+- [ ] Consider running `REFAST_REPO=../refast pytest` in a scheduled job, which also
+      verifies every "View source" link against the framework checkout.
