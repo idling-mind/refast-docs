@@ -10,3 +10,23 @@ dependencies = [
     "refast-vtk-js>=0.3.1",
     "refast-echarts>=0.2.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+# Narrow on purpose: the site is prose-heavy, so the rules that pay their way are
+# the ones that catch code that cannot run at all.
+#   E4  imports          E7  pycodestyle gotchas     E9  syntax errors
+#   F811 redefined       F821 undefined name         W605 invalid escape
+select = ["E4", "E7", "E9", "F811", "F821", "W605"]
+
+[tool.ruff.lint.per-file-ignores]
+# Page modules import the component set they reference inside their Markdown
+# samples; see the sweep tracked in docs/TODO.md before removing this.
+"docs/**" = ["F401"]
