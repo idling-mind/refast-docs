@@ -50,7 +50,7 @@ def render(ctx):
         children=[
             Heading(PAGE_TITLE, level=1),
             Separator(class_name="my-4"),
-            Markdown(text="Your content here"),
+            Markdown(content="Your content here"),
         ],
     )
     return docs_layout(ctx, content, PAGE_ROUTE)

@@ -35,7 +35,7 @@ After the code block, embed the actual component:
 # In render():
 Column(gap=4, children=[
     Heading("Button", level=3),
-    Markdown(text="...code and props table..."),
+    Markdown(content="...code and props table..."),
     # Live demo
     Card(class_name="p-4", children=[
         Row(gap=2, children=[

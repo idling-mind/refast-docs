@@ -19,15 +19,15 @@ Open http://localhost:8000 in your browser.
 - **`app.py`** — Main app. Contains `RefastApp`, shared `docs_layout()` function, all route registrations.
 - **`pages/`** — Each page is a Python module with a `render(ctx)` function.
 - **Navigation** — Sidebar with 4 sections (Getting Started, Concepts, Components, Advanced). SPA navigation via `ctx.load()`.
-- **Content** — Primarily `Markdown(text="""...""")` blocks for prose, with real Refast components for live examples.
+- **Content** — Primarily `Markdown(content="""...""")` blocks for prose, with real Refast components for live examples.
 
 ## Content Format Rules
 
 1. **Page structure**: Every page's `render(ctx)` returns `docs_layout(ctx, content, PAGE_ROUTE)` where content is wrapped in `Container(class_name="max-w-4xl mx-auto p-6", children=[...])`.
 2. **Title**: Start with `Heading(PAGE_TITLE, level=1)` followed by `Separator(class_name="my-4")`.
-3. **Prose**: Use `Markdown(text="""...""")` for body text, tables, code blocks.
+3. **Prose**: Use `Markdown(content="""...""")` for body text, tables, code blocks.
 4. **Live examples**: Embed actual Refast components alongside their code snippets so readers see both the code and the rendered result.
-5. **Callouts**: Use `Alert(title="...", description="...")` for important notes.
+5. **Callouts**: Use `Alert(title="...", message="...")` for important notes.
 6. **Code examples**: Use triple-backtick code blocks inside the Markdown text. The Markdown component supports syntax highlighting.
 7. **Cross-links**: Reference other pages by their routes (e.g., `[State Management](/docs/concepts/state)`).
 

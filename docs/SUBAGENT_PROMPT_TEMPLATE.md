@@ -138,7 +138,7 @@ def render(ctx):
 ### Callouts
 Use Alert components for important notes:
 ```python
-Alert(title="Note", description="State is only available in WebSocket context.")
+Alert(title="Note", message="State is only available in WebSocket context.")
 ```
 
 Or use blockquotes in Markdown:
