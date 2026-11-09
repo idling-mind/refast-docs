@@ -448,5 +448,5 @@ Image(src=ctx.state.get("chart_url", ""), alt="Generated chart")
 
 - [DOM Updates](/docs/concepts/updates) — Other ways to update the UI
 - [Streaming](/docs/concepts/streaming) — Incremental content delivery
-- [Form Inputs](/docs/components/inputs) — Other input components
+- [Form Inputs](/docs/components/input) — Other input components
 """

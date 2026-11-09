@@ -754,6 +754,5 @@ uv run pytest tests/ --cov=src/refast --cov-report=html
 ## Next Steps
 
 - [Building Extensions](/docs/advanced/extension-dev) — Package components as installable extensions
-- [Styling](/docs/advanced/styling) — Tailwind CSS patterns and theming
-- [Naming Conventions](/docs/advanced/styling) — Full `snake_case` ↔ `camelCase` reference
+- [Styling](/docs/concepts/styling) — Tailwind patterns, theming, and the `snake_case` ↔ `camelCase` prop mapping
 """

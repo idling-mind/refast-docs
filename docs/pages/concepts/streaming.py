@@ -370,7 +370,7 @@ component. Use **Stop** to interrupt mid-stream.
 
 - [DOM Updates](/docs/concepts/updates) — All targeted update methods
 - [Background Jobs](/docs/concepts/background) — Long-running tasks and broadcasting
-- [Examples: Streaming](/docs) — Full working example in `examples/streaming/app.py`
+- [Examples: Streaming](/examples/scroll-stream) — Full working streaming example
 """
 
 

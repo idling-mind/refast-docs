@@ -152,7 +152,7 @@ icon and server-side callbacks.
 from refast.components import Link
 
 # Simple navigation link
-Link("Go to Docs", href="/docs")
+Link("Go to Docs", href="/docs/getting-started")
 
 # External link with icon
 Link("GitHub", href="https://github.com", target="_blank", external=True)

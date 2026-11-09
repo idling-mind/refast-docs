@@ -543,5 +543,5 @@ def profile_page(ctx: Context):
 ## Next Steps
 
 - [Sessions](/docs/advanced/sessions) — Secure server-side session stores
-- [Styling](/docs/advanced/styling) — Designing layout and themes
+- [Styling](/docs/concepts/styling) — Designing layout and themes
 """

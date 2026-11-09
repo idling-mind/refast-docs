@@ -221,7 +221,7 @@ Breadcrumb(
                 BreadcrumbSeparator(),
                 BreadcrumbItem(children=[BreadcrumbEllipsis()]),
                 BreadcrumbSeparator(),
-                BreadcrumbItem(children=[BreadcrumbLink("Components", href="/docs/components")]),
+                BreadcrumbItem(children=[BreadcrumbLink("Components", href="/docs/components/button")]),
                 BreadcrumbSeparator(),
                 BreadcrumbItem(children=[BreadcrumbPage("Breadcrumb")]),
             ]

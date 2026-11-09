@@ -78,7 +78,10 @@ thorough technical references adapted from the existing `.md` docs in the `docs/
 
 ---
 
-### 5. `styling.py` — Styling (`/docs/advanced/styling`)
+### 5. `../concepts/styling.py` — Styling (`/docs/concepts/styling`)
+
+> Note: this page lives in the **Core Concepts** section (`docs/pages/concepts/styling.py`),
+> not in `docs/pages/advanced/`.
 
 **Adapt from:** `docs/STYLING_GUIDE.md`, `docs/TAILWIND_SUPPORT.md`
 

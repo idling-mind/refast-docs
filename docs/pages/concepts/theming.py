@@ -354,5 +354,5 @@ light/dark mode or when you call `ctx.set_theme()` at runtime:
 ## Next Steps
 
 - [Toast Notifications](/docs/concepts/toasts) — Visual feedback for users
-- [Styling](/docs/advanced/styling) — Full styling reference
+- [Styling](/docs/concepts/styling) — Full styling reference
 """
