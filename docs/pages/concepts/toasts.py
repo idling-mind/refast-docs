@@ -432,5 +432,5 @@ await ctx.show_toast(
 
 - [JavaScript Interop](/docs/concepts/js-interop) — Use `ctx.js()` in toast action callbacks
 - [Components Reference](/docs/components/progress) — Progress, Badge, and other feedback components
-- [Toast Showcase Example](https://github.com/your-repo/examples/toast_showcase) — Live demo of all features
+- [Toast Showcase Example](https://github.com/idling-mind/refast/tree/main/examples/toast_showcase) — Live demo of all features
 """
