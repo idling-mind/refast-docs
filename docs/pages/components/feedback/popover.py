@@ -165,27 +165,27 @@ from refast.components import Popover, PopoverTrigger, PopoverContent
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `Popover`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool | None` | `None` | Controlled open state |
+| `open` | `bool \| None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
-| `on_open_change` | `Callback | None` | `None` | Called when open state changes |
-| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred side |
-| `align` | `"start" | "center" | "end"` | `"center"` | Content alignment |
-| `trigger` | `Component | None` | `None` | Shorthand trigger component |
+| `on_open_change` | `Callback \| None` | `None` | Called when open state changes |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Content alignment |
+| `trigger` | `Component \| None` | `None` | Shorthand trigger component |
 
 ### `PopoverContent`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred side |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side |
 | `side_offset` | `int` | `4` | Pixels from the trigger |
-| `align` | `"start" | "center" | "end"` | `"center"` | Alignment relative to trigger |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to trigger |
 
 ## Component Hierarchy
 

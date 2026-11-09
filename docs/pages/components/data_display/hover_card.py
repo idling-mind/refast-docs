@@ -205,19 +205,19 @@ HoverCard(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## HoverCard Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | A `HoverCardTrigger` and a `HoverCardContent`. |
-| `open` | `bool | None` | `None` | Controlled open state. |
+| `open` | `bool \| None` | `None` | Controlled open state. |
 | `default_open` | `bool` | `False` | Initial open state (uncontrolled). |
-| `on_open_change` | `Callback | None` | `None` | Fired when the open state changes. |
+| `on_open_change` | `Callback \| None` | `None` | Fired when the open state changes. |
 | `open_delay` | `int` | `700` | Milliseconds before the card opens on hover. |
 | `close_delay` | `int` | `300` | Milliseconds before the card closes on mouse-leave. |
-| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred side of the trigger. |
-| `align` | `"start" | "center" | "end"` | `"center"` | Alignment relative to the trigger. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side of the trigger. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## HoverCardTrigger Props
@@ -233,9 +233,9 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Card content shown on hover. |
-| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Preferred placement. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred placement. |
 | `side_offset` | `int` | `4` | Pixel gap from the trigger. |
-| `align` | `"start" | "center" | "end"` | `"center"` | Alignment relative to the trigger. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## User profile preview example

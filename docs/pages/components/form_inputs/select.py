@@ -202,21 +202,21 @@ Select(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `list[dict]` | required | List of `{"value": str, "label": str}` dicts. Add `"disabled": True` to disable an option |
-| `name` | `str | None` | `None` | HTML name attribute |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below label |
-| `value` | `str | None` | `None` | Controlled selected value |
-| `default_value` | `str | None` | `None` | Uncontrolled initial value |
+| `name` | `str \| None` | `None` | HTML name attribute |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below label |
+| `value` | `str \| None` | `None` | Controlled selected value |
+| `default_value` | `str \| None` | `None` | Uncontrolled initial value |
 | `placeholder` | `str` | `"Select..."` | Placeholder option shown when nothing is selected |
 | `required` | `bool` | `False` | Shows required asterisk |
 | `disabled` | `bool` | `False` | Disables the select |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired when the selection changes |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired when the selection changes |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

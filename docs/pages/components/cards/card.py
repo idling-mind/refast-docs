@@ -206,24 +206,24 @@ Card(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Card Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Sub-components (`CardHeader`, `CardContent`, `CardFooter`). |
-| `title` | `str | None` | `None` | Shorthand title (rendered without `CardHeader`). |
-| `description` | `str | None` | `None` | Shorthand description below `title`. |
-| `on_click` | `Callback | None` | `None` | Makes the card interactive. |
+| `title` | `str \| None` | `None` | Shorthand title (rendered without `CardHeader`). |
+| `description` | `str \| None` | `None` | Shorthand description below `title`. |
+| `on_click` | `Callback \| None` | `None` | Makes the card interactive. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
-| `style` | `dict | None` | `None` | Inline CSS style dict. |
+| `style` | `dict \| None` | `None` | Inline CSS style dict. |
 
 ## CardHeader Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `str | None` | `None` | Shorthand heading text. |
-| `description` | `str | None` | `None` | Shorthand subtitle text. |
+| `title` | `str \| None` | `None` | Shorthand heading text. |
+| `description` | `str \| None` | `None` | Shorthand subtitle text. |
 | `children` | `list` | `[]` | Explicit `CardTitle` / `CardDescription` children. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 

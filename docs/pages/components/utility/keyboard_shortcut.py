@@ -189,7 +189,7 @@ KeyboardShortcut(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
@@ -199,7 +199,7 @@ REFERENCE = """
 | `bubble` | `bool` | `False` | When `True`, propagation continues to lower-priority handlers after this one fires |
 | `prevent_default` | `bool` | `True` | Suppress the browser's native action for the combo (e.g. prevents Ctrl+S from opening the save dialog) |
 | `enabled` | `bool` | `True` | Disable the shortcuts without removing the component from the tree |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 
 ## Shortcut format
 

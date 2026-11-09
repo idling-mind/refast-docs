@@ -186,28 +186,28 @@ Input(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str | None` | `None` | HTML name attribute |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below label |
-| `type` | `"text" | "email" | "password" | "number" | "tel" | "url" | "search"` | `"text"` | Input type |
+| `name` | `str \| None` | `None` | HTML name attribute |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below label |
+| `type` | `"text" \| "email" \| "password" \| "number" \| "tel" \| "url" \| "search"` | `"text"` | Input type |
 | `placeholder` | `str` | `""` | Placeholder text |
-| `value` | `str | None` | `None` | Controlled value |
-| `default_value` | `str | None` | `None` | Uncontrolled initial value |
+| `value` | `str \| None` | `None` | Controlled value |
+| `default_value` | `str \| None` | `None` | Uncontrolled initial value |
 | `required` | `bool` | `False` | Shows required asterisk |
 | `disabled` | `bool` | `False` | Disables interaction |
 | `read_only` | `bool` | `False` | Read-only mode |
-| `error` | `str | None` | `None` | Error message |
+| `error` | `str \| None` | `None` | Error message |
 | `debounce` | `int` | `0` | Delay in ms before `on_change` fires |
-| `on_change` | `Callback | None` | `None` | Fired on value change |
-| `on_blur` | `Callback | None` | `None` | Fired on blur |
-| `on_focus` | `Callback | None` | `None` | Fired on focus |
-| `on_keydown` | `Callback | None` | `None` | Fired on key-down |
-| `on_keyup` | `Callback | None` | `None` | Fired on key-up |
-| `on_input` | `Callback | None` | `None` | Fired on every input event |
+| `on_change` | `Callback \| None` | `None` | Fired on value change |
+| `on_blur` | `Callback \| None` | `None` | Fired on blur |
+| `on_focus` | `Callback \| None` | `None` | Fired on focus |
+| `on_keydown` | `Callback \| None` | `None` | Fired on key-down |
+| `on_keyup` | `Callback \| None` | `None` | Fired on key-up |
+| `on_input` | `Callback \| None` | `None` | Fired on every input event |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

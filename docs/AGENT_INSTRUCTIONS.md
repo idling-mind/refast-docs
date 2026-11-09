@@ -30,6 +30,7 @@ Open http://localhost:8000 in your browser.
 5. **Callouts**: Use `Alert(title="...", message="...")` for important notes.
 6. **Code examples**: Use triple-backtick code blocks inside the Markdown text. The Markdown component supports syntax highlighting.
 7. **Cross-links**: Reference other pages by their routes (e.g., `[State Management](/docs/concepts/state)`).
+8. **Tables**: `Markdown` renders with `remark-gfm`, which splits cells on **every** `|` in a row — including inside code spans. Escape type unions as `\|` (write `` `str \| None` ``, never `` `str | None` ``), and keep the cell count identical to the header row. Because `\|` is an invalid Python escape sequence, store table content in **raw** strings (`CONTENT = r"""…"""`).
 
 ## Adding a New Page
 

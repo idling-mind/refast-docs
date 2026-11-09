@@ -198,23 +198,23 @@ Tabs(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Tabs Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | `TabItem` components. |
-| `default_value` | `str | None` | `None` | Initially active tab value (uncontrolled). |
-| `value` | `str | None` | `None` | Controlled active tab value. |
-| `on_value_change` | `Callback | None` | `None` | Fired when the active tab changes. `ctx.event_data` is the new value string. |
+| `default_value` | `str \| None` | `None` | Initially active tab value (uncontrolled). |
+| `value` | `str \| None` | `None` | Controlled active tab value. |
+| `on_value_change` | `Callback \| None` | `None` | Fired when the active tab changes. `ctx.event_data` is the new value string. |
 | `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction of the tabs. |
 | `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Size of the tab triggers. |
-| `gap` | `int | None` | `None` | Gap in pixels between tab buttons. |
+| `gap` | `int \| None` | `None` | Gap in pixels between tab buttons. |
 | `tab_list_class_name` | `str` | `""` | Extra Tailwind classes for the tab buttons list container. |
-| `tab_list_style` | `dict | None` | `None` | Inline styles for the tab buttons list container. |
+| `tab_list_style` | `dict \| None` | `None` | Inline styles for the tab buttons list container. |
 | `stretch` | `bool` | `False` | Whether triggers should stretch to fill the horizontal width (horizontal layout) or vertical list container width. |
 | `class_name` | `str` | `""` | Extra Tailwind classes for the outer wrapper. |
-| `style` | `dict | None` | `None` | Inline styles for the outer wrapper. |
+| `style` | `dict \| None` | `None` | Inline styles for the outer wrapper. |
 
 ## TabItem Props
 
@@ -222,7 +222,7 @@ REFERENCE = """
 |------|------|---------|-------------|
 | `value` | `str` | *(required)* | Unique identifier within the `Tabs` group. |
 | `label` | `str` | *(required)* | Text displayed on the tab trigger button. |
-| `icon` | `str | None` | `None` | Lucide icon name shown before the label. |
+| `icon` | `str \| None` | `None` | Lucide icon name shown before the label. |
 | `children` | `list` | `[]` | Panel content shown when this tab is active. |
 | `disabled` | `bool` | `False` | Grays out and disables the tab trigger. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |

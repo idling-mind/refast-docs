@@ -293,7 +293,7 @@ ChartContainer(class_name="h-72", children=[
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ---
 
 ## Component Reference
@@ -303,9 +303,9 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `list[dict]` | *(required)* | Array of data objects |
-| `cx` | `str | int` | `"50%"` | X centre position |
-| `cy` | `str | int` | `"50%"` | Y centre position |
-| `outer_radius` | `int | str` | `"80%"` | Outer radius |
+| `cx` | `str \| int` | `"50%"` | X centre position |
+| `cy` | `str \| int` | `"50%"` | Y centre position |
+| `outer_radius` | `int \| str` | `"80%"` | Outer radius |
 | `start_angle` | `int` | `90` | Angle for the first axis |
 | `end_angle` | `int` | `-270` | Angle sweep direction |
 
@@ -316,7 +316,7 @@ REFERENCE = """
 | `data_key` | `str` | *(required)* | Key from data |
 | `fill` | `str` | `"hsl(var(--chart-1))"` | Fill color |
 | `fill_opacity` | `float` | `0.6` | Fill opacity |
-| `stroke` | `str | None` | *(same as fill)* | Stroke color |
+| `stroke` | `str \| None` | *(same as fill)* | Stroke color |
 | `stroke_width` | `int` | `2` | Stroke width |
 
 ### RadialBarChart Props
@@ -324,9 +324,9 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `list[dict]` | *(required)* | Array of data objects |
-| `inner_radius` | `int | str` | `"10%"` | Inner radius |
-| `outer_radius` | `int | str` | `"80%"` | Outer radius |
-| `bar_size` | `int | None` | `None` | Fixed bar thickness |
+| `inner_radius` | `int \| str` | `"10%"` | Inner radius |
+| `outer_radius` | `int \| str` | `"80%"` | Outer radius |
+| `bar_size` | `int \| None` | `None` | Fixed bar thickness |
 | `start_angle` | `int` | `90` | Start angle |
 | `end_angle` | `int` | `-270` | End angle |
 
@@ -335,17 +335,17 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data_key` | `str` | *(required)* | Key for values |
-| `background` | `bool | dict` | `False` | Show background track arc |
-| `corner_radius` | `int | str | None` | `None` | Rounded bar ends |
+| `background` | `bool \| dict` | `False` | Show background track arc |
+| `corner_radius` | `int \| str \| None` | `None` | Rounded bar ends |
 | `min_angle` | `int` | `0` | Minimum arc angle for zero values |
-| `label` | `bool | dict | None` | `None` | Value labels |
+| `label` | `bool \| dict \| None` | `None` | Value labels |
 | `fill` | `str` | `"hsl(var(--chart-1))"` | Default fill (overridden by `Cell`) |
 
 ### ScatterChart Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `data` | `list[dict] | None` | `None` | Chart-level data (can also be set on `Scatter`) |
+| `data` | `list[dict] \| None` | `None` | Chart-level data (can also be set on `Scatter`) |
 | `margin` | `dict` | `{top:20, right:20, left:20, bottom:20}` | Chart margins |
 | `children` | `list` | `[]` | Axes, scatter series, tooltip |
 
@@ -353,11 +353,11 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `data` | `list[dict] | None` | `None` | Series-level data points |
+| `data` | `list[dict] \| None` | `None` | Series-level data points |
 | `fill` | `str` | `"hsl(var(--chart-1))"` | Point fill color |
 | `shape` | `str` | `"circle"` | Point shape: `"circle"`, `"cross"`, `"diamond"`, `"square"`, `"star"`, `"triangle"`, `"wye"` |
-| `name` | `str | None` | `None` | Label for tooltip / legend |
-| `line` | `bool | dict` | `False` | Connect points with a line |
+| `name` | `str \| None` | `None` | Label for tooltip / legend |
+| `line` | `bool \| dict` | `False` | Connect points with a line |
 
 ### Other Available Chart Types
 

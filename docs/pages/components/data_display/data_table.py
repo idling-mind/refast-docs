@@ -170,7 +170,7 @@ DataTable(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
@@ -183,11 +183,11 @@ REFERENCE = """
 | `page_size` | `int` | `10` | Number of rows per page. |
 | `loading` | `bool` | `False` | Show a loading overlay. |
 | `empty_message` | `str` | `"No data available"` | Text shown when no rows match. |
-| `current_page` | `int | None` | `None` | Controlled current page (1-based). |
-| `on_row_click` | `Callback | None` | `None` | Fired when a row is clicked. `ctx.event_data` is the row dict. |
-| `on_sort_change` | `Callback | None` | `None` | Fired on sort. `ctx.event_data` is `{"key": ..., "direction": "asc"/"desc"}` or `None`. |
-| `on_filter_change` | `Callback | None` | `None` | Fired on filter input change. `ctx.event_data` is `{"value": ...}`. |
-| `on_page_change` | `Callback | None` | `None` | Fired on page change. `ctx.event_data` is `{"page": N}`. |
+| `current_page` | `int \| None` | `None` | Controlled current page (1-based). |
+| `on_row_click` | `Callback \| None` | `None` | Fired when a row is clicked. `ctx.event_data` is the row dict. |
+| `on_sort_change` | `Callback \| None` | `None` | Fired on sort. `ctx.event_data` is `{"key": ..., "direction": "asc"/"desc"}` or `None`. |
+| `on_filter_change` | `Callback \| None` | `None` | Fired on filter input change. `ctx.event_data` is `{"value": ...}`. |
+| `on_page_change` | `Callback \| None` | `None` | Fired on page change. `ctx.event_data` is `{"page": N}`. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## Column definition keys

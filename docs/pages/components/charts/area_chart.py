@@ -186,17 +186,17 @@ Area(data_key="mobile",  label="Mobile",  stacked_id="areas", ...)
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## AreaChart Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `list[dict]` | *(required)* | Array of data objects |
-| `layout` | `"horizontal" | "vertical"` | `"horizontal"` | Chart orientation |
+| `layout` | `"horizontal" \| "vertical"` | `"horizontal"` | Chart orientation |
 | `margin` | `dict` | `{top:10, right:10, left:10, bottom:0}` | Chart margins |
-| `stack_offset` | `str | None` | `None` | `"expand"`, `"wiggle"`, `"silhouette"` for stacked areas |
-| `base_value` | `int | str | None` | `None` | Baseline value for areas |
-| `on_click` | `Callback | None` | `None` | Click on the chart |
+| `stack_offset` | `str \| None` | `None` | `"expand"`, `"wiggle"`, `"silhouette"` for stacked areas |
+| `base_value` | `int \| str \| None` | `None` | Baseline value for areas |
+| `on_click` | `Callback \| None` | `None` | Click on the chart |
 | `children` | `list` | `[]` | Axes, areas, tooltip, legend |
 
 ## Area Props
@@ -207,12 +207,12 @@ REFERENCE = """
 | `type` | `str` | `"natural"` | Interpolation: `"linear"`, `"monotone"`, `"step"`, `"natural"` |
 | `fill` | `str` | *(auto from `data_key`)* | Area fill color; defaults to `var(--color-{data_key})` |
 | `fill_opacity` | `float` | `0.4` | Fill opacity (0–1). Use `0.8` for solid, `0.3` for gradient-like |
-| `stroke` | `str | None` | *(same as fill)* | Line stroke color |
+| `stroke` | `str \| None` | *(same as fill)* | Line stroke color |
 | `stroke_width` | `int` | `2` | Stroke width in pixels |
-| `stacked_id` | `str | None` | `None` | Areas sharing the same `stacked_id` are stacked |
-| `dot` | `bool | dict` | `False` | Show data-point dots |
+| `stacked_id` | `str \| None` | `None` | Areas sharing the same `stacked_id` are stacked |
+| `dot` | `bool \| dict` | `False` | Show data-point dots |
 | `connect_nulls` | `bool` | `False` | Connect across null values |
-| `base_value` | `int | str | None` | `None` | Override baseline for this area |
-| `label` | `bool | dict | None` | `None` | Show value labels |
+| `base_value` | `int \| str \| None` | `None` | Override baseline for this area |
+| `label` | `bool \| dict \| None` | `None` | Show value labels |
 | `hide` | `bool` | `False` | Hide this area series |
 """

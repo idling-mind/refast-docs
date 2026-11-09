@@ -198,15 +198,15 @@ Container(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list | Component | None` | `None` | Child components |
-| `id` | `str | None` | `None` | Unique element ID |
+| `children` | `list \| Component \| None` | `None` | Child components |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Tailwind CSS classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Notes
 

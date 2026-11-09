@@ -133,18 +133,18 @@ ScrollArea(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list | Component | None` | `None` | Scrollable content |
-| `type` | `"auto" | "always" | "scroll" | "hover"` | `"hover"` | When the scrollbar is visible |
+| `children` | `list \| Component \| None` | `None` | Scrollable content |
+| `type` | `"auto" \| "always" \| "scroll" \| "hover"` | `"hover"` | When the scrollbar is visible |
 | `scroll_hide_delay` | `int` | `600` | ms before scrollbar hides (hover/scroll modes) |
-| `dir` | `"ltr" | "rtl" | None` | `None` | Reading direction (inherits from document) |
+| `dir` | `"ltr" \| "rtl" \| None` | `None` | Reading direction (inherits from document) |
 | `stick_to_bottom` | `bool` | `False` | Auto-scroll to bottom as content updates |
-| `scroll_direction` | `"both" | "vertical" | "horizontal"` | `"both"` | Restrict scrolling direction |
-| `id` | `str | None` | `None` | Unique element ID |
+| `scroll_direction` | `"both" \| "vertical" \| "horizontal"` | `"both"` | Restrict scrolling direction |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes (use for height/width) |
 
 

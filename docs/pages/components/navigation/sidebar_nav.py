@@ -206,28 +206,28 @@ Sidebar(collapsible="none", ...)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"left" | "right"` | `"left"` | Placement |
-| `variant` | `"sidebar" | "floating" | "inset"` | `"sidebar"` | Visual style |
-| `collapsible` | `"offcanvas" | "icon" | "none"` | `"offcanvas"` | Collapse behaviour |
+| `side` | `"left" \| "right"` | `"left"` | Placement |
+| `variant` | `"sidebar" \| "floating" \| "inset"` | `"sidebar"` | Visual style |
+| `collapsible` | `"offcanvas" \| "icon" \| "none"` | `"offcanvas"` | Collapse behaviour |
 
 ### `SidebarMenuButton`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Button text |
-| `icon` | `str | None` | `None` | Lucide icon name or emoji |
+| `icon` | `str \| None` | `None` | Lucide icon name or emoji |
 | `is_active` | `bool` | `False` | Highlight as current item |
-| `variant` | `"default" | "outline"` | `"default"` | Visual variant |
-| `size` | `"default" | "sm" | "lg"` | `"default"` | Size |
-| `href` | `str | None` | `None` | Optional link URL |
-| `on_click` | `Callback | None` | `None` | Click callback |
+| `variant` | `"default" \| "outline"` | `"default"` | Visual variant |
+| `size` | `"default" \| "sm" \| "lg"` | `"default"` | Size |
+| `href` | `str \| None` | `None` | Optional link URL |
+| `on_click` | `Callback \| None` | `None` | Click callback |
 
 ### `SidebarMenuSubButton`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Sub-item text |
-| `href` | `str | None` | `None` | Navigation URL |
+| `href` | `str \| None` | `None` | Navigation URL |
 | `is_active` | `bool` | `False` | Highlight as active |
-| `on_click` | `Callback | None` | `None` | Click callback |
+| `on_click` | `Callback \| None` | `None` | Click callback |
 """

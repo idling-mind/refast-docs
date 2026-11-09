@@ -202,23 +202,23 @@ Combobox(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `list[dict]` | `[]` | Options with required `value` and `label` keys |
-| `value` | `str | list[str] | None` | `None` | Controlled selected value(s) |
+| `value` | `str \| list[str] \| None` | `None` | Controlled selected value(s) |
 | `placeholder` | `str` | `"Select..."` | Trigger text when nothing is selected |
 | `search_placeholder` | `str` | `"Search..."` | Placeholder in the search input |
 | `empty_text` | `str` | `"No results found."` | Text when no options match |
 | `multiselect` | `bool` | `False` | Allow selecting multiple values |
 | `disabled` | `bool` | `False` | Disables interaction |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below label |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below label |
 | `required` | `bool` | `False` | Shows required asterisk |
-| `error` | `str | None` | `None` | Error message |
-| `on_select` | `Callback | None` | `None` | Fired when selection changes |
+| `error` | `str \| None` | `None` | Error message |
+| `on_select` | `Callback \| None` | `None` | Fired when selection changes |
 
 ## Rich Options
 

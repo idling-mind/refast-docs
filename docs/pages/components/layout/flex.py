@@ -213,18 +213,18 @@ Flex(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list | Component | None` | `None` | Child components |
-| `direction` | `"row" | "column" | "row-reverse" | "column-reverse"` | `"row"` | flex-direction |
-| `justify` | `"start" | "end" | "center" | "between" | "around" | "evenly"` | `"start"` | justify-content |
-| `align` | `"start" | "end" | "center" | "stretch" | "baseline"` | `"stretch"` | align-items |
+| `children` | `list \| Component \| None` | `None` | Child components |
+| `direction` | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"` | flex-direction |
+| `justify` | `"start" \| "end" \| "center" \| "between" \| "around" \| "evenly"` | `"start"` | justify-content |
+| `align` | `"start" \| "end" \| "center" \| "stretch" \| "baseline"` | `"stretch"` | align-items |
 | `wrap` | `bool` | `False` | Whether children wrap |
 | `gap` | `int` | `2` | Gap between children (Tailwind spacing unit) |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Notes

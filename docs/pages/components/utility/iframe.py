@@ -155,21 +155,21 @@ Iframe(src="https://example.com", title="External Site")
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `src` | `str | None` | `None` | The URL of the page to embed. |
-| `srcdoc` | `str | None` | `None` | Inline HTML to embed (takes precedence over `src`). |
-| `title` | `str | None` | `None` | Title of the iframe (important for accessibility). |
-| `name` | `str | None` | `None` | Name of the iframe. |
-| `allow` | `str | None` | `None` | Feature policy permissions (e.g. `geolocation`). |
-| `sandbox` | `str | None` | `None` | Sandbox restrictions (e.g. `allow-scripts`). |
-| `referrer_policy` | `str | None` | `None` | Referrer policy for loading the iframe. |
+| `src` | `str \| None` | `None` | The URL of the page to embed. |
+| `srcdoc` | `str \| None` | `None` | Inline HTML to embed (takes precedence over `src`). |
+| `title` | `str \| None` | `None` | Title of the iframe (important for accessibility). |
+| `name` | `str \| None` | `None` | Name of the iframe. |
+| `allow` | `str \| None` | `None` | Feature policy permissions (e.g. `geolocation`). |
+| `sandbox` | `str \| None` | `None` | Sandbox restrictions (e.g. `allow-scripts`). |
+| `referrer_policy` | `str \| None` | `None` | Referrer policy for loading the iframe. |
 | `loading` | `Literal["lazy", "eager"]` | `"lazy"` | Browser loading strategy. |
-| `width` | `int | str | None` | `None` | Width of the iframe (pixels or CSS string). |
-| `height` | `int | str | None` | `None` | Height of the iframe (pixels or CSS string). |
+| `width` | `int \| str \| None` | `None` | Width of the iframe (pixels or CSS string). |
+| `height` | `int \| str \| None` | `None` | Height of the iframe (pixels or CSS string). |
 
 ## Basic External Embed
 

@@ -163,37 +163,37 @@ RadioGroup(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Radio Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `str` | required | Value emitted when this radio is selected |
-| `name` | `str | None` | `None` | HTML name attribute (shared within a group) |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below the radio |
+| `name` | `str \| None` | `None` | HTML name attribute (shared within a group) |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below the radio |
 | `checked` | `bool` | `False` | Controlled checked state |
 | `default_checked` | `bool` | `False` | Uncontrolled initial state |
 | `required` | `bool` | `False` | Shows required asterisk |
 | `disabled` | `bool` | `False` | Disables this radio button |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired when this radio is selected |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired when this radio is selected |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## RadioGroup Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str | None` | `None` | Group name for form submission |
+| `name` | `str \| None` | `None` | Group name for form submission |
 | `children` | `list[Radio]` | `[]` | Radio items |
-| `label` | `str | None` | `None` | Group label |
-| `description` | `str | None` | `None` | Help text below label |
-| `value` | `str | None` | `None` | Controlled selected value |
-| `default_value` | `str | None` | `None` | Uncontrolled initial value |
-| `orientation` | `"vertical" | "horizontal"` | `"vertical"` | Layout orientation |
+| `label` | `str \| None` | `None` | Group label |
+| `description` | `str \| None` | `None` | Help text below label |
+| `value` | `str \| None` | `None` | Controlled selected value |
+| `default_value` | `str \| None` | `None` | Uncontrolled initial value |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Layout orientation |
 | `required` | `bool` | `False` | Shows required asterisk |
 | `disabled` | `bool` | `False` | Disables all radios in the group |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired with the newly selected value |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired with the newly selected value |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

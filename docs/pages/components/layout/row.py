@@ -156,17 +156,17 @@ Row(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list | Component | None` | `None` | Child components |
-| `justify` | `"start" | "end" | "center" | "between" | "around" | "evenly"` | `"start"` | justify-content |
-| `align` | `"start" | "end" | "center" | "stretch" | "baseline"` | `"start"` | align-items |
+| `children` | `list \| Component \| None` | `None` | Child components |
+| `justify` | `"start" \| "end" \| "center" \| "between" \| "around" \| "evenly"` | `"start"` | justify-content |
+| `align` | `"start" \| "end" \| "center" \| "stretch" \| "baseline"` | `"start"` | align-items |
 | `gap` | `int` | `2` | Gap between children (Tailwind spacing unit) |
 | `wrap` | `bool` | `False` | Whether children wrap |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Examples

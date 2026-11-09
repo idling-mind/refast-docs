@@ -227,15 +227,15 @@ Paragraph("Welcome to the docs.", lead=True)
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Text Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `content` | `str` | *(required)* | Text content |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Tailwind CSS classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Paragraph Props
 
@@ -244,9 +244,9 @@ REFERENCE = """
 | `text` | `str` | *(required)* | Paragraph content |
 | `lead` | `bool` | `False` | Larger lead paragraph style |
 | `muted` | `bool` | `False` | Applies `text-muted-foreground` |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Notes
 

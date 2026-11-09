@@ -192,17 +192,17 @@ Accordion(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Accordion Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | `AccordionItem` components. |
-| `type` | `"single" | "multiple"` | `"single"` | `"single"` allows one item open; `"multiple"` allows many. |
+| `type` | `"single" \| "multiple"` | `"single"` | `"single"` allows one item open; `"multiple"` allows many. |
 | `collapsible` | `bool` | `True` | When `type="single"`, allows closing all items. |
-| `default_value` | `str | list[str] | None` | `None` | Initially open item(s) (uncontrolled). |
-| `value` | `str | list[str] | None` | `None` | Controlled open item(s). |
-| `on_value_change` | `Callback | None` | `None` | Fired when open items change. `ctx.event_data` is `{"value": ...}`. |
+| `default_value` | `str \| list[str] \| None` | `None` | Initially open item(s) (uncontrolled). |
+| `value` | `str \| list[str] \| None` | `None` | Controlled open item(s). |
+| `on_value_change` | `Callback \| None` | `None` | Fired when open items change. `ctx.event_data` is `{"value": ...}`. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## AccordionItem Props

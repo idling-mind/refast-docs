@@ -236,35 +236,35 @@ DropdownMenu(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Component Reference
 
 ### DropdownMenu
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool | None` | `None` | Controlled open state |
+| `open` | `bool \| None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state (uncontrolled) |
-| `on_open_change` | `Callback | None` | `None` | Called when open state changes |
+| `on_open_change` | `Callback \| None` | `None` | Called when open state changes |
 | `children` | `list` | *(required)* | Must contain `DropdownMenuTrigger` and `DropdownMenuContent` |
 
 ### DropdownMenuContent
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" | "right" | "bottom" | "left"` | `"bottom"` | Which side to open toward |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Which side to open toward |
 | `side_offset` | `int` | `4` | Pixel gap from the trigger |
-| `align` | `"start" | "center" | "end"` | `"start"` | Alignment relative to trigger |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | Alignment relative to trigger |
 
 ### DropdownMenuItem
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Item text |
-| `icon` | `str | None` | `None` | Lucide icon name |
-| `shortcut` | `str | None` | `None` | Keyboard shortcut hint (display only) |
+| `icon` | `str \| None` | `None` | Lucide icon name |
+| `shortcut` | `str \| None` | `None` | Keyboard shortcut hint (display only) |
 | `disabled` | `bool` | `False` | Greys out and prevents selection |
-| `on_select` | `Callback | None` | `None` | Called when item is selected |
+| `on_select` | `Callback \| None` | `None` | Called when item is selected |
 
 ### DropdownMenuLabel
 
@@ -280,7 +280,7 @@ REFERENCE = """
 | `label` | `str` | *(required)* | Item text |
 | `checked` | `bool` | `False` | Whether the checkbox is checked |
 | `disabled` | `bool` | `False` | Prevents interaction |
-| `on_checked_change` | `Callback | None` | `None` | Called with new `bool` value |
+| `on_checked_change` | `Callback \| None` | `None` | Called with new `bool` value |
 
 ### DropdownMenuRadioGroup + DropdownMenuRadioItem
 
@@ -299,7 +299,7 @@ DropdownMenuRadioGroup(
 | Prop (RadioGroup) | Type | Default | Description |
 |---|---|---|---|
 | `value` | `str` | `""` | Currently selected value |
-| `on_value_change` | `Callback | None` | `None` | Called with new selected value |
+| `on_value_change` | `Callback \| None` | `None` | Called with new selected value |
 
 | Prop (RadioItem) | Type | Default | Description |
 |---|---|---|---|
@@ -325,6 +325,6 @@ DropdownMenuSub(
 | Prop (SubTrigger) | Type | Default | Description |
 |---|---|---|---|
 | `label` | `str` | *(required)* | Trigger label |
-| `icon` | `str | None` | `None` | Lucide icon |
+| `icon` | `str \| None` | `None` | Lucide icon |
 | `inset` | `bool` | `False` | Align with icon-bearing items |
 """

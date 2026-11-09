@@ -106,16 +106,16 @@ Heading("Sub-section", level=3)
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Heading content |
-| `level` | `1 | 2 | 3 | 4 | 5 | 6` | `1` | HTML heading level (`h1`–`h6`) |
-| `id` | `str | None` | `None` | Unique element ID |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | HTML heading level (`h1`–`h6`) |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## All Levels
 

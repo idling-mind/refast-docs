@@ -162,14 +162,14 @@ Collapsible(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Collapsible Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool | None` | `None` | Controlled open state. Omit for uncontrolled. |
+| `open` | `bool \| None` | `None` | Controlled open state. Omit for uncontrolled. |
 | `default_open` | `bool` | `False` | Initial open state (uncontrolled only). |
-| `on_open_change` | `Callback | None` | `None` | Fired when the open state changes. |
+| `on_open_change` | `Callback \| None` | `None` | Fired when the open state changes. |
 | `disabled` | `bool` | `False` | Prevents toggling. |
 | `children` | `list` | `[]` | A `CollapsibleTrigger` and a `CollapsibleContent`. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |

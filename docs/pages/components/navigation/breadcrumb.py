@@ -169,7 +169,7 @@ from refast.components import (
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `Breadcrumb`
@@ -177,7 +177,7 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `ChildrenType` | `None` | `BreadcrumbList` child |
-| `separator` | `str | None` | `None` | Custom separator character |
+| `separator` | `str \| None` | `None` | Custom separator character |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### `BreadcrumbLink`
@@ -187,7 +187,7 @@ REFERENCE = """
 | `label` | `str` | *(required)* | Link text |
 | `href` | `str` | `"#"` | Navigation URL |
 | `current` | `bool` | `False` | Mark as current location |
-| `on_click` | `Callback | None` | `None` | Click callback (alternative to href) |
+| `on_click` | `Callback \| None` | `None` | Click callback (alternative to href) |
 
 ### `BreadcrumbPage`
 

@@ -213,14 +213,14 @@ Form(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Form Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Form content — typically `FormField` components and a submit `Button` |
-| `on_submit` | `Callback | None` | `None` | Called with `form_data: dict` when the form is submitted. Keys are `Input` `name` values |
-| `id` | `str | None` | auto | Component ID |
+| `on_submit` | `Callback \| None` | `None` | Called with `form_data: dict` when the form is submitted. Keys are `Input` `name` values |
+| `id` | `str \| None` | auto | Component ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 > **Note:** `method` and `enctype` are not configurable — all data is sent over the WebSocket.
@@ -230,11 +230,11 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | The input component(s) to wrap |
-| `label` | `str | None` | `None` | Field label text |
-| `hint` | `str | None` | `None` | Hint text displayed below the label |
-| `error` | `str | None` | `None` | Validation error displayed below the field |
+| `label` | `str \| None` | `None` | Field label text |
+| `hint` | `str \| None` | `None` | Hint text displayed below the label |
+| `error` | `str \| None` | `None` | Validation error displayed below the field |
 | `required` | `bool` | `False` | Shows required asterisk |
-| `id` | `str | None` | auto | Component ID |
+| `id` | `str \| None` | auto | Component ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Label Props
@@ -242,9 +242,9 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `text` | `str` | required | Label text content |
-| `html_for` | `str | None` | `None` | Associates label with a control's `id` (rendered as `htmlFor`) |
+| `html_for` | `str \| None` | `None` | Associates label with a control's `id` (rendered as `htmlFor`) |
 | `required` | `bool` | `False` | Shows required asterisk |
-| `id` | `str | None` | auto | Component ID |
+| `id` | `str \| None` | auto | Component ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## InputWrapper Props
@@ -255,10 +255,10 @@ description, required indicator, and error message — without the `Form` contex
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | The wrapped control(s) |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below the label |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below the label |
 | `required` | `bool` | `False` | Shows required asterisk |
-| `error` | `str | None` | `None` | Error message |
-| `id` | `str | None` | auto | Component ID |
+| `error` | `str \| None` | `None` | Error message |
+| `id` | `str \| None` | auto | Component ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

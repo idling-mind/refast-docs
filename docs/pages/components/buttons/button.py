@@ -174,20 +174,20 @@ Button("Processing…", loading=True)
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(positional)* | Button text |
-| `variant` | `"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"` | `"default"` | Visual style |
-| `size` | `"sm" | "md" | "lg" | `"md"` | Button dimensions |
-| `icon` | `str | None` | `None` | Lucide icon name (e.g. `"save"`, `"trash"`) |
-| `icon_position` | `"left" | "right"` | `"left"` | Icon placement relative to label |
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Button dimensions; `"icon"` renders a square icon-only button |
+| `icon` | `str \| None` | `None` | Lucide icon name (e.g. `"save"`, `"trash"`) |
+| `icon_position` | `"left" \| "right"` | `"left"` | Icon placement relative to label |
 | `disabled` | `bool` | `False` | Prevents interaction |
 | `loading` | `bool` | `False` | Shows spinner and disables the button |
-| `type` | `"button" | "submit" | "reset"` | `"button"` | HTML button type attribute |
-| `on_click` | `Callback | None` | `None` | Server callback invoked on click |
+| `type` | `"button" \| "submit" \| "reset"` | `"button"` | HTML button type attribute |
+| `on_click` | `Callback \| None` | `None` | Server callback invoked on click |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## All Variants

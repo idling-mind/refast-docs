@@ -257,31 +257,31 @@ from refast.components import Progress, Spinner, Skeleton
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Progress Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `int | None` | `0` | Current value (0–100). `None` = indeterminate |
+| `value` | `int \| None` | `0` | Current value (0–100). `None` = indeterminate |
 | `max` | `int` | `100` | Maximum value |
-| `label` | `str | None` | `None` | Accessible label |
+| `label` | `str \| None` | `None` | Accessible label |
 | `show_value` | `bool` | `False` | Show `value%` text inside bar |
-| `foreground_color` | `str | None` | `None` | Bar fill colour token |
-| `striped` | `"static" | "animated" | None` | `None` | Striped pattern |
+| `foreground_color` | `str \| None` | `None` | Bar fill colour token |
+| `striped` | `"static" \| "animated" \| None` | `None` | Striped pattern |
 
 ## Spinner Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `size` | `"sm" | "md" | "lg"` | `"md"` | Spinner size |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Spinner size |
 
 ## Skeleton Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `width` | `str | int | None` | `None` | CSS width (e.g. `"60%"`, `200`) |
-| `height` | `str | int | None` | `None` | CSS height |
-| `variant` | `"text" | "circular" | "rectangular"` | `"text"` | Shape |
+| `width` | `str \| int \| None` | `None` | CSS width (e.g. `"60%"`, `200`) |
+| `height` | `str \| int \| None` | `None` | CSS height |
+| `variant` | `"text" \| "circular" \| "rectangular"` | `"text"` | Shape |
 | `circle` | `bool` | `False` | Render as a circle (override) |
 
 ## Examples
