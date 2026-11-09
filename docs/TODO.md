@@ -92,7 +92,12 @@ Open items:
       ~400 imports look unused to the linter. Run `ruff check --select F401 --fix docs`
       on a machine with a working environment, re-run the test suite to confirm nothing
       was needed at runtime, then drop the ignore.
-- [ ] Add `[dependency-groups] dev = ["pytest", "httpx", "ruff"]` once `uv lock` can be
-      re-run; CI currently installs the tools ephemerally so the lockfile stays valid.
+- [ ] Run `uv lock` once to record the new `dev` dependency group (pytest, httpx, ruff) in
+      `uv.lock`; CI deliberately ignores the lockfile and resolves from the index, so this
+      only affects local `uv run` commands.
+- [ ] Decide whether `uv.lock` belongs in git. It currently resolves against an internal
+      feed, whose wheel URLs a public runner cannot reach — committing it as-is would break
+      `uv sync --locked` in CI. Keep it untracked, or commit one resolved against the
+      public index.
 - [ ] Consider running `REFAST_REPO=../refast pytest` in a scheduled job, which also
       verifies every "View source" link against the framework checkout.
