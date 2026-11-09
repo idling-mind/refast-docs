@@ -235,9 +235,9 @@ ui = RefastApp(title="Rate Limited Refast App")
 
 @ui.page("/")
 async def home(ctx: Context):
-    # During page functions, ctx._request is populated with the Starlette Request
-    if ctx._request:
-        allowed, info = await limiter.is_allowed(ctx._request)
+    # During page functions, ctx.request is populated with the Starlette Request
+    if ctx.request:
+        allowed, info = await limiter.is_allowed(ctx.request)
         if not allowed:
             raise HTTPException(
                 status_code=429, 
