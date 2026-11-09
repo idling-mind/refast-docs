@@ -355,7 +355,6 @@ def settings_panel_page(ctx: Context):
                                                     class_name="bg-muted/50 p-3",
                                                     children=[
                                                         Radio(
-                                                            name="theme",
                                                             value="light",
                                                             label="Light",
                                                         ),
@@ -365,7 +364,6 @@ def settings_panel_page(ctx: Context):
                                                     class_name="bg-muted/50 p-3",
                                                     children=[
                                                         Radio(
-                                                            name="theme",
                                                             value="dark",
                                                             label="Dark",
                                                         ),
@@ -375,7 +373,6 @@ def settings_panel_page(ctx: Context):
                                                     class_name="bg-muted/50 p-3",
                                                     children=[
                                                         Radio(
-                                                            name="theme",
                                                             value="system",
                                                             label="System Default",
                                                         ),
