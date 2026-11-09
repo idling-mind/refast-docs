@@ -108,6 +108,7 @@ from .pages.getting_started import (  # noqa: E402
     quick_tour,
     todo_app_live,
 )
+from docs.examples.routes import register_example_routes  # noqa: E402
 
 # ── App instance ─────────────────────────────────────────────────────────
 
@@ -669,39 +670,7 @@ register_page(ui, "/", home.render)
 # Register all navigation section pages dynamically
 register_nav_routes(ui, NAV_SECTIONS)
 
-
-
-
-# Advanced
-@ui.page("/docs/advanced/component-dev")
-def page_advanced_component_dev(ctx: Context):
-    return component_dev.render(ctx)
-
-
-@ui.page("/docs/advanced/extension-dev")
-def page_advanced_extension_dev(ctx: Context):
-    return extension_dev.render(ctx)
-
-
-@ui.page("/docs/advanced/security")
-def page_advanced_security(ctx: Context):
-    return security.render(ctx)
-
-
-@ui.page("/docs/advanced/sessions")
-def page_advanced_sessions(ctx: Context):
-    return sessions.render(ctx)
-
-
-@ui.page("/docs/concepts/styling")
-def page_concepts_styling(ctx: Context):
-    return styling.render(ctx)
-
-
-# ── Standalone Examples ──────────────────────────────────────────────────
-
-from docs.examples.routes import register_example_routes
-
+# Standalone example apps mounted under /examples/...
 register_example_routes(ui)
 
 
