@@ -30,9 +30,11 @@ docs/
 ## Adding a Page
 
 1. Create `pages/<section>/<name>.py` with `PAGE_TITLE`, `PAGE_ROUTE`, and `render(ctx)`
-2. Import it in `app.py`
-3. Add `@ui.page(route)` handler in `app.py`
-4. Add the page to `NAV_SECTIONS` in `app.py` for sidebar navigation
+2. Import it in `app.py` and add it to `NAV_SECTIONS` as `(label, route, icon, render)`
+   — `register_nav_routes()` registers the route, so no `@ui.page()` handler is needed
+3. Component pages under `pages/components/` need neither: give the module a
+   `PAGE_METADATA` dict and `components/registry.py` discovers it
+4. Run `uv run pytest` — it renders every page and checks links, props and tables
 
 ## Page Template
 

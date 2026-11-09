@@ -35,8 +35,29 @@ Open http://localhost:8000 in your browser.
 ## Adding a New Page
 
 1. Create `pages/<section>/<page_name>.py` with `PAGE_TITLE`, `PAGE_ROUTE`, and `render(ctx)`.
-2. In `app.py`, import the module and add a `@ui.page(route)` handler.
-3. Add the page to `NAV_SECTIONS` in `app.py` so it appears in the sidebar.
+2. Add the page to `NAV_SECTIONS` in `app.py` — import the module and list it as
+   `(label, route, icon, module.render)`. Routes are registered from `NAV_SECTIONS`
+   by `register_nav_routes()`; do **not** add a separate `@ui.page()` handler, or the
+   route gets registered twice and the second definition shadows the first.
+3. Component pages under `pages/components/` skip step 2 entirely: create the module
+   with a `PAGE_METADATA` dict (`title`, `route`, `icon`, `group`, `order`) and
+   `pages/components/registry.py` picks it up. A module without `PAGE_METADATA`
+   silently lands in the "Utility" group.
+4. For a component's Props table, use `props_table(Component)` from
+   `pages/components/props_table.py` instead of typing one — it reads the installed
+   signature and docstring, so it cannot go stale or emit a broken row.
+
+## Checking Your Work
+
+```bash
+uv run pytest                      # renders every page, checks links and tables
+uv run ruff check docs tests       # lint
+```
+
+The suite in `tests/` is the contract with refast: it renders every registered page,
+rejects props the components do not accept, fails on links to unregistered routes, and
+checks that every Markdown table has as many cells as its header. If you rename a route,
+update the pages that link to it or `test_docs_links.py` will fail.
 
 ## Available Components for Documentation
 
