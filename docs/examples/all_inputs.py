@@ -316,13 +316,13 @@ def render_showcase(ctx: Context):
                             Alert(
                                 variant="success",
                                 title="Form Submitted!",
-                                description="The server successfully intercepted the form submission.",
+                                message="The server successfully intercepted the form submission.",
                             )
                             if submitted_data is not None
                             else Alert(
                                 variant="info",
                                 title="Awaiting Submission",
-                                description="Fill in the fields on the left and click 'Submit All Form Data' to see the payload.",
+                                message="Fill in the fields on the left and click 'Submit All Form Data' to see the payload.",
                             ),
                             Text(
                                 "Kwargs payload from on_submit callback:",
