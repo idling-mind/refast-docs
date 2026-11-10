@@ -130,38 +130,84 @@ ui = RefastApp(
     preloaded_features=["markdown", "controls", "navigation", "overlay"],
 )
 
-# Enter in the palette should mean "look that up in the pages", not "open whichever
-# row cmdk happened to select first". cmdk auto-selects the top match as you type and
-# its Command wrapper exposes no way to turn that off, so the difference has to be
-# read from intent: if the last thing you did was arrow through rows, Enter selects
-# one; if it was type, Enter asks /search, which can rank and explain properly.
+# cmdk does two things the palette cannot live with, and both have to be fixed where
+# they happen -- in the browser, before React's own handlers run.
 #
-# The text goes to the page by URL rather than through ctx.save_prop, because a
-# mirrored value is one debounce behind and an Enter pressed immediately after typing
-# deserves what is actually on screen. location.assign loads /search as a document;
-# refast exposes no public JS navigation call to do it more cheaply.
+# It never sorts. A row's score decides only whether it is hidden; the rows you see
+# stay in DOM order, which for us is sidebar order, and the row cmdk selects is the
+# first *visible* one in that order. So a query whose best match sits deep in the nav
+# scrolled the list down to it and hid the results that mattered. `orderRows` puts the
+# rows in DOM order by where the query lands in each row's keyword blob: at position 0
+# the blob's first word is the page title, so the page *named* styling beats the nine
+# that merely mention it -- the tf-idf ordering in docs/search.py only pays for itself
+# once something reads the order, and now this does.
+#
+# Enter should mean "look that up in the pages", not "open whichever row cmdk
+# happened to select". There is no prop that turns the pre-selection off, so intent is
+# read from the keys: arrow first and Enter picks that row; type and Enter asks /search,
+# which can rank and explain properly. The typed text comes from the input itself, not
+# the save_prop mirror, which is one debounce behind and deserves to lose.
+#
+# location.assign loads /search as a document; refast exposes no public JS navigation
+# call to do it more cheaply.
 ui.add_js(
     """
 (() => {
   let arrowed = false;
-  document.addEventListener("keydown", (event) => {
+
+  const rank = (hay, query) => {
+    if (!query) return 0;
+    const at = hay.indexOf(query);
+    if (at === 0) return 100;
+    if (at > 0) return 60 - Math.min(at, 55);
+    let words = 0;
+    for (const word of query.split(/\\s+/)) if (word && hay.includes(word)) words++;
+    return words * 5;
+  };
+
+  const orderRows = (input) => {
+    const root = input.closest("[cmdk-root]") || document;
+    const query = input.value.trim().toLowerCase();
+    const rows = Array.from(root.querySelectorAll("[cmdk-item]")).filter((row) => row.parentElement);
+    rows
+      .map((row, at) => [
+        row,
+        rank((row.getAttribute("data-val") || row.textContent).toLowerCase(), query),
+        at,
+      ])
+      .sort((a, b) => b[1] - a[1] || a[2] - b[2])
+      .forEach(([row]) => row.parentElement.appendChild(row));
+    const list = root.querySelector("[cmdk-list]");
+    if (list) list.scrollTop = 0;
+  };
+
+  document.addEventListener("input", (event) => {
     const input = event.target;
-    if (!input || !input.hasAttribute || !input.hasAttribute("cmdk-input")) {
-      arrowed = false;
-      return;
-    }
-    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-      arrowed = true;
-    } else if (event.key === "Enter") {
-      if (arrowed) return;
-      event.preventDefault();
-      event.stopPropagation();
-      const query = input.value.trim();
-      window.location.assign(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
-    } else {
-      arrowed = false;
-    }
+    if (input && input.hasAttribute && input.hasAttribute("cmdk-input")) orderRows(input);
   }, true);
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      const input = event.target;
+      if (!input || !input.hasAttribute || !input.hasAttribute("cmdk-input")) {
+        arrowed = false;
+        return;
+      }
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        arrowed = true;
+      } else if (event.key === "Enter") {
+        if (arrowed) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const query = input.value.trim();
+        window.location.assign(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
+      } else {
+        arrowed = false;
+      }
+    },
+    true,
+  );
 })();
 """
 )
@@ -362,12 +408,16 @@ def _build_search_dialog(ctx: Context, current_path: str):
     Filtering happens in the browser. cmdk scores each item against the value it
     registers, and refast's Command wrapper forwards neither ``shouldFilter`` nor
     extra props, so the page text has to reach the client for body search to work
-    at all: each row carries its page's title, section and most distinctive terms,
-    ordered by tf-idf so that ``command-score``'s preference for early matches
-    lands the right page on top. Driving the ranking from the server instead --
-    refreshing per keystroke -- lost letters and then matched nothing, because a
-    controlled input echoes one keystroke behind while cmdk scores the live string
-    against that stale echo.
+    at all: each row carries its page's title, section and most distinctive terms.
+    What the score decides is only whether a row is shown; where rows appear is DOM
+    order, which is why the script in ``ui.add_js`` above re-orders them by the same
+    text before cmdk filters. Ordering the blob by tf-idf is what makes that read
+    correctly: the page named Styling leads with the word, the nine that mention it
+    do not. Driving the ranking from the server was tried first and failed twice: a
+    controlled input echoes one keystroke behind, so letters dropped; and with values
+    rewritten per keystroke, cmdk scored its live string against the stale echo,
+    scored 0, and hid everything. The palette input is deliberately uncontrolled and
+    only mirrors the text through ``ctx.save_prop``, which has no echo to fight with.
 
     One flat list, because sections are navigation and not ranking: while rows were
     grouped by section, any tie between groups fell back to DOM order, and Getting

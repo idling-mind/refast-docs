@@ -58,6 +58,7 @@ class _Doc:
     route: str
     title: str
     group: str
+    nav_label: str = ""
     headings: list[str] = field(default_factory=list)
     body: str = ""
     snippet: str = ""
@@ -99,7 +100,7 @@ def _doc_from_module(route: str, title: str, group: str, func: Callable[..., Any
     import sys
 
     module = sys.modules.get(func.__module__)
-    doc = _Doc(route=route, title=title or route, group=group)
+    doc = _Doc(route=route, title=title or route, group=group, nav_label=title or "")
     if module is None or not getattr(module, "__file__", None):
         return doc
 
@@ -304,7 +305,10 @@ def keywords(route: str, limit: int = 8) -> str:
     doc = next((d for d in _pages if d.route == route), None)
     if doc is None:
         return ""
-    return " ".join(dict.fromkeys([doc.title, doc.group, *doc.terms[:limit]]))
+    # The row shows the nav label, so the label leads the blob: the palette's ranker
+    # reads position 0 as "this page is called that". PAGE_TITLE follows, because it
+    # is the heading the page itself opens with and the two are not always identical.
+    return " ".join(dict.fromkeys([doc.nav_label, doc.title, doc.group, *doc.terms[:limit]]))
 
 
 def routes() -> list[str]:

@@ -210,7 +210,7 @@ def test_the_palette_leads_to_the_results_page() -> None:
 
 
 def test_enter_in_the_palette_searches_unless_a_row_was_arrowed(client: TestClient) -> None:
-    """cmdk pre-selects the top match as you type, and exposes nothing to stop it.
+    """cmdk pre-selects a row as you type, and exposes nothing to stop it.
 
     So the intent has to be read from the keys themselves: typing then Enter asks
     /search, which can rank and explain; arrowing to a row and pressing Enter keeps
@@ -218,11 +218,41 @@ def test_enter_in_the_palette_searches_unless_a_row_was_arrowed(client: TestClie
     only place this can be decided -- the server never sees which key came first.
     """
     shell = client.get("/").text
-    script = shell[shell.index("cmdk-input"):][:600]
-    assert "cmdk-input" in shell and "location.assign" in script
+    script = shell[shell.index("cmdk-input") - 400 : shell.index("cmdk-input") + 2400]
+    assert "location.assign" in script
     assert "/search?q=" in script, "Enter should carry the typed text to the results page"
     assert "ArrowDown" in script and "ArrowUp" in script, "arrow selection must survive"
     assert "preventDefault" in script, "cmdk would otherwise select the pre-highlighted row"
+
+
+def test_the_palette_orders_rows_before_cmdk_filters_them(client: TestClient) -> None:
+    """cmdk scores rows to decide whether to show them, never where to put them.
+
+    Selection then falls on the first visible row in DOM order, so a query whose
+    best page sits late in the nav scrolled the list away from its own results.
+    The script has to run before React's onChange -- capture phase on input -- so
+    that the order cmdk reads is already the ranked one.
+    """
+    shell = client.get("/").text
+    assert 'addEventListener("input"' in shell, "nothing orders the rows"
+    start = shell.index("const orderRows")
+    order = shell[start : start + 700]
+    assert "appendChild" in order, "reordering must move the DOM nodes, not just style them"
+    assert "scrollTop = 0" in shell, "the list must not stay scrolled to the old selection"
+    assert "data-val" in shell, "ranking must read the same text cmdk matched against"
+
+
+def test_every_keyword_blob_leads_with_its_page_title() -> None:
+    """rank() reads position 0 as "this page is named for the query".
+
+    docs/search.py builds the blob title-first on purpose; if a row ever ships
+    with terms ahead of the title, the page stops winning its own name.
+    """
+    import docs.app as app
+    for item in app._SEARCH_ITEMS:
+        blob = search.keywords(item["route"])
+        title = item["label"].split(" (")[0].lower()
+        assert blob.lower().startswith(title), (item["route"], blob[:60])
 
 
 def test_a_closed_page_does_not_ship_the_search_corpus() -> None:
