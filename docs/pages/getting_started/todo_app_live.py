@@ -99,6 +99,67 @@ def render(ctx: Context):
                 """
             ),
             rc.Flex(class_name="gap-4 my-8", children=[app_content]),
+            rc.Markdown(content=CONTENT),
         ],
     )
     return docs_layout(ctx, content, PAGE_ROUTE)
+
+
+CONTENT = r"""
+## What the demo is doing
+
+The list above is the whole app — 60-odd lines in
+[`docs/pages/getting_started/todo_app_live.py`](https://github.com/idling-mind/refast-docs/blob/main/docs/pages/getting_started/todo_app_live.py),
+including this explanation. Three pieces carry it.
+
+### The input writes into state without a round trip
+
+```python
+rc.Input(
+    name="new_todo",
+    id="new-todo-input",
+    on_change=ctx.save_prop("new_todo", debounce=300),
+)
+```
+
+`ctx.save_prop` tells the browser to keep the field's value in a variable on the
+server, so typing does not re-render anything. The `debounce` waits for a pause
+in typing before the value is sent.
+
+### Adding reads the saved value and appends to a list
+
+```python
+async def add_todo(ctx: Context, new_todo: str):
+    todos = ctx.state.get("todos", [])
+    todos.append({"id": str(uuid4()), "text": new_todo, "completed": False})
+    ctx.state["todos"] = todos
+    await ctx.update_props("new-todo-input", {"value": ""})
+    await ctx.replace("todo-list", render_todo_list(ctx))
+    await ctx.show_toast(f'Added todo: "{new_todo}"', variant="success")
+```
+
+`props=["new_todo"]` on the button's callback is what delivers `new_todo` as an
+argument — the framework sends the saved value with the event rather than
+keeping it in the component. Clearing the field is a prop update on its id;
+redrawing the list is `ctx.replace` on the list's id. The uuid exists so
+`mark_todo` can find the row it toggled.
+
+### Ticking a box re-renders the list, not the page
+
+```python
+rc.Checkbox(
+    checked=todo["completed"],
+    on_change=ctx.callback(mark_todo, todo_id=todo["id"]),
+)
+```
+
+Each checkbox closes over its todo's id, so one handler serves the whole list.
+
+## Where to read further
+
+- [Quick Tour](/docs/quick-tour) — this app built step by step
+- [Callbacks & Events](/docs/concepts/callbacks) — `props`, `bound_args`, debounce
+- [State & Store](/docs/concepts/state) — what `ctx.state` covers and when to use
+  the browser stores instead
+- [Updates](/docs/concepts/updates) — `replace`, `append`, `update_props`
+"""
