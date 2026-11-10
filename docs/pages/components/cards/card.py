@@ -5,7 +5,7 @@ Interactive reference page for the Card component family.
 
 from refast import Context
 from docs.pages.components.common import render_doc_page
-from docs.pages.components.playground import playground_card
+from docs.pages.components.playground import make_state_setter, playground_card
 from refast.components import (
     Button,
     Card,
@@ -24,9 +24,6 @@ from refast.components import (
     Separator,
     Text,
 )
-
-from docs.pages.components.common import render_doc_page
-from docs.pages.components.playground import make_state_setter, playground_card
 
 PAGE_METADATA = {
     "title": "Card",

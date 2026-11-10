@@ -83,8 +83,8 @@ def _playground(ctx: Context):
                     Text("color", class_name="text-sm font-medium"),
                     Select(
                         options=[
-                            {"value": v, "label": l}
-                            for v, l in [
+                            {"value": v, "label": label}
+                            for v, label in [
                                 ("", "default"),
                                 ("text-muted-foreground", "muted"),
                                 ("text-primary", "primary"),
