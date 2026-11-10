@@ -219,19 +219,7 @@ async def open_search(ctx: Context, current_path: str = "/"):
 async def close_search(ctx: Context, current_path: str = "/"):
     """Close the search dialog."""
     ctx.state["search_open"] = False
-    ctx.state["search_query"] = ""
     await ctx.load(current_path)
-
-
-async def search_query(ctx: Context, value: str = ""):
-    """Re-rank the palette as the reader types, against page bodies not just titles.
-
-    The parameter is named ``value`` because that is the key refast puts a text
-    event's payload under -- callbacks receive event data as keyword arguments
-    filtered to the names they declare, so anything else silently stays default.
-    """
-    ctx.state["search_query"] = value
-    await ctx.refresh(target_id="search-results")
 
 
 async def search_navigate(ctx: Context, path: str = "/"):
@@ -271,7 +259,6 @@ search_index.set_pages(
     [(item["label"], item["route"], item["group"], item["render"]) for item in _SEARCH_ITEMS]
 )
 
-_ICONS_BY_ROUTE = {item["route"]: item["icon"] for item in _SEARCH_ITEMS}
 
 # Where the site's own source lives; used for the footer's "Edit this page".
 SITE_SOURCE_REPO = "https://github.com/idling-mind/refast-docs"
@@ -296,54 +283,46 @@ def _source_url(route: str) -> str | None:
 
 
 def _build_search_dialog(ctx: Context, current_path: str):
-    """Build the CMD+K search dialog overlay."""
-    is_open = ctx.state.get("search_open", False)
-    query = str(ctx.state.get("search_query", "") or "")
+    """Build the CMD+K search dialog overlay.
 
-    if query.strip():
-        # Ranking happens on the server, over the text of every page. cmdk then
-        # filters its own items client-side, which would throw away results
-        # whose titles do not contain the query -- so the query goes into each
-        # item's value, the documented way of driving cmdk from a backend.
-        command_groups = [
+    Filtering happens in the browser. cmdk scores each item against the value it
+    registers, and refast's Command wrapper forwards neither ``shouldFilter`` nor
+    extra props, so the page text has to reach the client for body search to
+    work at all: each item carries its page's keywords. Driving the ranking from
+    the server instead -- refreshing the list per keystroke -- lost letters and
+    then matched nothing, because a controlled input echoes one keystroke behind
+    while cmdk scores the live string against that stale echo.
+
+    The list is built only while the dialog is open, which keeps ~90 keyword
+    blobs out of every ordinary page payload.
+    """
+    if not ctx.state.get("search_open", False):
+        return Dialog(open=False, children=[])
+
+    # Group items by section label
+    groups: dict[str, list[dict]] = {}
+    for item in _SEARCH_ITEMS:
+        groups.setdefault(item["group"], []).append(item)
+
+    command_groups = []
+    for group_label, group_items in groups.items():
+        command_groups.append(
             CommandGroup(
-                heading=f"Pages matching \u201c{query}\u201d",
+                heading=group_label,
                 children=[
                     CommandItem(
-                        label=hit.title,
-                        value=hit.value_for(query),
-                        icon=_ICONS_BY_ROUTE.get(hit.route, "file-text"),
-                        on_select=ctx.callback(search_navigate, path=hit.route),
+                        label=item["label"],
+                        value=f"{item['label']} {search_index.keywords(item['route'])}",
+                        icon=item["icon"],
+                        on_select=ctx.callback(search_navigate, path=item["route"]),
                     )
-                    for hit in search_index.search(query)
+                    for item in group_items
                 ],
             )
-        ]
-    else:
-        # Group items by section label
-        groups: dict[str, list[dict]] = {}
-        for item in _SEARCH_ITEMS:
-            groups.setdefault(item["group"], []).append(item)
-
-        command_groups = []
-        for group_label, group_items in groups.items():
-            command_groups.append(
-                CommandGroup(
-                    heading=group_label,
-                    children=[
-                        CommandItem(
-                            label=item["label"],
-                            value=item["label"],
-                            icon=item["icon"],
-                            on_select=ctx.callback(search_navigate, path=item["route"]),
-                        )
-                        for item in group_items
-                    ],
-                )
-            )
+        )
 
     return Dialog(
-        open=is_open,
+        open=True,
         on_open_change=ctx.callback(close_search, current_path=current_path),
         children=[
             DialogContent(
@@ -352,13 +331,8 @@ def _build_search_dialog(ctx: Context, current_path: str):
                     Command(
                         class_name="rounded-lg border-0 shadow-none",
                         children=[
-                            CommandInput(
-                                placeholder="Search titles and page text\u2026",
-                                value=query,
-                                on_value_change=ctx.callback(search_query),
-                            ),
+                            CommandInput(placeholder="Search titles and page text\u2026"),
                             CommandList(
-                                id="search-results",
                                 children=[
                                     CommandEmpty(message="No pages found."),
                                     *command_groups,

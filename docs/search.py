@@ -69,14 +69,6 @@ class Hit:
     snippet: str
     score: float
 
-    def value_for(self, query: str) -> str:
-        """The ``CommandItem`` value cmdk should score this hit against.
-
-        ``Command`` exposes no ``shouldFilter``, so cmdk keeps filtering client
-        side; embedding the query in the value is the documented way to keep
-        server-chosen results from being filtered out of existence.
-        """
-        return f"{query} {self.title} {self.group}"
 
 _pages: list[_Doc] = []
 _index: dict[str, dict[int, float]] | None = None
@@ -224,6 +216,46 @@ def _snippet(doc: _Doc, terms: list[str], width: int = 150) -> str:
 def indexed_pages() -> int:
     """How many pages the index covers (0 before the first search)."""
     return len(_pages)
+
+
+_keyword_cache: dict[str, str] = {}
+
+
+def keywords(route: str, limit: int = 20, cap: int = 420) -> str:
+    """The text cmdk should score ``route`` against, for the ⌘K palette.
+
+    cmdk filters client-side over each item's registered value and refast's
+    Command wrapper forwards neither ``shouldFilter`` nor extra props, so the
+    only way to make page bodies searchable in the palette is to hand the words
+    to the browser once and let it score locally. Sending the query to the
+    server and rewriting the values was tried first and failed twice over: a
+    controlled input echoes a keystroke behind, and cmdk then scores the stale
+    string against the live one, which matches nothing.
+
+    ``limit`` caps the blob; 28 terms is roughly 150 characters per page.
+    """
+    if route in _keyword_cache:
+        return _keyword_cache[route]
+
+    if _index is None:
+        _build()
+    doc = next((d for d in _pages if d.route == route), None)
+    if doc is None:
+        return ""
+
+    counts: dict[str, float] = {}
+    for term in _tokenize(doc.title):
+        counts[term] = counts.get(term, 0.0) + TITLE_WEIGHT
+    for heading in doc.headings:
+        for term in _tokenize(heading):
+            counts[term] = counts.get(term, 0.0) + HEADING_WEIGHT
+    for term in _tokenize(doc.body):
+        counts[term] = counts.get(term, 0.0) + BODY_WEIGHT
+
+    top = sorted(counts, key=lambda t: (-counts[t], t))[:limit]
+    blob = " ".join(dict.fromkeys([doc.title, *doc.headings[:8], *top]))[:cap]
+    _keyword_cache[route] = blob
+    return blob
 
 
 def routes() -> list[str]:

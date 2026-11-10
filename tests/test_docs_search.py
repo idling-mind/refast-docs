@@ -14,7 +14,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from docs import search
-from docs.app import NAV_SECTIONS, app, ui
+from docs.app import NAV_SECTIONS, app
 
 
 @pytest.fixture
@@ -89,30 +89,18 @@ def test_snippet_is_prose_not_a_code_sample() -> None:
         assert "```" not in snippet
 
 
-def test_palette_lists_results_for_the_current_query() -> None:
-    """The dialog has to render the server's ranking, not re-filter it away."""
+def _palette(open_: bool = True) -> list[dict]:
+    """The rendered nodes of the search dialog, the way a page would emit them."""
     from refast import Context
 
+    import docs.app as app
+
     ctx = Context()
-    ctx.state["search_query"] = "debounce"
-    page = ui.pages["/docs/components/textarea"](ctx)
-    nodes = list(_walk(page.render() if hasattr(page, "render") else page))
-
-    headings = [n["props"].get("heading") for n in nodes if n.get("type") == "CommandGroup"]
-    assert any(str(h).startswith("Pages matching") for h in headings), headings
-
-    items = [n["props"] for n in nodes if n.get("type") == "CommandItem"]
-    assert items, "query produced an empty palette"
-    assert all("debounce" in str(props.get("value", "")).lower() for props in items), (
-        "cmdk scores each item's value against the query client-side; a value "
-        "without the query filters the server's own results out"
-    )
-
-    inputs = [n["props"] for n in nodes if n.get("type") == "CommandInput"]
-    assert inputs and inputs[0].get("onValueChange"), "the input is not wired to the server"
+    ctx.state["search_open"] = open_
+    return _walk(app._build_search_dialog(ctx, "/docs/components/textarea").render())
 
 
-def _walk(node, seen=None):
+def _walk(node, seen=None) -> list[dict]:
     seen = [] if seen is None else seen
     if isinstance(node, dict):
         seen.append(node)
@@ -124,71 +112,64 @@ def _walk(node, seen=None):
     return seen
 
 
-def _drain(ws, want: str, limit: int = 200) -> dict:
-    """Read WebSocket messages until one of ``want`` type arrives."""
-    for _ in range(limit):
-        message = ws.receive_json()
-        if message.get("type") == "resync_store":
-            ws.send_json({"type": "store_sync", "data": {"local": {}, "session": {}}})
-            continue
-        if message.get("type") == want:
-            return message
-    pytest.fail(f"no {want!r} message among {limit} replies")
+def test_the_palette_ships_page_text_for_cmdk_to_score() -> None:
+    """Body words have to reach the browser, because cmdk filters locally.
 
-
-def test_the_typed_value_arrives_under_the_key_refast_sends() -> None:
-    """Refast fills callback parameters by name from the event payload.
-
-    A text event's payload key is ``value``, so a parameter named ``query`` keeps
-    its default forever and the palette looks inert -- which is exactly how this
-    shipped broken once. Cheaper and steadier than the socket test below, and it
-    fails instantly rather than by timeout.
+    refast's Command wrapper forwards neither ``shouldFilter`` nor extra props, so
+    a server cannot opt out of cmdk's scoring. The terms come from the index
+    rather than being hardcoded: whatever ``search()`` found in a page body has to
+    be in that page's item value, or the palette cannot find it either.
     """
-    import inspect
+    values = {
+        str(n["props"].get("value", "")).lower()
+        for n in _palette()
+        if n.get("type") == "CommandItem"
+    }
+    assert values, "the open palette shipped no items"
 
-    from docs.app import search_query
+    for query in ("save_prop", "debounce"):
+        hits = search.search(query, limit=8)
+        assert hits, f"the index itself knows nothing about {query!r}"
+        assert any(query in search.keywords(h.route).lower() for h in hits), (
+            f"{query!r} is ranked by the index but reaches no item value, so cmdk cannot match it"
+        )
+        assert any(query in v for v in values), f"{query!r} is not searchable in the palette"
 
-    assert "value" in inspect.signature(search_query).parameters, (
-        "the palette's input handler must name its parameter `value`, the key "
-        "refast puts a text event's payload under"
-    )
 
+def test_the_palette_input_is_uncontrolled() -> None:
+    """A controlled input loses keystrokes; the palette must not echo them.
 
-def test_typing_in_the_palette_ranks_page_text_end_to_end(client: TestClient) -> None:
-    """The whole loop: keystroke -> callback -> state -> refreshed result list.
-
-    Everything above this test can pass while the palette is dead, because it
-    hands ``search_query`` a state value the browser never sends. This test is
-    the client: it speaks the WebSocket protocol, so the whole path from a
-    keystroke to a refreshed result list is checked against the wire.
+    The first version sent every keystroke to the server and echoed it back as
+    ``value=``. Typing arrived one letter at a time, and cmdk then scored its
+    live string against item values that were one keystroke stale -- so nothing
+    matched. Local filtering has no such window.
     """
-    with client.websocket_connect("/ws") as ws:
-        ws.send_json({"type": "store_init", "path": "/docs/components/textarea", "data": {}})
-        tree = _drain(ws, "page_render")["component"]
+    inputs = [n["props"] for n in _palette() if n.get("type") == "CommandInput"]
+    assert len(inputs) == 1
+    assert inputs[0].get("value") is None, "the palette input is controlled; keystrokes will drop"
+    assert not inputs[0].get("onValueChange"), "typing round-trips to the server again"
 
-        input_node = next(n for n in _walk(tree) if n.get("type") == "CommandInput")
-        callback = input_node["props"]["onValueChange"]
-        assert callback, "the palette input has no server callback wired"
 
-        ws.send_json(
-            {
-                "type": "callback",
-                "callback_id": callback["callbackId"],
-                "data": callback.get("boundArgs", {}),
-                "event_data": {"value": "save_prop"},
-            }
-        )
+def test_a_closed_page_does_not_ship_the_search_corpus() -> None:
+    """90 keyword blobs on every page load is payload nobody asked for."""
+    import json
 
-        update = _drain(ws, "update")
-        assert update["targetId"] == "search-results", update
-        nodes = _walk(update["component"])
+    closed = _palette(open_=False)
+    assert not [n for n in closed if n.get("type") == "CommandItem"]
+    assert len(json.dumps(closed)) < 1_500, "the closed palette still carries the corpus"
 
-        headings = [n["props"].get("heading") for n in nodes if n.get("type") == "CommandGroup"]
-        assert headings and headings[0].startswith("Pages matching"), headings
+    items = [n for n in _palette(open_=True) if n.get("type") == "CommandItem"]
+    assert len(items) == len(NAV_ROUTES), "every page in the navigation should be reachable"
 
-        items = [n["props"] for n in nodes if n.get("type") == "CommandItem"]
-        assert items, "typing produced no results"
-        assert all("save_prop" in str(props.get("value", "")) for props in items), (
-            "results must carry the query in their value or cmdk filters them out"
-        )
-        assert len(items) <= 12
+
+def test_keyword_blobs_stay_small_enough_to_send() -> None:
+    """The corpus crosses the socket the moment ⌘K is pressed, so it costs latency."""
+    sizes = [len(search.keywords(route)) for route in search.routes()]
+    assert max(sizes) <= 420, f"largest blob is {max(sizes)} characters"
+    assert sum(sizes) < 30_000, f"the palette corpus weighs {sum(sizes)} characters"
+
+
+def test_keywords_name_the_page_they_came_from() -> None:
+    """A blob that lost its own title would rank badly in cmdk's scoring."""
+    blob = search.keywords("/docs/advanced/sessions").lower()
+    assert "session" in blob and "cookie" in blob, blob
