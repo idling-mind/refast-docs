@@ -67,14 +67,31 @@ thorough technical references adapted from the existing `.md` docs in the `docs/
 **Read:** All files in `src/refast/session/`
 
 **Cover:**
-- **Session class**: Dict-like interface, get/set/delete/bracket syntax
-- **SessionData**: id, data, created_at, expires_at, modified_at
-- **MemoryStore**: In-memory dict (constructor, thread safety, limitations)
-- **RedisStore**: Redis-backed (constructor, redis_url, TTL, serialization)
-- **SessionMiddleware**: Cookie-based management (constructor params, cookie settings)
+- **Session class**: Dict-like interface, `get`/`set`/`delete`, bracket syntax, `clear`,
+  `destroy`, `set_expiry(seconds)`, `save`, `is_modified`, `id`
+- **SessionData**: `id`, `data`, `created_at`, `updated_at`, `expires_at`
+- **MemorySessionStore**: In-memory dict (`default_ttl`, `cleanup_interval`); per-process,
+  so it does not work across workers
+- **RedisSessionStore**: Redis-backed (`redis_url` or an existing `client`, `prefix`,
+  `default_ttl`)
+- **SessionMiddleware**: `store`, `cookie_name`, `cookie_max_age`, `cookie_path`,
+  `cookie_domain`, `cookie_secure`, `cookie_httponly`, `cookie_samesite`, `secret_key`
 - **get_session dependency**: FastAPI dependency injection
 - **State vs Session vs Store comparison table** (lifetime, persistence, sharing)
-- **Production recommendations**: Redis store, secure cookies, TTL settings
+- **Production recommendations**: Redis store, `cookie_secure=True`, TTL settings
+
+**Traps that have already been documented wrongly once — check before writing:**
+
+- The store classes are `MemorySessionStore` / `RedisSessionStore`; `MemoryStore` and
+  `RedisStore` do not exist, and they are exported from `refast.session`.
+- The middleware parameter is `cookie_max_age`, not `max_age`.
+- `SessionMiddleware` subclasses `BaseHTTPMiddleware`, so WebSocket connections never
+  reach it. `ctx.session` is built by `Context` with no store, which makes it
+  per-connection unless the middleware attached one to `request.state.session`. Do not
+  describe `ctx.session` as surviving a reload.
+- `secret_key` is stored but unused — its docstring says signing is future work. The
+  cookie carries an opaque id, not signed data.
+- `ctx.store.session` is the browser's `sessionStorage`, a different mechanism entirely.
 
 ---
 
