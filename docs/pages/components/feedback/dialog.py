@@ -17,11 +17,7 @@ from refast.components import (
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    Heading,
     Input,
-    Markdown,
-    Row,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page
@@ -278,53 +274,53 @@ from refast.components import (
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `Dialog`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool | None` | `None` | Controlled open state |
+| `open` | `bool \| None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
-| `on_open_change` | `Callback | None` | `None` | Called when open state changes |
+| `on_open_change` | `Callback \| None` | `None` | Called when open state changes |
 | `backdrop` | `bool` | `True` | Whether to render the semi-transparent overlay backdrop |
-| `modal` | `bool | None` | `None` | Enables modal interaction mode (traps focus, disables body scroll) |
-| `title` | `str | None` | `None` | Shorthand title (skips `DialogHeader`) |
-| `description` | `str | None` | `None` | Shorthand description |
+| `modal` | `bool \| None` | `None` | Enables modal interaction mode (traps focus, disables body scroll) |
+| `title` | `str \| None` | `None` | Shorthand title (skips `DialogHeader`) |
+| `description` | `str \| None` | `None` | Shorthand description |
 | `confirm_label` | `str` | `"Continue"` | Label for the confirm button |
 | `cancel_label` | `str` | `"Cancel"` | Label for the cancel button |
-| `on_confirm` | `Callback | None` | `None` | Confirm callback |
-| `on_cancel` | `Callback | None` | `None` | Cancel callback |
-| `variant` | `"default" | "destructive"` | `"default"` | Visual style |
-| `trigger` | `Component | None` | `None` | Shorthand trigger component |
-| `width` | `str | None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
-| `height` | `str | None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
-| `max_width` | `str | None` | `None` | Custom max-width limit (e.g., `"1000px"`) |
-| `max_height` | `str | None` | `None` | Custom max-height limit |
+| `on_confirm` | `Callback \| None` | `None` | Confirm callback |
+| `on_cancel` | `Callback \| None` | `None` | Cancel callback |
+| `variant` | `"default" \| "destructive"` | `"default"` | Visual style |
+| `trigger` | `Component \| None` | `None` | Shorthand trigger component |
+| `width` | `str \| None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
+| `height` | `str \| None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
+| `max_width` | `str \| None` | `None` | Custom max-width limit (e.g., `"1000px"`) |
+| `max_height` | `str \| None` | `None` | Custom max-height limit |
 
 ### `DialogContent`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `width` | `str | None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
-| `height` | `str | None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
-| `max_width` | `str | None` | `None` | Custom max-width limit (e.g., `"1000px"`) |
-| `max_height` | `str | None` | `None` | Custom max-height limit |
+| `width` | `str \| None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
+| `height` | `str \| None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
+| `max_width` | `str \| None` | `None` | Custom max-width limit (e.g., `"1000px"`) |
+| `max_height` | `str \| None` | `None` | Custom max-height limit |
 
 ### `DialogAction`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Button text |
-| `on_click` | `Callback | None` | `None` | Click callback |
+| `on_click` | `Callback \| None` | `None` | Click callback |
 
 ### `DialogCancel`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | `"Cancel"` | Button text |
-| `on_click` | `Callback | None` | `None` | Click callback |
+| `on_click` | `Callback \| None` | `None` | Click callback |
 
 ## Shorthand API
 

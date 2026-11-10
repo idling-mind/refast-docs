@@ -171,8 +171,8 @@ ThemeSwitcher(on_change=ctx.callback(on_theme_change))
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `default_theme` | `"light" | "dark" | "system"` | `"system"` | Initial mode if no stored preference |
-| `mode` | `"toggle" | "dropdown"` | `"toggle"` | Display as icon toggle or dropdown menu |
+| `default_theme` | `"light" \| "dark" \| "system"` | `"system"` | Initial mode if no stored preference |
+| `mode` | `"toggle" \| "dropdown"` | `"toggle"` | Display as icon toggle or dropdown menu |
 | `show_system_option` | `bool` | `True` | Include "System" option in dropdown mode |
 | `storage_key` | `str` | `"refast-theme"` | `localStorage` key for persistence |
 | `on_change` | callback | `None` | Server callback fired when user switches mode |
@@ -354,5 +354,5 @@ light/dark mode or when you call `ctx.set_theme()` at runtime:
 ## Next Steps
 
 - [Toast Notifications](/docs/concepts/toasts) — Visual feedback for users
-- [Styling](/docs/advanced/styling) — Full styling reference
+- [Styling](/docs/concepts/styling) — Full styling reference
 """

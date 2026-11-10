@@ -4,17 +4,10 @@ from refast import Context
 from refast.components import (
     Alert,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page
@@ -156,16 +149,16 @@ Alert(title="Success!", message="Your changes have been saved.", variant="succes
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `str | None` | `None` | Bold heading of the alert |
-| `message` | `str | None` | `None` | Body text |
-| `variant` | `"default" | "success" | "warning" | "destructive" | "info"` | `"default"` | Color and icon |
+| `title` | `str \| None` | `None` | Bold heading of the alert |
+| `message` | `str \| None` | `None` | Body text |
+| `variant` | `"default" \| "success" \| "warning" \| "destructive" \| "info"` | `"default"` | Color and icon |
 | `dismissible` | `bool` | `False` | Show a close button |
-| `on_dismiss` | `Callback | None` | `None` | Called when the close button is clicked |
+| `on_dismiss` | `Callback \| None` | `None` | Called when the close button is clicked |
 | `children` | `ChildrenType` | `None` | Custom content inside the alert |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 

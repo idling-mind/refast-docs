@@ -6,13 +6,8 @@ from docs.pages.components.playground import playground_card
 from refast.components import (
     BlockQuote,
     Column,
-    Container,
-    Heading,
     Input,
-    Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -164,19 +159,19 @@ BlockQuote(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `str | Component | list | None` | `None` | The quote body — accepts a string, a single component, or a list |
-| `cite` | `str | None` | `None` | Attribution text shown below the quote (e.g. author name) |
+| `children` | `str \| Component \| list \| None` | `None` | The quote body — accepts a string, a single component, or a list |
+| `cite` | `str \| None` | `None` | Attribution text shown below the quote (e.g. author name) |
 | `color` | `str` | `"default"` | Named variant **or** any CSS color (see below) |
-| `icon` | `str | None` | `None` | Lucide icon name displayed above the quote body |
+| `icon` | `str \| None` | `None` | Lucide icon name displayed above the quote body |
 | `icon_size` | `int` | `20` | Icon size in pixels |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Color Variants
 

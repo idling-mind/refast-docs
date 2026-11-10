@@ -3,16 +3,9 @@
 from refast import Context
 from refast.components import (
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Sheet,
     SheetContent,
     SheetDescription,
@@ -182,31 +175,31 @@ from refast.components import (
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `Sheet`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `bool | None` | `None` | Controlled open state |
+| `open` | `bool \| None` | `None` | Controlled open state |
 | `default_open` | `bool` | `False` | Initial open state |
-| `on_open_change` | `Callback | None` | `None` | Called when open state changes |
-| `width` | `str | None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
-| `height` | `str | None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
-| `max_width` | `str | None` | `None` | Custom max-width limit |
-| `max_height` | `str | None` | `None` | Custom max-height limit |
+| `on_open_change` | `Callback \| None` | `None` | Called when open state changes |
+| `width` | `str \| None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
+| `height` | `str \| None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
+| `max_width` | `str \| None` | `None` | Custom max-width limit |
+| `max_height` | `str \| None` | `None` | Custom max-height limit |
 
 ### `SheetContent`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" | "right" | "bottom" | "left"` | `"right"` | Slide-in edge |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Slide-in edge |
 | `children` | `ChildrenType` | `None` | Panel content |
-| `width` | `str | None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
-| `height` | `str | None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
-| `max_width` | `str | None` | `None` | Custom max-width limit |
-| `max_height` | `str | None` | `None` | Custom max-height limit |
+| `width` | `str \| None` | `None` | Custom width (e.g., `"500px"`, `"90vw"`) |
+| `height` | `str \| None` | `None` | Custom height (e.g., `"400px"`, `"80vh"`) |
+| `max_width` | `str \| None` | `None` | Custom max-width limit |
+| `max_height` | `str \| None` | `None` | Custom max-height limit |
 
 ### `SheetTitle`
 

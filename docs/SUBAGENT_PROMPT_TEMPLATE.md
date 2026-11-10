@@ -98,8 +98,8 @@ CONTENT = r"""
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | — | Button text |
-| `variant` | `"default" | "outline"` | `"default"` | Visual style |
-| `on_click` | `Callback | None` | `None` | Click handler |
+| `variant` | `"default" \| "outline"` | `"default"` | Visual style |
+| `on_click` | `Callback \| None` | `None` | Click handler |
 ```
 
 ### Live Demos (Component Reference Pages)
@@ -138,7 +138,7 @@ def render(ctx):
 ### Callouts
 Use Alert components for important notes:
 ```python
-Alert(title="Note", description="State is only available in WebSocket context.")
+Alert(title="Note", message="State is only available in WebSocket context.")
 ```
 
 Or use blockquotes in Markdown:
@@ -249,18 +249,18 @@ For the **Buttons & Actions** component reference page:
 | Concepts | `theming.py` | `/docs/concepts/theming` | `src/refast/theme/`, `examples/theme_showcase/app.py` |
 | Concepts | `toasts.py` | `/docs/concepts/toasts` | `src/refast/context.py`, `examples/toast_showcase/app.py` |
 | Concepts | `js_interop.py` | `/docs/concepts/js-interop` | `src/refast/context.py`, `examples/js_callbacks/app.py` |
-| Components | `layout.py` | `/docs/components/layout` | `src/refast/components/base.py`, `src/refast/components/shadcn/layout.py` |
-| Components | `typography.py` | `/docs/components/typography` | `src/refast/components/shadcn/typography.py` |
-| Components | `buttons.py` | `/docs/components/buttons` | `src/refast/components/shadcn/button.py`, `src/refast/components/shadcn/controls.py` |
-| Components | `inputs.py` | `/docs/components/inputs` | `src/refast/components/shadcn/input.py`, `src/refast/components/shadcn/form.py` |
-| Components | `cards.py` | `/docs/components/cards` | `src/refast/components/shadcn/card.py` |
-| Components | `data_display.py` | `/docs/components/data-display` | `src/refast/components/shadcn/data_display.py` |
-| Components | `navigation.py` | `/docs/components/navigation` | `src/refast/components/shadcn/navigation.py`, `src/refast/components/shadcn/sidebar.py` |
-| Components | `feedback.py` | `/docs/components/feedback` | `src/refast/components/shadcn/feedback.py`, `src/refast/components/shadcn/overlay.py` |
-| Components | `charts.py` | `/docs/components/charts` | `src/refast/components/shadcn/chart.py` |
-| Components | `utility.py` | `/docs/components/utility` | `src/refast/components/shadcn/icon.py`, `src/refast/components/shadcn/separator.py` |
+| Components | `components/layout/*.py` | `/docs/components/container` (group `Layout`) | `src/refast/components/base.py`, `src/refast/components/shadcn/layout.py` |
+| Components | `components/typography/*.py` | `/docs/components/text` (group `Typography`) | `src/refast/components/shadcn/typography.py` |
+| Components | `components/buttons/*.py` | `/docs/components/button` (group `Buttons & Actions`) | `src/refast/components/shadcn/button.py`, `src/refast/components/shadcn/controls.py` |
+| Components | `components/form_inputs/*.py` | `/docs/components/input` (group `Form Inputs`) | `src/refast/components/shadcn/input.py`, `src/refast/components/shadcn/form.py` |
+| Components | `components/cards/*.py` | `/docs/components/card` (group `Cards & Containers`) | `src/refast/components/shadcn/card.py` |
+| Components | `components/data_display/*.py` | `/docs/components/table` (group `Data Display`) | `src/refast/components/shadcn/data_display.py` |
+| Components | `components/navigation/*.py` | `/docs/components/sidebar-nav` (group `Navigation`) | `src/refast/components/shadcn/navigation.py` |
+| Components | `components/feedback/*.py` | `/docs/components/alert` (group `Feedback & Overlay`) | `src/refast/components/shadcn/feedback.py`, `src/refast/components/shadcn/overlay.py` |
+| Components | `components/charts/*.py` | `/docs/components/bar-chart` (group `Charts`) | `src/refast/components/shadcn/charts/` |
+| Components | `components/utility/*.py` | `/docs/components/icon` (group `Utility`) | `src/refast/components/shadcn/icon.py`, `src/refast/components/shadcn/utility.py`, `src/refast/components/shadcn/keyboard.py` |
 | Advanced | `component_dev.py` | `/docs/advanced/component-dev` | `docs/COMPONENT_DEVELOPMENT.md`, `docs/NAMING_CONVENTIONS.md` |
 | Advanced | `extension_dev.py` | `/docs/advanced/extension-dev` | `docs/EXTENSION_DEVELOPMENT.md` |
 | Advanced | `security.py` | `/docs/advanced/security` | `src/refast/security/*.py` |
 | Advanced | `sessions.py` | `/docs/advanced/sessions` | `src/refast/session/*.py` |
-| Advanced | `styling.py` | `/docs/advanced/styling` | `docs/STYLING_GUIDE.md`, `docs/TAILWIND_SUPPORT.md` |
+| Concepts | `styling.py` | `/docs/concepts/styling` | `docs/STYLING_GUIDE.md`, `docs/TAILWIND_SUPPORT.md` |

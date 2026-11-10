@@ -4,12 +4,7 @@ from refast import Context
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Column,
-    Container,
-    Heading,
     Markdown,
     Row,
     Select,
@@ -123,12 +118,12 @@ Separator(orientation="vertical", class_name="h-6")
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Axis of the separator line |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Axis of the separator line |
 | `decorative` | `bool` | `True` | When `True`, hidden from the accessibility tree |
 | `class_name` | `str` | `""` | Extra Tailwind classes (e.g. `"h-6"` for vertical) |
 

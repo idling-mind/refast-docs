@@ -24,7 +24,7 @@ For every component on a page, include:
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | (positional) | Button text |
-| `variant` | `"default" | "secondary"` | `"default"` | Visual variant |
+| `variant` | `"default" \| "secondary"` | `"default"` | Visual variant |
 ```
 
 ### Live Example Pattern
@@ -35,7 +35,7 @@ After the code block, embed the actual component:
 # In render():
 Column(gap=4, children=[
     Heading("Button", level=3),
-    Markdown(text="...code and props table..."),
+    Markdown(content="...code and props table..."),
     # Live demo
     Card(class_name="p-4", children=[
         Row(gap=2, children=[
@@ -52,7 +52,14 @@ Column(gap=4, children=[
 
 ## Pages
 
-### 1. `layout.py` — Layout Components (`/docs/components/layout`)
+> Each component now has its **own module** inside the group folder below
+> (e.g. `pages/components/buttons/button.py`), and pages are discovered
+> automatically by `pages/components/registry.py` from their `PAGE_METADATA`
+> dict (`title`, `route`, `icon`, `group`, `order`). No `app.py` edit is needed
+> to add a component page — but a page without `PAGE_METADATA` silently lands in
+> the "Utility" group, so always declare it.
+
+### 1. `components/layout/*.py` — Layout Components (group `Layout`, e.g. `/docs/components/container`)
 
 **Read:** `src/refast/components/base.py`, `src/refast/components/shadcn/layout.py`
 
@@ -71,7 +78,7 @@ Column(gap=4, children=[
 
 ---
 
-### 2. `typography.py` — Typography (`/docs/components/typography`)
+### 2. `components/typography/*.py` — Typography (group `Typography`, e.g. `/docs/components/text`)
 
 **Read:** `src/refast/components/shadcn/typography.py`
 
@@ -88,7 +95,7 @@ Column(gap=4, children=[
 
 ---
 
-### 3. `buttons.py` — Buttons & Actions (`/docs/components/buttons`)
+### 3. `components/buttons/*.py` — Buttons & Actions (group `Buttons & Actions`, e.g. `/docs/components/button`)
 
 **Read:** `src/refast/components/shadcn/button.py`, `src/refast/components/shadcn/controls.py`, `src/refast/components/shadcn/overlay.py`
 
@@ -102,7 +109,7 @@ Column(gap=4, children=[
 
 ---
 
-### 4. `inputs.py` — Form Inputs (`/docs/components/inputs`)
+### 4. `components/form_inputs/*.py` — Form Inputs (group `Form Inputs`, e.g. `/docs/components/input`)
 
 **Read:** `src/refast/components/shadcn/input.py`, `src/refast/components/shadcn/form.py`, `src/refast/components/shadcn/controls.py`
 
@@ -124,7 +131,7 @@ Column(gap=4, children=[
 
 ---
 
-### 5. `cards.py` — Cards & Containers (`/docs/components/cards`)
+### 5. `components/cards/*.py` — Cards & Containers (group `Cards & Containers`, e.g. `/docs/components/card`)
 
 **Read:** `src/refast/components/shadcn/card.py`, `src/refast/components/shadcn/utility.py`
 
@@ -139,7 +146,7 @@ Column(gap=4, children=[
 
 ---
 
-### 6. `data_display.py` — Data Display (`/docs/components/data-display`)
+### 6. `components/data_display/*.py` — Data Display (group `Data Display`, e.g. `/docs/components/table`)
 
 **Read:** `src/refast/components/shadcn/data_display.py`, `src/refast/components/shadcn/controls.py`
 
@@ -160,7 +167,7 @@ Column(gap=4, children=[
 
 ---
 
-### 7. `navigation.py` — Navigation (`/docs/components/navigation`)
+### 7. `components/navigation/*.py` — Navigation (group `Navigation`, e.g. `/docs/components/sidebar-nav`)
 
 **Read:** `src/refast/components/shadcn/navigation.py`
 
@@ -176,7 +183,7 @@ Column(gap=4, children=[
 
 ---
 
-### 8. `feedback.py` — Feedback & Overlay (`/docs/components/feedback`)
+### 8. `components/feedback/*.py` — Feedback & Overlay (group `Feedback & Overlay`, e.g. `/docs/components/alert`)
 
 **Read:** `src/refast/components/shadcn/feedback.py`, `src/refast/components/shadcn/overlay.py`
 
@@ -194,7 +201,7 @@ Column(gap=4, children=[
 
 ---
 
-### 9. `charts.py` — Charts (`/docs/components/charts`)
+### 9. `components/charts/*.py` — Charts (group `Charts`, e.g. `/docs/components/bar-chart`)
 
 **Read:** `src/refast/components/shadcn/charts.py`, `examples/charts_showcase/app.py`
 
@@ -216,7 +223,7 @@ Column(gap=4, children=[
 
 ---
 
-### 10. `utility.py` — Utility (`/docs/components/utility`)
+### 10. `components/utility/*.py` — Utility (group `Utility`, e.g. `/docs/components/icon`)
 
 **Read:** `src/refast/components/shadcn/icon.py`, `src/refast/components/shadcn/utility.py`, `src/refast/components/slot.py`
 

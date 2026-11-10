@@ -5,23 +5,16 @@ Interactive reference page for the Button component.
 
 from refast import Context
 from refast.components import (
-    Badge,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import make_state_setter, playground_card
+from docs.pages.components.props_table import props_table
 
 PAGE_METADATA = {
     "title": "Button",
@@ -155,7 +148,17 @@ def render(ctx: Context):
         route=PAGE_ROUTE,
         intro=INTRO,
         playground=_playground(ctx),
-        reference=REFERENCE,
+        reference=props_table(
+            Button,
+            # The signature says Any; readers want to know it takes a callback.
+            type_overrides={"on_click": "Callback | None"},
+            notes=(
+                "`id`, `class_name` and `style` are accepted by every component and are "
+                "documented on [Component Base](/docs/components/base)."
+            ),
+        )
+        + "\n\n"
+        + REFERENCE,
     )
 
 
@@ -174,22 +177,7 @@ Button("Processing…", loading=True)
 ```
 """
 
-REFERENCE = """
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `str` | *(positional)* | Button text |
-| `variant` | `"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"` | `"default"` | Visual style |
-| `size` | `"sm" | "md" | "lg" | `"md"` | Button dimensions |
-| `icon` | `str | None` | `None` | Lucide icon name (e.g. `"save"`, `"trash"`) |
-| `icon_position` | `"left" | "right"` | `"left"` | Icon placement relative to label |
-| `disabled` | `bool` | `False` | Prevents interaction |
-| `loading` | `bool` | `False` | Shows spinner and disables the button |
-| `type` | `"button" | "submit" | "reset"` | `"button"` | HTML button type attribute |
-| `on_click` | `Callback | None` | `None` | Server callback invoked on click |
-| `class_name` | `str` | `""` | Extra Tailwind classes |
-
+REFERENCE = r"""
 ## All Variants
 
 ```python

@@ -5,17 +5,10 @@ Interactive reference page for the Table component family.
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Table,
     TableBody,
     TableCell,
@@ -231,7 +224,7 @@ Table(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Table Props
 
 | Prop | Type | Default | Description |
@@ -267,8 +260,8 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | Cell content. |
-| `col_span` | `int | None` | `None` | Number of columns to span. |
-| `row_span` | `int | None` | `None` | Number of rows to span. |
+| `col_span` | `int \| None` | `None` | Number of columns to span. |
+| `row_span` | `int \| None` | `None` | Number of rows to span. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## Spanning cells

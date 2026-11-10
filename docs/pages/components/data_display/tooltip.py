@@ -6,17 +6,10 @@ Interactive reference page for the Tooltip component.
 from refast import Context
 from refast.components import (
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Column,
-    Container,
-    Heading,
     Input,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
     Tooltip,
 )
@@ -147,15 +140,15 @@ Tooltip(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `content` | `str` | *(required)* | Plain-text tooltip message. |
 | `children` | `list` | `[]` | The trigger element(s). Typically a single component. |
-| `side` | `"top" | "right" | "bottom" | "left"` | `"top"` | Preferred side of the trigger to display the tooltip. |
-| `side_offset` | `int | None` | `None` | Pixel gap between the trigger and the tooltip. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred side of the trigger to display the tooltip. |
+| `side_offset` | `int \| None` | `None` | Pixel gap between the trigger and the tooltip. |
 | `class_name` | `str` | `""` | Extra Tailwind classes applied to the tooltip content. |
 
 ## All sides

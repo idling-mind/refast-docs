@@ -38,18 +38,39 @@ or document them as known limitations.
 
 ## Documentation TODOs
 
+### Discovery & SEO
+
+- [x] ~~Per-page metadata~~ partially: the shell carries a description, Open Graph and
+      Twitter tags, `/robots.txt` and a `/sitemap.xml` of all 108 registered pages.
+      Because refast serves one static shell for every route, `<title>`, `og:url` and
+      `canonical` can only describe the root — a crawler or link preview never sees
+      "Sessions" as the title of `/docs/advanced/sessions`.
+- [ ] Prerender or server-render the shell per route so titles, descriptions and
+      canonical URLs are route-specific. This is the same feature as item 17
+      (prerendering/static export) and needs framework support: either
+      `RefastApp(pages=..., render_shell_for=path)` or a `head_tags` argument on
+      `@ui.page`.
+- [ ] Add an `og:image` (1200×630) and point `og:image` at it; previews are currently
+      text-only because `public/` holds nothing but a favicon.
+- [ ] Set `REFAST_DOCS_URL` on preview deployments, or they will claim
+      `refast.fastapicloud.com` as canonical.
+
 ### Content Completion
 
-All pages currently have placeholder content marked with `> **TODO**`. Each needs to be
-fleshed out per the `AGENT_INSTRUCTIONS.md` in its section folder.
+Every page now has real prose; the `> **TODO**` banners are gone (the last one, on
+`advanced/sessions.py`, was removed when that page was rewritten against the actual
+session API). What is missing is pages for the workflows a reader hits after the
+tutorial:
 
-**Priority order for content writing:**
+- [ ] Deployment — process managers, workers, `uvicorn main:app`, reverse proxy and
+      HTTPS cookie settings, a Dockerfile
+- [ ] Changelog / migration notes per refast release, breaking changes called out
+- [ ] Troubleshooting / FAQ — the errors a reader actually sees in a console
+- [ ] Extension version matrix — which of `refast-echarts` / `refast-grid` /
+      `refast-vtk-js` needs which core
 
-1. Getting Started section (installation, architecture, quick tour)
-2. Core Concepts (callbacks, state, store, updates)
-3. Component Reference (layout, buttons, inputs — most used)
-4. Advanced topics (component dev, extension dev)
-5. Remaining component pages (navigation, charts, etc.)
+Sections still thinnest relative to how often they are used: Getting Started
+(architecture), and the component pages that carry code samples but no live example.
 
 ### Live Examples
 
@@ -57,7 +78,9 @@ Many component reference pages need live interactive examples (actual Refast com
 rendered alongside their code snippets). Priority:
 
 - [ ] Button variants demo
-- [ ] Input + store_as demo
+- [ ] Input + `ctx.save_prop` / `props=[...]` demo. The previous item here asked for a
+      `store_as` demo; `store_as` is FastUI's API and does not exist in refast 0.12 or
+      0.13 -- grep found it nowhere in either — so it was unsatisfiable as written.
 - [ ] Card composition demo
 - [ ] Tabs demo
 - [ ] Chart demo (one per chart type)
@@ -66,4 +89,74 @@ rendered alongside their code snippets). Priority:
 
 ### Search
 
-- [ ] Implement in-page search using `Command*` components (client-side filtering of sidebar items)
+- [x] ~~`/search?q=` for readers whose query is too vague for the palette~~ — done: the
+      results page ranks server-side, shows the section on the right of each row, and
+      bolds the matched words in a snippet. It is the only surface with `search.search()`.
+- [x] ~~Palette rows labelled `Title — Section`~~ — done, and superseded: the section is
+      now a right-aligned muted span at the end of each row (`PaletteRow` in `docs/app.py`),
+      and the rows sit in one flat list. Grouping them by section made every tie fall back
+      to DOM order, so Getting Started led every search.
+- [x] ~~Nothing should be pre-selected while typing~~ — done: Enter goes to
+      `/search?q=…` unless ArrowUp/ArrowDown moved the caret first. cmdk highlights its top
+      match as soon as there is one and the Command wrapper exposes no way to turn that off,
+      so the script in the shell reads intent from the keys instead.
+- [x] ~~The "Nothing matched" hint rendered wrong~~ — done: it is a Markdown paragraph in a
+      Row of its own, with `save_prop` code-fenced. Snippets keep their backticks for the
+      same reason; stripped of them, an underscore opens an emphasis run and the line loses
+      its spaces.
+- [x] ~~The palette scrolls away from its own results~~ — done: cmdk does not sort, only
+      show-or-hide, so rows stayed in sidebar order and it selected the first visible one,
+      a dozen rows down for a query like "form", then scrolled it into view. The shell
+      script now re-orders the rows by where the query falls in each keyword blob and
+      resets the list's scroll, in the capture phase of `input`, before cmdk filters.
+- [ ] **Verify the palette in a browser.** The row structure, the flat list and the script
+      are asserted in tests, and the ranking was simulated in node against the real blobs
+      (`form` → Form instead of Column, `session` → Sessions instead of State & Store). But
+      nothing here has been seen in a real tab: cmdk's `data-selected` styling can still
+      make a row look chosen while you type, and the reorder happens to DOM nodes React
+      believes it owns.
+- [ ] `/search` has no entry in the sidebar, so it is only reachable from the palette
+      hand-off row, the Enter key, or a URL. Adding it to `NAV_SECTIONS` would make it
+      searchable-by-content, which is circular, and the sitemap already lists it.
+- [ ] Index the examples and the home page too; today only `NAV_SECTIONS` routes are
+      searchable, so "counter" finds the guide page but not `/examples/counter`.
+- [ ] The keyword blobs cost ~9 KB when the palette opens. If that ever matters, the
+      corpus could be fetched once and cached in the browser instead of riding in the
+      dialog tree.
+- [ ] The Icons page (`/docs/components/icon`) filters the way the palette used to: a
+      controlled `Input` plus `await ctx.refresh()` per keystroke, which re-renders every
+      icon tile and echoes the value back one change behind. The same fix applies to any
+      page that filters a long list.
+
+---
+
+## Quality Gates
+
+CI (`.github/workflows/ci.yml`) runs `tests/`, which guard the docs against upstream
+refast releases:
+
+| Test | Catches |
+|------|---------|
+| `test_docs_pages_render.py` | a page function that raises while building its tree (bad props, bad imports, bad return) |
+| `test_docs_component_props.py` | a prop passed to a component that does not accept it |
+| `test_docs_links.py` | links to unregistered routes, "View source" URLs that 404, and "Edit this page" URLs whose file is gone |
+| `test_docs_markdown_tables.py` | Markdown tables that render with the wrong number of columns |
+| `test_docs_search.py` | pages that vanished from the search index, and ranking that stopped reflecting page text |
+| `test_docs_shell.py` | the HTML document every tab and crawler sees first: title, favicon, share metadata, robots.txt, sitemap.xml |
+
+Open items:
+
+- [x] ~~Import hygiene sweep~~ — done: `ruff check --select F401 --fix` removed 429 unused
+      imports from `docs/`, and `F401` is now part of the default rule set. Component pages
+      import only what they instantiate; names shown inside their Markdown samples are
+      illustrative and need no import.
+- [ ] Commit `uv.lock`? It is still untracked. A recent `uv sync` re-resolved it against
+      the public index (no internal-feed URLs remain), so committing it would now make
+      `uv sync --locked` work for contributors and CI alike — confirm before doing so, in
+      case the internal mirror was pinned on purpose.
+- [x] ~~Commit `uv.lock`?~~ — done: tracked, resolved against the public index. A
+      `uv sync` on a machine whose `UV_DEFAULT_INDEX` points at an internal mirror
+      rewrites those URLs back, so re-run `uv lock` with the public index before
+      committing a changed lock.
+- [ ] Run the suite against a framework checkout in a scheduled job
+      (`REFAST_REPO=../refast pytest`), which also verifies every "View source" link.

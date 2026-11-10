@@ -13,7 +13,6 @@ from refast.components import (
     Column,
     Container,
     Heading,
-    Icon,
     Row,
     Separator,
     Tabs,

@@ -4,18 +4,11 @@ from refast import Context
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Link,
-    Markdown,
     Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -152,7 +145,7 @@ icon and server-side callbacks.
 from refast.components import Link
 
 # Simple navigation link
-Link("Go to Docs", href="/docs")
+Link("Go to Docs", href="/docs/getting-started")
 
 # External link with icon
 Link("GitHub", href="https://github.com", target="_blank", external=True)
@@ -167,19 +160,19 @@ Link(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `text` | `str` | *(required)* | Visible link text |
 | `href` | `str` | *(required)* | Link destination URL |
-| `target` | `"_self" | "_blank" | "_parent" | "_top"` | `"_self"` | Where to open the link |
+| `target` | `"_self" \| "_blank" \| "_parent" \| "_top"` | `"_self"` | Where to open the link |
 | `external` | `bool` | `False` | Show an external-link icon |
-| `on_click` | `Callback | None` | `None` | Server callback on click |
-| `id` | `str | None` | `None` | Unique element ID |
+| `on_click` | `Callback \| None` | `None` | Server callback on click |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Notes
 

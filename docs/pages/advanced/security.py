@@ -1,5 +1,4 @@
 """Security — /docs/advanced/security."""
-from typing import Any, Literal
 
 from refast.components import Container, Heading, Markdown, Separator, Alert
 
@@ -235,9 +234,9 @@ ui = RefastApp(title="Rate Limited Refast App")
 
 @ui.page("/")
 async def home(ctx: Context):
-    # During page functions, ctx._request is populated with the Starlette Request
-    if ctx._request:
-        allowed, info = await limiter.is_allowed(ctx._request)
+    # During page functions, ctx.request is populated with the Starlette Request
+    if ctx.request:
+        allowed, info = await limiter.is_allowed(ctx.request)
         if not allowed:
             raise HTTPException(
                 status_code=429, 
@@ -543,5 +542,5 @@ def profile_page(ctx: Context):
 ## Next Steps
 
 - [Sessions](/docs/advanced/sessions) — Secure server-side session stores
-- [Styling](/docs/advanced/styling) — Designing layout and themes
+- [Styling](/docs/concepts/styling) — Designing layout and themes
 """

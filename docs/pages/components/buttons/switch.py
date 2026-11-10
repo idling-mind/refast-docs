@@ -5,16 +5,9 @@ Interactive reference page for the Switch component.
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
-    Separator,
     Text,
 )
 from refast.components.shadcn.controls import Switch
@@ -137,17 +130,17 @@ Row(children=[
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `bool | None` | `None` | Controlled checked state |
+| `checked` | `bool \| None` | `None` | Controlled checked state |
 | `default_checked` | `bool` | `False` | Initial state (uncontrolled) |
 | `disabled` | `bool` | `False` | Prevents interaction |
-| `name` | `str | None` | `None` | HTML input name for form submission |
-| `on_checked_change` | `Callback | None` | `None` | Called with new `bool` value on toggle |
-| `id` | `str | None` | `None` | Element ID — useful for pairing with a `<label>` |
+| `name` | `str \| None` | `None` | HTML input name for form submission |
+| `on_checked_change` | `Callback \| None` | `None` | Called with new `bool` value on toggle |
+| `id` | `str \| None` | `None` | Element ID — useful for pairing with a `<label>` |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Controlled vs Uncontrolled

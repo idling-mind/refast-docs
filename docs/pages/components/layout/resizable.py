@@ -2,20 +2,12 @@
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Column,
     Container,
-    Heading,
-    Markdown,
-    Paragraph,
     ResizableHandle,
     ResizablePanel,
     ResizablePanelGroup,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page
@@ -159,15 +151,15 @@ ResizablePanelGroup(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## ResizablePanelGroup
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `direction` | `"horizontal" | "vertical"` | `"horizontal"` | Split orientation |
-| `children` | `list | Component | None` | `None` | Alternating panels and handles |
-| `on_layout` | `Callback | None` | `None` | Fired with new panel size array on resize |
-| `id` | `str | None` | `None` | Unique element ID |
+| `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | Split orientation |
+| `children` | `list \| Component \| None` | `None` | Alternating panels and handles |
+| `on_layout` | `Callback \| None` | `None` | Fired with new panel size array on resize |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## ResizablePanel
@@ -175,18 +167,18 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `default_size` | `float` | `50` | Initial size as % of group |
-| `min_size` | `float | None` | `None` | Minimum size % |
-| `max_size` | `float | None` | `None` | Maximum size % |
+| `min_size` | `float \| None` | `None` | Minimum size % |
+| `max_size` | `float \| None` | `None` | Maximum size % |
 | `collapsible` | `bool` | `False` | Allow fully collapsing the panel |
-| `collapsed_size` | `float | None` | `None` | Size % when fully collapsed |
-| `children` | `list | Component | None` | `None` | Panel content |
+| `collapsed_size` | `float \| None` | `None` | Size % when fully collapsed |
+| `children` | `list \| Component \| None` | `None` | Panel content |
 
 ## ResizableHandle
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `with_handle` | `bool` | `False` | Show a visible grip icon on the handle |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Examples

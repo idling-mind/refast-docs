@@ -2,19 +2,12 @@
 
 from refast import Context
 from refast.components import (
-    Badge,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
     Container,
-    Heading,
-    Markdown,
     Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page
@@ -100,8 +93,8 @@ def _playground(ctx: Context):
                     Text("Background", class_name="text-sm font-medium"),
                     Select(
                         options=[
-                            {"value": v, "label": l}
-                            for v, l in [
+                            {"value": v, "label": label}
+                            for v, label in [
                                 ("none", "none"),
                                 ("muted", "bg-muted"),
                                 ("muted/30", "bg-muted/30"),
@@ -198,15 +191,15 @@ Container(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list | Component | None` | `None` | Child components |
-| `id` | `str | None` | `None` | Unique element ID |
+| `children` | `list \| Component \| None` | `None` | Child components |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Tailwind CSS classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Notes
 

@@ -154,7 +154,7 @@ EXAMPLES = [
         "desc": "Multi-city live weather monitoring cards with dynamic temperature gauges, condition badges, and data refresh callbacks.",
         "icon": "cloud",
         "route": "/examples/weather",
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/weather",
+        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/weather_dashboard",
         "tags": ["Data"],
     },
     {
@@ -170,7 +170,7 @@ EXAMPLES = [
         "desc": "Interactive data visualisations with bar charts, line plots, area graphs, and customizable theme palettes.",
         "icon": "line-chart",
         "route": None,
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/charts",
+        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/charts_showcase",
         "tags": ["Charts", "Data"],
     },
     {
@@ -212,7 +212,7 @@ EXAMPLES = [
         "desc": "Conversational LLM assistant UI with message bubbles, avatar indicators, token streaming, and scroll lock.",
         "icon": "bot",
         "route": None,
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/ai_chat",
+        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/aichat",
         "tags": ["Real-time", "AI"],
     },
     {
@@ -302,7 +302,7 @@ EXAMPLES = [
         "desc": "Packaging a Refast application as a standalone native desktop GUI window using PyWebView with zero web browser UI.",
         "icon": "monitor",
         "route": None,
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/desktop_app",
+        "code_url": "https://github.com/idling-mind/refast/blob/main/examples/desktop_app.py",
         "tags": ["Desktop"],
     },
     {
@@ -310,7 +310,7 @@ EXAMPLES = [
         "desc": "Triggering OS-level system tray and desktop push notifications from server-side Python events.",
         "icon": "bell",
         "route": None,
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/desktop_notifications",
+        "code_url": "https://github.com/idling-mind/refast/blob/main/examples/desktop_notifications.py",
         "tags": ["Desktop"],
     },
     {
@@ -318,7 +318,7 @@ EXAMPLES = [
         "desc": "Managing asynchronous background jobs with live progress bars, cancellation triggers, and completion alerts.",
         "icon": "timer",
         "route": None,
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/long_running_task",
+        "code_url": "https://github.com/idling-mind/refast/blob/main/examples/longrunning.py",
         "tags": ["Advanced"],
     },
     {
@@ -342,7 +342,7 @@ EXAMPLES = [
         "desc": "Building third-party React and Python extensions with custom entry points, npm bundling, and asset pipelines.",
         "icon": "puzzle",
         "route": None,
-        "code_url": "https://github.com/idling-mind/refast/tree/main/examples/custom_extension",
+        "code_url": "https://github.com/idling-mind/refast/blob/main/docs/EXTENSION_DEVELOPMENT.md",
         "tags": ["Advanced"],
     },
 

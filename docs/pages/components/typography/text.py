@@ -4,18 +4,11 @@ from refast import Context
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
-    Markdown,
     Paragraph,
     Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -83,8 +76,8 @@ def _playground(ctx: Context):
                     Text("color", class_name="text-sm font-medium"),
                     Select(
                         options=[
-                            {"value": v, "label": l}
-                            for v, l in [
+                            {"value": v, "label": label}
+                            for v, label in [
                                 ("", "default"),
                                 ("text-muted-foreground", "muted"),
                                 ("text-primary", "primary"),
@@ -227,15 +220,15 @@ Paragraph("Welcome to the docs.", lead=True)
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Text Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `content` | `str` | *(required)* | Text content |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Tailwind CSS classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Paragraph Props
 
@@ -244,9 +237,9 @@ REFERENCE = """
 | `text` | `str` | *(required)* | Paragraph content |
 | `lead` | `bool` | `False` | Larger lead paragraph style |
 | `muted` | `bool` | `False` | Applies `text-muted-foreground` |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
-| `style` | `dict | None` | `None` | Inline CSS overrides |
+| `style` | `dict \| None` | `None` | Inline CSS overrides |
 
 ## Notes
 

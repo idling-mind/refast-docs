@@ -5,17 +5,9 @@ from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
     Badge,
-    Card,
-    CardContent,
-    CardHeader,
     Column,
-    Container,
-    Heading,
     Input,
-    Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -194,17 +186,17 @@ Badge(children=["XLarge"], size="xl")
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `list | Component | None` | `None` | Badge content (usually a short string) |
-| `variant` | `"default" | "secondary" | "destructive" | "outline" | "success" | "warning"` | `"default"` | Visual style |
-| `icon` | `str | None` | `None` | Lucide icon name (e.g. `"check"`, `"star"`, `"alert-circle"`) |
-| `icon_position` | `"left" | "right"` | `"left"` | Position of the icon relative to badge text |
-| `size` | `"xs" | "sm" | "md" | "lg" | "xl"` | `"md"` | Size of the badge |
-| `id` | `str | None` | `None` | Unique element ID |
+| `children` | `list \| Component \| None` | `None` | Badge content (usually a short string) |
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "success" \| "warning"` | `"default"` | Visual style |
+| `icon` | `str \| None` | `None` | Lucide icon name (e.g. `"check"`, `"star"`, `"alert-circle"`) |
+| `icon_position` | `"left" \| "right"` | `"left"` | Position of the icon relative to badge text |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Size of the badge |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Variants

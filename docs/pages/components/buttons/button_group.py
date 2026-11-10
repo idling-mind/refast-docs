@@ -10,10 +10,6 @@ from refast.components import (
     Card,
     CardContent,
     Column,
-    Container,
-    Heading,
-    Markdown,
-    Separator,
     Text,
 )
 from refast.components.shadcn.button import ButtonGroup
@@ -94,14 +90,14 @@ ButtonGroup(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Component Reference
 
 ### `ButtonGroup`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Layout direction of the grouped buttons. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction of the grouped buttons. |
 | `children` | `ChildrenType` | `None` | Grouped buttons, text labels, and separators. |
 | `class_name` | `str` | `""` | Additional Tailwind CSS classes. |
 """

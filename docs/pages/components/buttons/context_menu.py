@@ -5,16 +5,8 @@ Interactive reference page for the ContextMenu component family.
 
 from refast import Context
 from refast.components import (
-    Badge,
-    Card,
-    CardContent,
-    CardHeader,
-    Column,
     Container,
-    Heading,
     Markdown,
-    Row,
-    Separator,
     Text,
 )
 from refast.components.shadcn.overlay import (
@@ -214,7 +206,7 @@ ContextMenu(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Component Reference
 
 ### ContextMenu
@@ -250,10 +242,10 @@ The popover panel that appears after right-clicking.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `str` | *(required)* | Item text |
-| `icon` | `str | None` | `None` | Lucide icon name |
-| `shortcut` | `str | None` | `None` | Keyboard shortcut hint (display only) |
+| `icon` | `str \| None` | `None` | Lucide icon name |
+| `shortcut` | `str \| None` | `None` | Keyboard shortcut hint (display only) |
 | `disabled` | `bool` | `False` | Greys out and prevents selection |
-| `on_select` | `Callback | None` | `None` | Called when item is selected |
+| `on_select` | `Callback \| None` | `None` | Called when item is selected |
 
 ### ContextMenuSeparator
 
@@ -266,7 +258,7 @@ A horizontal rule with no configurable props (besides `class_name`).
 | `label` | `str` | *(required)* | Item text |
 | `checked` | `bool` | `False` | Whether the checkbox is checked |
 | `disabled` | `bool` | `False` | Prevents interaction |
-| `on_checked_change` | `Callback | None` | `None` | Called with new `bool` value |
+| `on_checked_change` | `Callback \| None` | `None` | Called with new `bool` value |
 
 ## Common Patterns
 

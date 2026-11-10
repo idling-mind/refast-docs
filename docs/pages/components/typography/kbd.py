@@ -7,13 +7,8 @@ from refast.components import (
     CardContent,
     CardHeader,
     Column,
-    Container,
-    Heading,
     Kbd,
-    Markdown,
-    Paragraph,
     Row,
-    Separator,
     Text,
 )
 
@@ -122,13 +117,13 @@ Kbd("Tab")
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `str` | *(required)* | The key label to display |
-| `id` | `str | None` | `None` | Unique element ID |
+| `id` | `str \| None` | `None` | Unique element ID |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## Notes

@@ -60,8 +60,8 @@ compiled CSS bundle.
 | Category | Classes |
 |----------|---------|
 | **Width / Height** | `w-full`, `w-screen`, `w-auto`, `w-min`, `w-max`, `w-fit`; same for `h-` |
-| **Max-width** | `max-w-{xs|sm|md|lg|xl|2xl–7xl|full|min|max|fit|prose}` |
-| **Max-width screen** | `max-w-screen-{sm|md|lg|xl|2xl}` |
+| **Max-width** | `max-w-{xs\|sm\|md\|lg\|xl\|2xl–7xl\|full\|min\|max\|fit\|prose}` |
+| **Max-width screen** | `max-w-screen-{sm\|md\|lg\|xl\|2xl}` |
 
 ### Spacing
 
@@ -81,18 +81,18 @@ Container(class_name="p-4 mx-auto mt-6")
 | `flex-1`, `flex-auto`, `flex-none` | Growth shorthand — responsive |
 | `grow`, `grow-0`, `shrink`, `shrink-0` | Explicit grow/shrink |
 | `gap-{0–6,8}`, `gap-x-*`, `gap-y-*` | Gap — responsive |
-| `justify-{start|end|center|between|around|evenly|stretch}` | Main axis |
-| `items-{start|end|center|stretch|baseline}` | Cross axis |
-| `self-{start|end|center|stretch|baseline}` | Individual self-alignment |
-| `content-{start|end|center|between|around|evenly|stretch}` | Multi-line |
+| `justify-{start\|end\|center\|between\|around\|evenly\|stretch}` | Main axis |
+| `items-{start\|end\|center\|stretch\|baseline}` | Cross axis |
+| `self-{start\|end\|center\|stretch\|baseline}` | Individual self-alignment |
+| `content-{start\|end\|center\|between\|around\|evenly\|stretch}` | Multi-line |
 
 ### Grid
 
 | Class | Notes |
 |-------|-------|
-| `grid-cols-{1–6|12|none}` | Column count — responsive |
-| `col-span-{1|2|3|4|6|12|full}` | Column span — responsive |
-| `row-span-{1|2|3|4|6|12|full}` | Row span — responsive |
+| `grid-cols-{1–6\|12\|none}` | Column count — responsive |
+| `col-span-{1\|2\|3\|4\|6\|12\|full}` | Column span — responsive |
+| `row-span-{1\|2\|3\|4\|6\|12\|full}` | Row span — responsive |
 
 ### Typography
 
@@ -110,9 +110,9 @@ Container(class_name="p-4 mx-auto mt-6")
 |----------|---------|
 | **Border width** | `border`, `border-0`, `border-2`, `border-4`, `border-8` |
 | **Border sides** | `border-x`, `border-y`, `border-t`, `border-r`, `border-b`, `border-l` (+ `-0/-2/-4/-8`) |
-| **Radius** | `rounded`, `rounded-{sm|md|lg|xl|2xl|3xl|full|none}` |
-| **Radius sides** | `rounded-t`, `rounded-r`, `rounded-b`, `rounded-l`, `rounded-{tl|tr|br|bl}` |
-| **Shadow** | `shadow`, `shadow-{sm|md|lg|xl|2xl|inner|none}` |
+| **Radius** | `rounded`, `rounded-{sm\|md\|lg\|xl\|2xl\|3xl\|full\|none}` |
+| **Radius sides** | `rounded-t`, `rounded-r`, `rounded-b`, `rounded-l`, `rounded-{tl\|tr\|br\|bl}` |
+| **Shadow** | `shadow`, `shadow-{sm\|md\|lg\|xl\|2xl\|inner\|none}` |
 
 ### Interaction & Animation
 

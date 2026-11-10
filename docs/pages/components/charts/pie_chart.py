@@ -2,21 +2,12 @@
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
-    Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from refast.components.shadcn.charts import (
-    Cell,
     ChartContainer,
     ChartLegend,
     ChartLegendContent,
@@ -174,14 +165,14 @@ ChartContainer(class_name="h-72", children=[
 > You can also use `Cell` children for fine-grained control.
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## PieChart Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `list` | `[]` | `Pie` components plus optional tooltip and legend |
 | `margin` | `dict` | `{top:0, right:0, left:0, bottom:0}` | Chart margins |
-| `on_click` | `Callback | None` | `None` | Click on the chart area |
+| `on_click` | `Callback \| None` | `None` | Click on the chart area |
 
 ## Pie Props
 
@@ -190,16 +181,16 @@ REFERENCE = """
 | `data` | `list[dict]` | *(required)* | Array of data objects |
 | `data_key` | `str` | *(required)* | Key holding the numeric value for each slice |
 | `name_key` | `str` | *(required)* | Key holding the label for each slice |
-| `inner_radius` | `int | str` | `0` | Inner radius; set > 0 for a donut chart |
-| `outer_radius` | `int | str` | `"80%"` | Outer radius |
-| `cx` | `str | int` | `"50%"` | X position of the centre |
-| `cy` | `str | int` | `"50%"` | Y position of the centre |
+| `inner_radius` | `int \| str` | `0` | Inner radius; set > 0 for a donut chart |
+| `outer_radius` | `int \| str` | `"80%"` | Outer radius |
+| `cx` | `str \| int` | `"50%"` | X position of the centre |
+| `cy` | `str \| int` | `"50%"` | Y position of the centre |
 | `padding_angle` | `int` | `0` | Gap between slices (degrees) |
-| `corner_radius` | `int | str | None` | `None` | Rounded slice corners |
+| `corner_radius` | `int \| str \| None` | `None` | Rounded slice corners |
 | `start_angle` | `int` | `0` | Start angle (degrees) |
 | `end_angle` | `int` | `360` | End angle (degrees) |
-| `label` | `bool | None` | `None` | Show percentage/value labels on slices |
-| `label_line` | `bool | dict | None` | `None` | Leader lines from slices to labels |
+| `label` | `bool \| None` | `None` | Show percentage/value labels on slices |
+| `label_line` | `bool \| dict \| None` | `None` | Leader lines from slices to labels |
 | `min_angle` | `int` | `0` | Minimum sector angle so tiny slices are still visible |
 | `children` | `list` | `[]` | `Cell` components for per-slice styling |
 

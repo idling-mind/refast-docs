@@ -3,10 +3,35 @@ name = "refast-docs"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
-    "refast>=0.7.0",
+    # Floors are the versions whose API this site was written and verified
+    # against; CI resolves the newest release so drift shows up there.
+    "refast>=0.12.0",
     "uvicorn",
     "fastapi[standard]",
     "refast-grid>=0.3.0",
     "refast-vtk-js>=0.3.1",
     "refast-echarts>=0.2.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "httpx",
+    "ruff>=0.6",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+# Narrow on purpose: the site is prose-heavy, so the rules that pay their way are
+# the ones that catch code that cannot run at all.
+#   E4  imports          E7  pycodestyle gotchas     E9  syntax errors
+#   F401 unused imports  F811 redefined              F821 undefined name
+#   W605 invalid escape sequence (\| table pipes must live in raw strings)
+select = ["E4", "E7", "E9", "F401", "F811", "F821", "W605"]

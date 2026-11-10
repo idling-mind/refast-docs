@@ -2,24 +2,14 @@
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from refast.components.shadcn.controls import (
     InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
 )
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
@@ -206,22 +196,22 @@ InputOTP(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## InputOTP Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `max_length` | `int` | `6` | Total number of OTP characters |
-| `value` | `str | None` | `None` | Controlled value |
+| `value` | `str \| None` | `None` | Controlled value |
 | `disabled` | `bool` | `False` | Disables all slots |
-| `pattern` | `str | None` | `None` | Regex pattern to validate each character |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below label |
+| `pattern` | `str \| None` | `None` | Regex pattern to validate each character |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below label |
 | `required` | `bool` | `False` | Shows required asterisk |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired with the current OTP string on every keystroke |
-| `on_complete` | `Callback | None` | `None` | Fired when all slots are filled |
-| `children` | `list | None` | `None` | Custom `InputOTPGroup` / `InputOTPSeparator` layout |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired with the current OTP string on every keystroke |
+| `on_complete` | `Callback \| None` | `None` | Fired when all slots are filled |
+| `children` | `list \| None` | `None` | Custom `InputOTPGroup` / `InputOTPSeparator` layout |
 
 ## InputOTPSlot Props
 

@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # The docs must keep working against whatever refast was released last, so
+    # these checks also run nightly on main.
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: Lint and render docs (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+
+      # Deliberately resolved from the index instead of uv.lock: this repository
+      # is published to the public index, and uv.lock in a developer checkout may
+      # point at an internal mirror. It also means CI always exercises the
+      # newest refast release, so renamed props and moved pages surface here
+      # rather than in a reader's browser.
+      - name: Install dependencies
+        run: |
+          uv venv --python ${{ matrix.python-version }}
+          uv pip install -r pyproject.toml pytest httpx ruff
+
+      - name: Lint
+        run: uv run --no-sync ruff check docs tests main.py
+
+      - name: Render every documentation page
+        run: uv run --no-sync python -m pytest -q

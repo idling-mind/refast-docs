@@ -91,9 +91,9 @@ Every component automatically gets these from the base class:
 
 | Param | Type | Description |
 |-------|------|-------------|
-| `id` | `str | None` | Component ID — auto-generated UUID if not provided |
+| `id` | `str \| None` | Component ID — auto-generated UUID if not provided |
 | `class_name` | `str` | Tailwind CSS classes |
-| `style` | `dict | None` | Inline styles for truly dynamic values |
+| `style` | `dict \| None` | Inline styles for truly dynamic values |
 | `**props` | `Any` | Any additional props passed to the frontend |
 
 ### Implementing `render()`
@@ -754,6 +754,5 @@ uv run pytest tests/ --cov=src/refast --cov-report=html
 ## Next Steps
 
 - [Building Extensions](/docs/advanced/extension-dev) — Package components as installable extensions
-- [Styling](/docs/advanced/styling) — Tailwind CSS patterns and theming
-- [Naming Conventions](/docs/advanced/styling) — Full `snake_case` ↔ `camelCase` reference
+- [Styling](/docs/concepts/styling) — Tailwind patterns, theming, and the `snake_case` ↔ `camelCase` prop mapping
 """

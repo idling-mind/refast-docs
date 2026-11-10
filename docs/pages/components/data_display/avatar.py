@@ -6,18 +6,11 @@ Interactive reference page for the Avatar component.
 from refast import Context
 from refast.components import (
     Avatar,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Input,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page
@@ -162,15 +155,15 @@ Avatar(fallback="JD", size="lg")
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `src` | `str | None` | `None` | URL of the user image. Omit to show initials only. |
+| `src` | `str \| None` | `None` | URL of the user image. Omit to show initials only. |
 | `alt` | `str` | `""` | Alternative text; also used to derive the fallback initial when `fallback` is not supplied. |
-| `fallback` | `str | None` | `None` | Short string (one or two letters) shown when the image is unavailable. |
-| `size` | `"sm" | "md" | "lg"` | `"md"` | Avatar diameter: `"sm"` = 32px, `"md"` = 40px, `"lg"` = 48px. |
+| `fallback` | `str \| None` | `None` | Short string (one or two letters) shown when the image is unavailable. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Avatar diameter: `"sm"` = 32px, `"md"` = 40px, `"lg"` = 48px. |
 | `class_name` | `str` | `""` | Extra Tailwind classes. |
 
 ## All sizes

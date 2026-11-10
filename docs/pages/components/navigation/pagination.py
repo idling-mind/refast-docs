@@ -4,12 +4,7 @@ from refast import Context
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Column,
-    Container,
-    Heading,
     Markdown,
     Pagination,
     PaginationContent,
@@ -18,9 +13,7 @@ from refast.components import (
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-    Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -231,7 +224,7 @@ from refast.components import (
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `PaginationLink`
@@ -241,14 +234,14 @@ REFERENCE = """
 | `label` | `str` | *(required)* | Page label text |
 | `href` | `str` | `"#"` | URL for the link |
 | `active` | `bool` | `False` | Highlights the current page |
-| `on_click` | `Callback | None` | `None` | Server click callback |
+| `on_click` | `Callback \| None` | `None` | Server click callback |
 
 ### `PaginationPrevious` / `PaginationNext`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `href` | `str` | `"#"` | Navigation URL |
-| `on_click` | `Callback | None` | `None` | Server click callback |
+| `on_click` | `Callback \| None` | `None` | Server click callback |
 
 ## Component Hierarchy
 

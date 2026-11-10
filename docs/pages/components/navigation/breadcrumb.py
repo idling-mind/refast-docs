@@ -11,17 +11,10 @@ from refast.components import (
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -169,7 +162,7 @@ from refast.components import (
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `Breadcrumb`
@@ -177,7 +170,7 @@ REFERENCE = """
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `ChildrenType` | `None` | `BreadcrumbList` child |
-| `separator` | `str | None` | `None` | Custom separator character |
+| `separator` | `str \| None` | `None` | Custom separator character |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ### `BreadcrumbLink`
@@ -187,7 +180,7 @@ REFERENCE = """
 | `label` | `str` | *(required)* | Link text |
 | `href` | `str` | `"#"` | Navigation URL |
 | `current` | `bool` | `False` | Mark as current location |
-| `on_click` | `Callback | None` | `None` | Click callback (alternative to href) |
+| `on_click` | `Callback \| None` | `None` | Click callback (alternative to href) |
 
 ### `BreadcrumbPage`
 
@@ -221,7 +214,7 @@ Breadcrumb(
                 BreadcrumbSeparator(),
                 BreadcrumbItem(children=[BreadcrumbEllipsis()]),
                 BreadcrumbSeparator(),
-                BreadcrumbItem(children=[BreadcrumbLink("Components", href="/docs/components")]),
+                BreadcrumbItem(children=[BreadcrumbLink("Components", href="/docs/components/button")]),
                 BreadcrumbSeparator(),
                 BreadcrumbItem(children=[BreadcrumbPage("Breadcrumb")]),
             ]

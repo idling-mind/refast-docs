@@ -6,11 +6,16 @@ Run:
     cd <project_root>
     uvicorn docs.app:app --reload
 """
+import inspect
+import os
 from importlib.metadata import version
+from html import escape
+from urllib.parse import quote
 
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from refast import Context, RefastApp
@@ -24,7 +29,6 @@ from refast.components import (
     Button,
     Command,
     CommandEmpty,
-    CommandGroup,
     CommandInput,
     CommandItem,
     CommandList,
@@ -38,6 +42,7 @@ from refast.components import (
     DropdownMenuTrigger,
     Flex,
     IconButton,
+    Link,
     Row,
     Separator,
     Sidebar,
@@ -58,6 +63,7 @@ from refast.components import (
     SidebarRail,
     SidebarSeparator,
     SidebarTrigger,
+    Text,
     Tooltip,
 )
 from refast.components.shadcn import KeyboardShortcut, ThemeSwitcher
@@ -69,6 +75,7 @@ from refast.theme import (
     ocean_breeze_theme,
 )
 
+from . import search as search_index  # noqa: E402
 from .pages import home  # noqa: E402
 from .pages.advanced import (  # noqa: E402
     component_dev,
@@ -108,15 +115,101 @@ from .pages.getting_started import (  # noqa: E402
     quick_tour,
     todo_app_live,
 )
+from docs.examples.routes import register_example_routes  # noqa: E402
+
+#: the results page is not in NAV_SECTIONS -- it is a utility route, registered by hand
+PAGE_ROUTE_SEARCH = "/search"
 
 # ── App instance ─────────────────────────────────────────────────────────
 
 ui = RefastApp(
     title="Refast Docs",
     theme=default_theme,
-    favicon="📖",
+    favicon="/public/favicon.ico",
     custom_css="/styles/main.css",
     preloaded_features=["markdown", "controls", "navigation", "overlay"],
+)
+
+# cmdk does two things the palette cannot live with, and both have to be fixed where
+# they happen -- in the browser, before React's own handlers run.
+#
+# It never sorts. A row's score decides only whether it is hidden; the rows you see
+# stay in DOM order, which for us is sidebar order, and the row cmdk selects is the
+# first *visible* one in that order. So a query whose best match sits deep in the nav
+# scrolled the list down to it and hid the results that mattered. `orderRows` puts the
+# rows in DOM order by where the query lands in each row's keyword blob: at position 0
+# the blob's first word is the page title, so the page *named* styling beats the nine
+# that merely mention it -- the tf-idf ordering in docs/search.py only pays for itself
+# once something reads the order, and now this does.
+#
+# Enter should mean "look that up in the pages", not "open whichever row cmdk
+# happened to select". There is no prop that turns the pre-selection off, so intent is
+# read from the keys: arrow first and Enter picks that row; type and Enter asks /search,
+# which can rank and explain properly. The typed text comes from the input itself, not
+# the save_prop mirror, which is one debounce behind and deserves to lose.
+#
+# location.assign loads /search as a document; refast exposes no public JS navigation
+# call to do it more cheaply.
+ui.add_js(
+    """
+(() => {
+  let arrowed = false;
+
+  const rank = (hay, query) => {
+    if (!query) return 0;
+    const at = hay.indexOf(query);
+    if (at === 0) return 100;
+    if (at > 0) return 60 - Math.min(at, 55);
+    let words = 0;
+    for (const word of query.split(/\\s+/)) if (word && hay.includes(word)) words++;
+    return words * 5;
+  };
+
+  const orderRows = (input) => {
+    const root = input.closest("[cmdk-root]") || document;
+    const query = input.value.trim().toLowerCase();
+    const rows = Array.from(root.querySelectorAll("[cmdk-item]")).filter((row) => row.parentElement);
+    rows
+      .map((row, at) => [
+        row,
+        rank((row.getAttribute("data-val") || row.textContent).toLowerCase(), query),
+        at,
+      ])
+      .sort((a, b) => b[1] - a[1] || a[2] - b[2])
+      .forEach(([row]) => row.parentElement.appendChild(row));
+    const list = root.querySelector("[cmdk-list]");
+    if (list) list.scrollTop = 0;
+  };
+
+  document.addEventListener("input", (event) => {
+    const input = event.target;
+    if (input && input.hasAttribute && input.hasAttribute("cmdk-input")) orderRows(input);
+  }, true);
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      const input = event.target;
+      if (!input || !input.hasAttribute || !input.hasAttribute("cmdk-input")) {
+        arrowed = false;
+        return;
+      }
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        arrowed = true;
+      } else if (event.key === "Enter") {
+        if (arrowed) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const query = input.value.trim();
+        window.location.assign(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
+      } else {
+        arrowed = false;
+      }
+    },
+    true,
+  );
+})();
+"""
 )
 
 # ── Navigation structure ─────────────────────────────────────────────────
@@ -215,6 +308,17 @@ async def close_search(ctx: Context, current_path: str = "/"):
     await ctx.load(current_path)
 
 
+async def open_full_search(ctx: Context):
+    """Hand the palette's text to the results page.
+
+    The query is read through save_prop rather than the item's own payload: a
+    CommandItem's on_select carries nothing, and making the input controlled to
+    get at it is what cost keystrokes before.
+    """
+    query = str(ctx.state.get("palette_query", "") or "").strip()
+    await ctx.load(f"{PAGE_ROUTE_SEARCH}?q={quote(query)}" if query else PAGE_ROUTE_SEARCH)
+
+
 async def search_navigate(ctx: Context, path: str = "/"):
     """Navigate from a search result and close the dialog."""
     ctx.state["search_open"] = False
@@ -231,46 +335,123 @@ def _get_search_items() -> list[dict]:
         group_label = section["label"]
         if "groups" in section:
             for group in section["groups"]:
-                for label, route, icon, *_ in group["pages"]:
-                    items.append({"label": label, "route": route, "icon": icon, "group": group_label})
+                for label, route, icon, render in group["pages"]:
+                    items.append(
+                        {"label": label, "route": route, "icon": icon, "group": group_label, "render": render}
+                    )
         else:
-            for label, route, icon, *_ in section["pages"]:
-                items.append({"label": label, "route": route, "icon": icon, "group": group_label})
+            for label, route, icon, render in section["pages"]:
+                items.append(
+                    {"label": label, "route": route, "icon": icon, "group": group_label, "render": render}
+                )
     return items
-
 
 
 _SEARCH_ITEMS = _get_search_items()
 
+# The palette matched page titles only, so a reader hunting for "save_prop" had
+# to know which page documented it first. This hands the same routes to the
+# full-text index in docs/search.py, which covers the prose on them.
+search_index.set_pages(
+    [(item["label"], item["route"], item["group"], item["render"]) for item in _SEARCH_ITEMS]
+)
 
-def _build_search_dialog(ctx: Context, current_path: str):
-    """Build the CMD+K search dialog overlay."""
-    is_open = ctx.state.get("search_open", False)
 
-    # Group items by section label
-    groups: dict[str, list[dict]] = {}
-    for item in _SEARCH_ITEMS:
-        groups.setdefault(item["group"], []).append(item)
+# Where the site's own source lives; used for the footer's "Edit this page".
+SITE_SOURCE_REPO = "https://github.com/idling-mind/refast-docs"
+_REPO_ROOT = Path(__file__).resolve().parent.parent
 
-    command_groups = []
-    for group_label, group_items in groups.items():
-        command_groups.append(
-            CommandGroup(
-                heading=group_label,
-                children=[
-                    CommandItem(
-                        label=item["label"],
-                        value=item["label"],
-                        icon=item["icon"],
-                        on_select=ctx.callback(search_navigate, path=item["route"]),
-                    )
-                    for item in group_items
-                ],
-            )
+
+def _source_url(route: str) -> str | None:
+    """Blob URL of the module that renders ``route``, or None if it cannot be found.
+
+    Derived from the page function rather than from the route, because the two do
+    not line up: ``/docs/components/button`` is rendered by
+    ``pages/components/buttons/button.py``.
+    """
+    func = next((item["render"] for item in _SEARCH_ITEMS if item["route"] == route), None)
+    if func is None:
+        return None
+    try:
+        path = Path(inspect.getsourcefile(inspect.unwrap(func))).resolve()
+        return f"{SITE_SOURCE_REPO}/blob/main/{path.relative_to(_REPO_ROOT)}"
+    except (TypeError, ValueError):  # no source available, or outside this repo
+        return None
+
+
+class PaletteRow(CommandItem):
+    """A cmdk row that puts the page title on the left and its section on the right.
+
+    CommandItem renders ``children: [label]``, so a plain label is the only text a
+    row can carry. Gluing the section onto the title with an em-dash makes it read
+    as part of the page's name, so this subclasses the row and hands it two spans.
+    cmdk still scores ``value`` -- untouched -- and still owns selection; the extra
+    span is decoration.
+    """
+
+    def __init__(self, label: str, section: str, **kwargs):
+        super().__init__(label, **kwargs)
+        self._title_text = Text(label, class_name="truncate")
+        self._section_text = Text(
+            section, class_name="ml-auto shrink-0 pl-4 text-xs text-muted-foreground"
         )
 
+    def render(self) -> dict:
+        node = super().render()
+        node["children"] = [self._title_text.render(), self._section_text.render()]
+        return node
+
+
+def _build_search_dialog(ctx: Context, current_path: str):
+    """Build the CMD+K search dialog overlay.
+
+    Filtering happens in the browser. cmdk scores each item against the value it
+    registers, and refast's Command wrapper forwards neither ``shouldFilter`` nor
+    extra props, so the page text has to reach the client for body search to work
+    at all: each row carries its page's title, section and most distinctive terms.
+    What the score decides is only whether a row is shown; where rows appear is DOM
+    order, which is why the script in ``ui.add_js`` above re-orders them by the same
+    text before cmdk filters. Ordering the blob by tf-idf is what makes that read
+    correctly: the page named Styling leads with the word, the nine that mention it
+    do not. Driving the ranking from the server was tried first and failed twice: a
+    controlled input echoes one keystroke behind, so letters dropped; and with values
+    rewritten per keystroke, cmdk scored its live string against the stale echo,
+    scored 0, and hid everything. The palette input is deliberately uncontrolled and
+    only mirrors the text through ``ctx.save_prop``, which has no echo to fight with.
+
+    One flat list, because sections are navigation and not ranking: while rows were
+    grouped by section, any tie between groups fell back to DOM order, and Getting
+    Started therefore led every search. The section sits at the right end of each
+    row now.
+
+    The list is built only while the dialog is open, which keeps the corpus out of
+    every ordinary page payload.
+    """
+    if not ctx.state.get("search_open", False):
+        return Dialog(open=False, children=[])
+
+    rows: list[CommandItem] = [
+        PaletteRow(
+            "Search the text of every page",
+            "\u21b5 results",
+            value="full text search results page body snippet relevance",
+            icon="search",
+            on_select=ctx.callback(open_full_search),
+        )
+    ]
+    rows.extend(
+        PaletteRow(
+            item["label"],
+            item["group"],
+            value=search_index.keywords(item["route"]),
+            icon=item["icon"],
+            on_select=ctx.callback(search_navigate, path=item["route"]),
+        )
+        for item in _SEARCH_ITEMS
+    )
+
     return Dialog(
-        open=is_open,
+        open=True,
         on_open_change=ctx.callback(close_search, current_path=current_path),
         children=[
             DialogContent(
@@ -279,11 +460,18 @@ def _build_search_dialog(ctx: Context, current_path: str):
                     Command(
                         class_name="rounded-lg border-0 shadow-none",
                         children=[
-                            CommandInput(placeholder="Search docs..."),
+                            CommandInput(
+                                placeholder="Search titles and page text\u2026",
+                                # Uncontrolled: the browser owns what is typed.
+                                # save_prop only mirrors the text to the server so
+                                # the results row can hand it over, and mirroring
+                                # has no echo loop to lose keystrokes in.
+                                on_value_change=ctx.save_prop("palette_query", debounce=200),
+                            ),
                             CommandList(
                                 children=[
                                     CommandEmpty(message="No pages found."),
-                                    *command_groups,
+                                    *rows,
                                 ],
                             ),
                         ],
@@ -572,10 +760,6 @@ def _build_topbar(ctx: Context, current_path: str):
                                 on_click=ctx.callback(open_search, current_path=current_path),
                             ),
                             ThemeSwitcher(),
-                            # Text(
-                            #     f"Active users: {len(ui.active_contexts)}",
-                            #     class_name="text-sm text-muted-foreground",
-                            # )
                             theme_switcher(ctx),
                         ],
                         align="center",
@@ -625,14 +809,41 @@ def _build_footer(ctx: Context, current_path: str):
                 on_click=ctx.callback(nav, path=next_route),
             )
 
+    edit_link = Container()
+    source_url = _source_url(current_path)
+    if source_url:
+        edit_link = Container(
+            class_name="flex justify-end px-6 pb-2",
+            children=[
+                Link(
+                    "Edit this page",
+                    href=source_url,
+                    variant="ghost",
+                    external=True,
+                    class_name="text-xs text-muted-foreground",
+                )
+            ],
+        )
+
     return Container(
         id="docs-page-footer",
-        class_name="border-t px-6 py-4 mt-8",
+        # No horizontal padding here: the rule below has to reach both edges of
+        # the column, so the rows are inset individually instead.
+        class_name="mt-8",
         children=[
-            Flex(
-                direction="row",
-                justify="between",
-                children=[prev_btn, next_btn],
+            edit_link,
+            # The rule divides the prose from the page-to-page controls, so it has
+            # to sit below both of those; the edit link belongs with the prose.
+            Container(
+                class_name="border-t",
+                children=[
+                    Flex(
+                        direction="row",
+                        justify="between",
+                        class_name="px-6 py-4",
+                        children=[prev_btn, next_btn],
+                    )
+                ],
             ),
         ],
     )
@@ -670,38 +881,14 @@ register_page(ui, "/", home.render)
 register_nav_routes(ui, NAV_SECTIONS)
 
 
+@ui.page(PAGE_ROUTE_SEARCH)
+def page_search(ctx: Context):
+    """Full-text results. Reachable from the palette and by linking /search?q=…"""
+    from .pages.search_results import render as render_search
 
+    return render_search(ctx)
 
-# Advanced
-@ui.page("/docs/advanced/component-dev")
-def page_advanced_component_dev(ctx: Context):
-    return component_dev.render(ctx)
-
-
-@ui.page("/docs/advanced/extension-dev")
-def page_advanced_extension_dev(ctx: Context):
-    return extension_dev.render(ctx)
-
-
-@ui.page("/docs/advanced/security")
-def page_advanced_security(ctx: Context):
-    return security.render(ctx)
-
-
-@ui.page("/docs/advanced/sessions")
-def page_advanced_sessions(ctx: Context):
-    return sessions.render(ctx)
-
-
-@ui.page("/docs/concepts/styling")
-def page_concepts_styling(ctx: Context):
-    return styling.render(ctx)
-
-
-# ── Standalone Examples ──────────────────────────────────────────────────
-
-from docs.examples.routes import register_example_routes
-
+# Standalone example apps mounted under /examples/...
 register_example_routes(ui)
 
 
@@ -711,6 +898,67 @@ app = FastAPI(title="Refast Documentation")
 app.mount(
     "/styles", StaticFiles(directory=Path(__file__).parent / "styles"), name="styles"
 )  # serve custom CSS and JS
+# Refast emits `favicon` as a plain <link rel="icon" href=...>, so the file it
+# points at has to be served; it sat unused in public/ while every tab requested
+# href="📖".
+app.mount(
+    "/public", StaticFiles(directory=_REPO_ROOT / "public"), name="public"
+)
+
+# ── Discovery ───────────────────────────────────────────────────────────
+
+#: Where this site is published. refast's own README points readers here;
+#: override with REFAST_DOCS_URL on a preview deployment so a staging host does
+#: not advertise itself as canonical.
+SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.com").rstrip("/")
+
+SITE_DESCRIPTION = (
+    "Documentation for Refast, a Python framework for building reactive web "
+    "applications: a FastAPI-style backend drives a React, shadcn/ui and Tailwind "
+    "frontend over a persistent WebSocket."
+)
+
+for _tag in (
+    f'<meta name="description" content="{escape(SITE_DESCRIPTION)}">',
+    '<meta property="og:type" content="website">',
+    f'<meta property="og:site_name" content="{escape(ui.title)}">',
+    f'<meta property="og:title" content="{escape(ui.title)}">',
+    f'<meta property="og:description" content="{escape(SITE_DESCRIPTION)}">',
+    f'<meta property="og:url" content="{SITE_URL}/">',
+    '<meta name="twitter:card" content="summary">',
+    # One shell is served for every route, so the canonical URL can only be the
+    # root; per-page URLs and titles need server rendering. See docs/TODO.md.
+    f'<link rel="canonical" href="{SITE_URL}/">',
+):
+    ui.add_head_tag(_tag)
+
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots_txt() -> PlainTextResponse:
+    """Crawl everything; the site has no private routes."""
+    return PlainTextResponse(
+        "User-agent: *\nAllow: /\n\nSitemap: " + SITE_URL + "/sitemap.xml\n",
+        media_type="text/plain",
+    )
+
+
+@app.get("/sitemap.xml", include_in_schema=False)
+def sitemap_xml() -> Response:
+    """Every registered page. Parameterised routes are left out: there is no way
+    to enumerate what they would resolve to."""
+    locations = "".join(
+        f"  <url><loc>{escape(SITE_URL + ('' if route == '/' else route))}</loc></url>\n"
+        for route in sorted(ui.pages)
+        if "{" not in route
+    )
+    return Response(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{locations}</urlset>\n",
+        media_type="application/xml",
+    )
+
+
 app.include_router(ui.router)
 
 if __name__ == "__main__":

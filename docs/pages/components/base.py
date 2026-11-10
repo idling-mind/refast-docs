@@ -1,9 +1,8 @@
-from docs.pages.components.common import render_doc_page
 """Base components — /docs/components/base."""
 
-from refast.components import Container, Heading, Separator
 
 from ..utils import render_markdown_with_demo_apps
+from .common import render_doc_page
 
 PAGE_METADATA = {
     "title": "Base",

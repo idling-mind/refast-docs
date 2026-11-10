@@ -3,9 +3,6 @@ from refast import Context
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Carousel,
     CarouselContent,
     CarouselItem,
@@ -14,11 +11,8 @@ from refast.components import (
     Checkbox,
     Column,
     Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 
@@ -172,16 +166,16 @@ from refast.components import (
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 ### `Carousel`
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `"horizontal" | "vertical"` | `"horizontal"` | Scroll axis |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Scroll axis |
 | `loop` | `bool` | `False` | Whether to wrap around continuously |
-| `opts` | `dict | None` | `None` | Embla Carousel options (advanced) |
+| `opts` | `dict \| None` | `None` | Embla Carousel options (advanced) |
 | `children` | `ChildrenType` | `None` | `CarouselContent` + navigation buttons |
 
 ### `CarouselItem`
@@ -195,7 +189,7 @@ REFERENCE = """
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `on_click` | `Callback | None` | `None` | Optional server callback when navigating |
+| `on_click` | `Callback \| None` | `None` | Optional server callback when navigating |
 
 ## Component Hierarchy
 

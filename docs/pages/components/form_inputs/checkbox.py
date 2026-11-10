@@ -2,16 +2,11 @@
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     CheckboxGroup,
     Column,
     Container,
-    Heading,
     Markdown,
-    Row,
     Select,
     Separator,
     Text,
@@ -242,37 +237,37 @@ CheckboxGroup(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Checkbox Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str | None` | `None` | HTML name attribute |
-| `value` | `str | None` | `None` | Value submitted when checked |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text below the checkbox |
+| `name` | `str \| None` | `None` | HTML name attribute |
+| `value` | `str \| None` | `None` | Value submitted when checked |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text below the checkbox |
 | `checked` | `bool` | `False` | Controlled checked state |
 | `default_checked` | `bool` | `False` | Uncontrolled initial state |
 | `required` | `bool` | `False` | Shows required asterisk |
 | `disabled` | `bool` | `False` | Disables interaction |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired when checked state changes |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired when checked state changes |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 
 ## CheckboxGroup Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `str | None` | `None` | Group name for form submission |
+| `name` | `str \| None` | `None` | Group name for form submission |
 | `children` | `list[Checkbox]` | `[]` | Checkbox items |
-| `label` | `str | None` | `None` | Group label |
-| `description` | `str | None` | `None` | Help text below label |
+| `label` | `str \| None` | `None` | Group label |
+| `description` | `str \| None` | `None` | Help text below label |
 | `value` | `list[str]` | `[]` | Controlled list of selected values |
-| `default_value` | `list[str] | None` | `None` | Uncontrolled initial values |
-| `orientation` | `"vertical" | "horizontal"` | `"vertical"` | Layout orientation |
+| `default_value` | `list[str] \| None` | `None` | Uncontrolled initial values |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Layout orientation |
 | `required` | `bool` | `False` | Shows required asterisk |
 | `disabled` | `bool` | `False` | Disables all checkboxes in the group |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired with the new list of selected values |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired with the new list of selected values |
 | `class_name` | `str` | `""` | Extra Tailwind classes |
 """

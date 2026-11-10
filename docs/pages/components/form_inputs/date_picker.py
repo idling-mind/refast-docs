@@ -2,19 +2,10 @@
 
 from refast import Context
 from refast.components import (
-    Alert,
-    Badge,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from refast.components.shadcn.controls import DatePicker
@@ -198,24 +189,24 @@ DatePicker(
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `date | list[date] | dict | None` | `None` | Controlled selected value |
-| `mode` | `"single" | "multiple" | "range"` | `"single"` | Selection mode |
+| `value` | `date \| list[date] \| dict \| None` | `None` | Controlled selected value |
+| `mode` | `"single" \| "multiple" \| "range"` | `"single"` | Selection mode |
 | `placeholder` | `str` | `"Pick a date"` | Button text when no date selected |
 | `disabled` | `bool` | `False` | Disables interaction |
 | `format` | `str` | `"PPP"` | date-fns format string |
-| `caption_layout` | `"label" | "dropdown" | ...` | `"label"` | Calendar header style |
-| `min_date` | `date | str | None` | `None` | Earliest selectable date |
-| `max_date` | `date | str | None` | `None` | Latest selectable date |
-| `label` | `str | None` | `None` | Label text |
-| `description` | `str | None` | `None` | Help text |
+| `caption_layout` | `"label" \| "dropdown" \| ...` | `"label"` | Calendar header style |
+| `min_date` | `date \| str \| None` | `None` | Earliest selectable date |
+| `max_date` | `date \| str \| None` | `None` | Latest selectable date |
+| `label` | `str \| None` | `None` | Label text |
+| `description` | `str \| None` | `None` | Help text |
 | `required` | `bool` | `False` | Shows required asterisk |
-| `error` | `str | None` | `None` | Error message |
-| `on_change` | `Callback | None` | `None` | Fired when selection changes |
+| `error` | `str \| None` | `None` | Error message |
+| `on_change` | `Callback \| None` | `None` | Fired when selection changes |
 
 ## Range Mode
 

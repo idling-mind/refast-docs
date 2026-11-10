@@ -135,7 +135,7 @@ container.render()
 - Children must be components or strings; passing raw dicts will raise validation errors.
 - The registry lookup is case-sensitive; `component_type` must match the registered name exactly.
 
-- [Component Reference](/docs/components/layout) — Detailed props for each UI element
+- [Component Reference](/docs/components/base) — Detailed props for each UI element
 
 ## Nested component example code
 

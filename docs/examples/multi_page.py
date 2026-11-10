@@ -11,9 +11,7 @@ from refast.components import (
     CardTitle,
     Column,
     Container,
-    Heading,
     Row,
-    Separator,
     Text,
 )
 

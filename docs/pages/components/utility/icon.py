@@ -419,17 +419,17 @@ Icon("settings", size=24, color="blue")
 ```
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `str` | *(required)* | Lucide icon name (e.g. `"home"`, `"settings"`) or emoji fallback. |
 | `size` | `int` | `16` | Icon height and width in pixels. |
-| `color` | `str | None` | `None` | CSS color value (e.g. `"red"`, `"#ff0000"`, `"currentColor"`). |
+| `color` | `str \| None` | `None` | CSS color value (e.g. `"red"`, `"#ff0000"`, `"currentColor"`). |
 | `stroke_width` | `float` | `2.0` | Thickness of the icon stroke lines. |
 | `class_name` | `str` | `""` | Extra Tailwind classes applied to the icon. |
-| `style` | `dict | None` | `None` | Inline CSS style dictionary. |
+| `style` | `dict \| None` | `None` | Inline CSS style dictionary. |
 
 ---
 

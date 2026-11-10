@@ -7,12 +7,9 @@ from refast.components import (
     Badge,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
     Row,
     Select,
-    Separator,
     Text,
 )
 from refast.components.shadcn.timer import Timer
@@ -187,16 +184,16 @@ Toggle the timer on and off by updating the `enabled` prop from a callback or
 state change — no need to add/remove the component from the tree.
 """
 
-REFERENCE = """
+REFERENCE = r"""
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `interval` | `int` | `1000` | Milliseconds between ticks. Must be ≥ 100 |
 | `enabled` | `bool` | `True` | When `False` the timer is paused; no callbacks are fired |
-| `on_tick` | `Callback | None` | `None` | Server callback invoked on each tick |
-| `id` | `str | None` | `None` | Unique element ID |
-| `extra_props` | `dict | None` | `None` | Additional props forwarded to the component |
+| `on_tick` | `Callback \| None` | `None` | Server callback invoked on each tick |
+| `id` | `str \| None` | `None` | Unique element ID |
+| `extra_props` | `dict \| None` | `None` | Additional props forwarded to the component |
 
 ## Common Patterns
 

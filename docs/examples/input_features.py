@@ -10,9 +10,7 @@ from refast.components import (
     CardTitle,
     Column,
     Container,
-    Heading,
     Input,
-    Text,
 )
 
 
