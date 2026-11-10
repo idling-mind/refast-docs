@@ -62,15 +62,23 @@ def render(ctx):
 
 Two surfaces, because one row of text cannot do both jobs.
 
-**`⌘K` navigates.** The palette lists every page in `NAV_SECTIONS`, labelled
-`Title — Section`, and cmdk filters that list **in the browser** against each row's
-`value`. That is not a preference: refast's `Command` wrapper forwards neither
-`shouldFilter` nor extra props, so the server cannot take cmdk's filter away -- it
-can only choose what the value contains. `docs/search.py` reads each page module
-with `ast`, indexes every string literal of 120 characters or more, and gives each
-page a blob ordered by tf-idf: title, section, then its most distinctive terms.
-Ordering by tf-idf rather than frequency is what makes cmdk's preference for early
-matches put the page named Styling above the nine pages that mention styling.
+**`⌘K` navigates.** The palette is one flat list of every page in `NAV_SECTIONS`: the
+page title on the left, its section right-aligned and muted on the right. cmdk
+filters that list **in the browser** against each row's `value`. That is not a
+preference: refast's `Command` wrapper forwards neither `shouldFilter` nor extra
+props, so the server cannot take cmdk's filter away -- it can only choose what the
+value contains. `docs/search.py` reads each page module with `ast`, indexes every
+string literal of 120 characters or more, and gives each page a blob ordered by
+tf-idf: title, section, then its most distinctive terms. Ordering by tf-idf rather
+than frequency is what makes cmdk's preference for early matches put the page named
+Styling above the nine pages that mention styling.
+
+Nothing is pre-selected by typing. cmdk highlights its top match as soon as there is
+one, and Enter would otherwise open it; a small script on the shell reads intent from
+the keys instead -- Enter goes to `/search?q=…` unless ArrowUp/ArrowDown moved the
+caret first. The rows are not grouped by section either, for the same reason the
+values are ordered by tf-idf: a `CommandGroup` per section meant every tie between
+groups fell back to DOM order, and Getting Started led every search.
 
 Driving the ranking from the server was tried first and failed twice: a controlled
 input echoes one keystroke behind, so letters dropped; and with values rewritten
@@ -81,9 +89,12 @@ through `ctx.save_prop`, which has no echo to fight with.
 **`/search` answers.** The results page ranks server-side (title 8x, headings 4x,
 idf-scaled, plus a bonus when the whole phrase is a title), shows the section on the
 right of every row, and bolds the matched words inside a snippet drawn from the
-page's prose -- the thing a palette row cannot say. The query is a URL parameter
-(`/search?q=styling`), so results can be linked and reopened, and the form means
-typing costs nothing until it is submitted. The palette's first row hands off to it.
+page's prose -- the thing a palette row cannot say. Snippets keep their backticks for
+that reason: stripped of them, `` `save_prop` `` reaches the Markdown renderer as bare
+text, the underscore opens an emphasis run, and the rest of the line loses its spaces
+and turns italic. The query is a URL parameter (`/search?q=styling`), so results can
+be linked and reopened, and the form means typing costs nothing until it is submitted.
+The palette's first row hands off to it.
 
 Measured: a closed palette is 242 bytes and ordinary pages no longer carry a 30 KB
 title list at all; opening it sends 9 KB of keywords.

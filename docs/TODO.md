@@ -89,27 +89,37 @@ rendered alongside their code snippets). Priority:
 
 ### Search
 
-- [x] ~~Implement in-page search~~ — done, in two parts: `⌘K` navigates (rows labelled
-      `Title — Section`, cmdk filtering locally over tf-idf-ordered keyword blobs,
-      because refast's `Command` forwards neither `shouldFilter` nor extra props), and
-      `/search?q=` answers (server ranking, section on the right, matched words bolded
-      in a snippet). See docs/README.md for why the server-ranked palette was reverted.
+- [x] ~~`/search?q=` for readers whose query is too vague for the palette~~ — done: the
+      results page ranks server-side, shows the section on the right of each row, and
+      bolds the matched words in a snippet. It is the only surface with `search.search()`.
+- [x] ~~Palette rows labelled `Title — Section`~~ — done, and superseded: the section is
+      now a right-aligned muted span at the end of each row (`PaletteRow` in `docs/app.py`),
+      and the rows sit in one flat list. Grouping them by section made every tie fall back
+      to DOM order, so Getting Started led every search.
+- [x] ~~Nothing should be pre-selected while typing~~ — done: Enter goes to
+      `/search?q=…` unless ArrowUp/ArrowDown moved the caret first. cmdk highlights its top
+      match as soon as there is one and the Command wrapper exposes no way to turn that off,
+      so the script in the shell reads intent from the keys instead.
+- [x] ~~The "Nothing matched" hint rendered wrong~~ — done: it is a Markdown paragraph in a
+      Row of its own, with `save_prop` code-fenced. Snippets keep their backticks for the
+      same reason; stripped of them, an underscore opens an emphasis run and the line loses
+      its spaces.
+- [ ] **Verify the palette in a browser.** The row structure, the flat list and the Enter
+      script are all asserted in tests, but the script is the one piece of this that runs
+      before any server code does, and cmdk's `data-selected` styling can still make a row
+      look chosen while typing. Nothing here has been seen in a real tab.
 - [ ] `/search` has no entry in the sidebar, so it is only reachable from the palette
-      or a URL. Adding it to `NAV_SECTIONS` would make it searchable-by-content, which
-      is circular, and the sitemap already lists it.
+      hand-off row, the Enter key, or a URL. Adding it to `NAV_SECTIONS` would make it
+      searchable-by-content, which is circular, and the sitemap already lists it.
 - [ ] Index the examples and the home page too; today only `NAV_SECTIONS` routes are
       searchable, so "counter" finds the guide page but not `/examples/counter`.
-- [ ] A `/search?q=` page would use `search.search()` -- real idf ranking plus the
-      snippets it already computes -- for readers whose query is too vague for the
-      palette's local scoring. The function exists; nothing calls it but tests.
-- [ ] The keyword blobs cost 25 KB when the palette opens. If that ever matters, the
+- [ ] The keyword blobs cost ~9 KB when the palette opens. If that ever matters, the
       corpus could be fetched once and cached in the browser instead of riding in the
       dialog tree.
-- [ ] The Icons page (`/docs/components/icon`) filters the way the palette used to:
-      a controlled `Input` plus `await ctx.refresh()` per keystroke, which re-renders
-      every icon tile and echoes the value back one change behind. It should either
-      score locally or refresh only the grid. The same fix applies to any page that
-      filters a long list.
+- [ ] The Icons page (`/docs/components/icon`) filters the way the palette used to: a
+      controlled `Input` plus `await ctx.refresh()` per keystroke, which re-renders every
+      icon tile and echoes the value back one change behind. The same fix applies to any
+      page that filters a long list.
 
 ---
 
