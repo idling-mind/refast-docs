@@ -68,23 +68,33 @@ filters that list **in the browser** against each row's `value`. That is not a
 preference: refast's `Command` wrapper forwards neither `shouldFilter` nor extra
 props, so the server cannot take cmdk's filter away -- it can only choose what the
 value contains. `docs/search.py` reads each page module with `ast`, indexes every
-string literal of 120 characters or more, and gives each page a blob ordered by
-tf-idf: title, section, then its most distinctive terms. Ordering by tf-idf rather
-than frequency is what makes cmdk's preference for early matches put the page named
-Styling above the nine pages that mention styling.
+string literal of 120 characters or more, and gives each page a blob: its nav label,
+its `PAGE_TITLE`, its section, then its most distinctive terms in tf-idf order.
 
-Nothing is pre-selected by typing. cmdk highlights its top match as soon as there is
-one, and Enter would otherwise open it; a small script on the shell reads intent from
-the keys instead -- Enter goes to `/search?q=…` unless ArrowUp/ArrowDown moved the
-caret first. The rows are not grouped by section either, for the same reason the
-values are ordered by tf-idf: a `CommandGroup` per section meant every tie between
-groups fell back to DOM order, and Getting Started led every search.
+Nothing in cmdk sorts on that blob. A row's score decides only whether it is shown;
+the rows you see stay in DOM order, which for us is sidebar order, and the row cmdk
+selects is the first *visible* one in that order. Searching "form" therefore landed on
+Column, a dozen rows down, and scrolled the list away from the page called Form. So a
+small script on the shell re-orders the rows by where the query falls in each blob --
+position 0 means the page is named for it -- and resets the list's scroll, in the
+capture phase of `input`, so that the order cmdk filters and selects from is already
+the ranked one. Ordering the blob by tf-idf is what makes that read correctly: the
+page called Styling leads with the word, the nine pages that mention styling do not.
+
+Nothing is pre-selected by typing either. cmdk highlights its top match as soon as
+there is one, and Enter would otherwise open it; the same script reads intent from the
+keys instead -- Enter goes to `/search?q=…` unless ArrowUp/ArrowDown moved the caret
+first. The rows are not grouped by section either, because a group is a bucket in DOM
+order and cannot rank: groups that tie fall back to the sidebar, and Getting Started
+led every search while they existed.
 
 Driving the ranking from the server was tried first and failed twice: a controlled
 input echoes one keystroke behind, so letters dropped; and with values rewritten
 per keystroke, cmdk scored its live string against the stale echo, scored 0, and hid
-everything. The palette input is deliberately uncontrolled and only mirrors the text
-through `ctx.save_prop`, which has no echo to fight with.
+everything. The palette input is deliberately uncontrolled, and its `ctx.save_prop`
+mirror stays out of the render path -- `save_prop` writes to the browser's prop store
+and makes no round trip at all, which is why ranking the rows from Python per keystroke
+was never on the table.
 
 **`/search` answers.** The results page ranks server-side (title 8x, headings 4x,
 idf-scaled, plus a bonus when the whole phrase is a title), shows the section on the

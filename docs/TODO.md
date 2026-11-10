@@ -104,10 +104,17 @@ rendered alongside their code snippets). Priority:
       Row of its own, with `save_prop` code-fenced. Snippets keep their backticks for the
       same reason; stripped of them, an underscore opens an emphasis run and the line loses
       its spaces.
-- [ ] **Verify the palette in a browser.** The row structure, the flat list and the Enter
-      script are all asserted in tests, but the script is the one piece of this that runs
-      before any server code does, and cmdk's `data-selected` styling can still make a row
-      look chosen while typing. Nothing here has been seen in a real tab.
+- [x] ~~The palette scrolls away from its own results~~ — done: cmdk does not sort, only
+      show-or-hide, so rows stayed in sidebar order and it selected the first visible one,
+      a dozen rows down for a query like "form", then scrolled it into view. The shell
+      script now re-orders the rows by where the query falls in each keyword blob and
+      resets the list's scroll, in the capture phase of `input`, before cmdk filters.
+- [ ] **Verify the palette in a browser.** The row structure, the flat list and the script
+      are asserted in tests, and the ranking was simulated in node against the real blobs
+      (`form` → Form instead of Column, `session` → Sessions instead of State & Store). But
+      nothing here has been seen in a real tab: cmdk's `data-selected` styling can still
+      make a row look chosen while you type, and the reorder happens to DOM nodes React
+      believes it owns.
 - [ ] `/search` has no entry in the sidebar, so it is only reachable from the palette
       hand-off row, the Enter key, or a URL. Adding it to `NAV_SECTIONS` would make it
       searchable-by-content, which is circular, and the sitemap already lists it.
