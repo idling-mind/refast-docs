@@ -38,6 +38,23 @@ or document them as known limitations.
 
 ## Documentation TODOs
 
+### Discovery & SEO
+
+- [x] ~~Per-page metadata~~ partially: the shell carries a description, Open Graph and
+      Twitter tags, `/robots.txt` and a `/sitemap.xml` of all 108 registered pages.
+      Because refast serves one static shell for every route, `<title>`, `og:url` and
+      `canonical` can only describe the root — a crawler or link preview never sees
+      "Sessions" as the title of `/docs/advanced/sessions`.
+- [ ] Prerender or server-render the shell per route so titles, descriptions and
+      canonical URLs are route-specific. This is the same feature as item 17
+      (prerendering/static export) and needs framework support: either
+      `RefastApp(pages=..., render_shell_for=path)` or a `head_tags` argument on
+      `@ui.page`.
+- [ ] Add an `og:image` (1200×630) and point `og:image` at it; previews are currently
+      text-only because `public/` holds nothing but a favicon.
+- [ ] Set `REFAST_DOCS_URL` on preview deployments, or they will claim
+      `refast.fastapicloud.com` as canonical.
+
 ### Content Completion
 
 Every page now has real prose; the `> **TODO**` banners are gone (the last one, on
@@ -91,8 +108,10 @@ refast releases:
 |------|---------|
 | `test_docs_pages_render.py` | a page function that raises while building its tree (bad props, bad imports, bad return) |
 | `test_docs_component_props.py` | a prop passed to a component that does not accept it |
-| `test_docs_links.py` | links to unregistered routes and "View source" URLs that 404 |
+| `test_docs_links.py` | links to unregistered routes, "View source" URLs that 404, and "Edit this page" URLs whose file is gone |
 | `test_docs_markdown_tables.py` | Markdown tables that render with the wrong number of columns |
+| `test_docs_search.py` | pages that vanished from the search index, and ranking that stopped reflecting page text |
+| `test_docs_shell.py` | the HTML document every tab and crawler sees first: title, favicon, share metadata, robots.txt, sitemap.xml |
 
 Open items:
 

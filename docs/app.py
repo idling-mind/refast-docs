@@ -7,11 +7,14 @@ Run:
     uvicorn docs.app:app --reload
 """
 import inspect
+import os
 from importlib.metadata import version
+from html import escape
 
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from refast import Context, RefastApp
@@ -768,6 +771,61 @@ app.mount(
 app.mount(
     "/public", StaticFiles(directory=_REPO_ROOT / "public"), name="public"
 )
+
+# ── Discovery ───────────────────────────────────────────────────────────
+
+#: Where this site is published. refast's own README points readers here;
+#: override with REFAST_DOCS_URL on a preview deployment so a staging host does
+#: not advertise itself as canonical.
+SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.com").rstrip("/")
+
+SITE_DESCRIPTION = (
+    "Documentation for Refast, a Python framework for building reactive web "
+    "applications: a FastAPI-style backend drives a React, shadcn/ui and Tailwind "
+    "frontend over a persistent WebSocket."
+)
+
+for _tag in (
+    f'<meta name="description" content="{escape(SITE_DESCRIPTION)}">',
+    '<meta property="og:type" content="website">',
+    f'<meta property="og:site_name" content="{escape(ui.title)}">',
+    f'<meta property="og:title" content="{escape(ui.title)}">',
+    f'<meta property="og:description" content="{escape(SITE_DESCRIPTION)}">',
+    f'<meta property="og:url" content="{SITE_URL}/">',
+    '<meta name="twitter:card" content="summary">',
+    # One shell is served for every route, so the canonical URL can only be the
+    # root; per-page URLs and titles need server rendering. See docs/TODO.md.
+    f'<link rel="canonical" href="{SITE_URL}/">',
+):
+    ui.add_head_tag(_tag)
+
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots_txt() -> PlainTextResponse:
+    """Crawl everything; the site has no private routes."""
+    return PlainTextResponse(
+        "User-agent: *\nAllow: /\n\nSitemap: " + SITE_URL + "/sitemap.xml\n",
+        media_type="text/plain",
+    )
+
+
+@app.get("/sitemap.xml", include_in_schema=False)
+def sitemap_xml() -> Response:
+    """Every registered page. Parameterised routes are left out: there is no way
+    to enumerate what they would resolve to."""
+    locations = "".join(
+        f"  <url><loc>{escape(SITE_URL + ('' if route == '/' else route))}</loc></url>\n"
+        for route in sorted(ui.pages)
+        if "{" not in route
+    )
+    return Response(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{locations}</urlset>\n",
+        media_type="application/xml",
+    )
+
+
 app.include_router(ui.router)
 
 if __name__ == "__main__":
