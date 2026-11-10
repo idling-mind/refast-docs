@@ -118,7 +118,7 @@ from docs.examples.routes import register_example_routes  # noqa: E402
 ui = RefastApp(
     title="Refast Docs",
     theme=default_theme,
-    favicon="📖",
+    favicon="/public/favicon.ico",
     custom_css="/styles/main.css",
     preloaded_features=["markdown", "controls", "navigation", "overlay"],
 )
@@ -642,10 +642,6 @@ def _build_topbar(ctx: Context, current_path: str):
                                 on_click=ctx.callback(open_search, current_path=current_path),
                             ),
                             ThemeSwitcher(),
-                            # Text(
-                            #     f"Active users: {len(ui.active_contexts)}",
-                            #     class_name="text-sm text-muted-foreground",
-                            # )
                             theme_switcher(ctx),
                         ],
                         align="center",
@@ -766,6 +762,12 @@ app = FastAPI(title="Refast Documentation")
 app.mount(
     "/styles", StaticFiles(directory=Path(__file__).parent / "styles"), name="styles"
 )  # serve custom CSS and JS
+# Refast emits `favicon` as a plain <link rel="icon" href=...>, so the file it
+# points at has to be served; it sat unused in public/ while every tab requested
+# href="📖".
+app.mount(
+    "/public", StaticFiles(directory=_REPO_ROOT / "public"), name="public"
+)
 app.include_router(ui.router)
 
 if __name__ == "__main__":
