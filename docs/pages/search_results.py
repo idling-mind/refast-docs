@@ -98,11 +98,20 @@ def render(ctx: Context):
         )
 
     if query.strip() and not hits:
+        # Markdown, with the identifier in backticks: raw `save_prop` in prose is an
+        # emphasis hazard, and the underscore opened an _italic run_ that swallowed
+        # the rest of the line. A Row of its own keeps it out of the count above.
         children.append(
-            Text(
-                "Nothing matched. Try an API name such as save_prop, or a word "
-                "you remember reading in the documentation.",
+            Row(
                 class_name="mt-4",
+                children=[
+                    Markdown(
+                        content=(
+                            "Nothing matched. Try an API name such as `save_prop`, or a "
+                            "word you remember reading in the documentation."
+                        )
+                    )
+                ],
             )
         )
 

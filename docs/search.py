@@ -257,7 +257,10 @@ def _plain(body: str) -> str:
     text = _FENCE_RE.sub(" ", body)
     text = _LINK_RE.sub(r"\1", text)
     text = _TAG_RE.sub(" ", text)
-    return re.sub(r"[`*>#|]+", " ", re.sub(r"\s+", " ", text)).strip()
+    # Backticks stay: a snippet that loses them hands `save_prop` to the markdown
+    # renderer as bare text, where the underscore opens emphasis and the rest of
+    # the line collapses.
+    return re.sub(r"[*<>#|]+", " ", re.sub(r"\s+", " ", text)).strip()
 
 
 def _snippet(doc: _Doc, terms: list[str], width: int = 150) -> str:

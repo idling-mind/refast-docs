@@ -114,24 +114,51 @@ def _walk(node, seen=None) -> list[dict]:
     return seen
 
 
-def _items(nodes: list[dict]) -> list[tuple[str, str]]:
-    """(label, value) for every palette row; the label renders, the value scores."""
-    return [
-        ((n.get("children") or [""])[0], str(n["props"].get("value", "")))
-        for n in nodes
-        if n.get("type") == "CommandItem"
-    ]
+def _rows(nodes: list[dict]) -> list[tuple[list[str], str]]:
+    """(texts, value) for every palette row. The texts are what a reader sees,
+    in left-to-right order; the value is what cmdk scores."""
+    out = []
+    for node in nodes:
+        if node.get("type") != "CommandItem":
+            continue
+        texts = [_text_of(child) for child in node.get("children") or []]
+        out.append(([t for t in texts if t], str(node["props"].get("value", ""))))
+    return out
+
+
+def _text_of(node) -> str:
+    if isinstance(node, dict):
+        parts = node.get("children") or []
+        return " ".join(p for p in (_text_of(c) for c in parts) if p) if parts else ""
+    return str(node) if node else ""
+
+
+def test_the_palette_is_one_flat_list() -> None:
+    """Sections are navigation, not ranking.
+
+    While rows were grouped by section, any tie between groups fell back to DOM
+    order, and Getting Started -- first in the sidebar -- led every search.
+    """
+    nodes = _palette()
+    assert not [n for n in nodes if n.get("type") == "CommandGroup"], "rows are grouped again"
 
 
 def test_every_palette_row_says_which_section_it_is_in() -> None:
-    """Without the section, "Styling" and "Styling" in another group are identical.
+    """Right-aligned and muted, not glued onto the title with an em-dash."""
+    sections = {section["label"] for section in NAV_SECTIONS}
+    page_rows = [texts for texts, _value in _rows(_palette())[1:] if len(texts) > 1]
+    assert page_rows, "no row carries a section"
+    assert all(texts[-1] in sections for texts in page_rows), page_rows[:3]
 
-    cmdk gives a row one line of text, so the section rides in the label; the
-    results page has room to put it on the right and add a snippet.
-    """
-    rows = [label for label, _value in _items(_palette())]
-    assert any(label.endswith("— Core Concepts") for label in rows), sorted(rows)[:5]
-    assert all("—" in label for label in rows if not label.startswith("Search")), sorted(rows)[:5]
+    styling = next(texts for texts, _v in _rows(_palette()) if texts[0] == "Styling")
+    span = next(
+        n
+        for n in _walk(_palette())
+        if n.get("type") == "Text" and (n.get("children") or [""]) == ["Core Concepts"]
+    )
+    classes = span["props"]["class_name"]
+    assert "ml-auto" in classes and "text-muted-foreground" in classes, classes
+    assert "text-xs" in classes, classes
 
 
 def test_palette_rows_score_against_page_text_not_just_titles() -> None:
@@ -142,12 +169,12 @@ def test_palette_rows_score_against_page_text_not_just_titles() -> None:
     contains. Ordering it by tf-idf is what makes position work: the page named
     Styling leads with the word, the nine pages that mention it do not.
     """
-    values = [value for _label, value in _items(_palette())]
+    values = [value for _texts, value in _rows(_palette())]
     assert values, "the open palette shipped no rows"
     assert any("safelisted" in value for value in values), "no row is findable by its body text"
     with_terms = [v for v in values if len(v.split()) > 3]
     assert len(with_terms) > len(values) * 0.8, "most rows carry nothing but a title"
-    styling = [v for label, v in _items(_palette()) if label.startswith("Styling ")]
+    styling = [v for texts, v in _rows(_palette()) if texts and texts[0] == "Styling"]
     assert styling and styling[0].lower().startswith("styling"), styling
 
 
@@ -168,15 +195,34 @@ def test_the_palette_input_keeps_the_browsers_text() -> None:
 
 
 def test_the_palette_leads_to_the_results_page() -> None:
-    """The row that turns a vague query into ranked, highlighted results."""
+    """The hand-off row is first, so it is what cmdk pre-selects."""
+    rows = _rows(_palette())
+    hand_off = [texts for texts, _value in rows if texts and "Search the text" in texts[0]]
+    assert len(hand_off) == 1, "the palette needs exactly one hand-off row"
+    assert rows[0][0] and "Search the text" in rows[0][0][0], "the hand-off row is not first"
+
     nodes = _palette()
-    rows = [n for n in nodes if n.get("type") == "CommandItem" and "Search page text" in str(n.get("children"))]
-    assert len(rows) == 1, "the palette needs exactly one hand-off row"
-    callback = rows[0]["props"]["on_select"]
+    item = next(
+        n for n in nodes if n.get("type") == "CommandItem" and "Search the text" in str(n)
+    )
+    callback = item["props"]["on_select"]
     assert callback and callback.get("callbackId"), "the hand-off row goes nowhere"
 
-    headings = [n["props"].get("heading") for n in nodes if n.get("type") == "CommandGroup"]
-    assert headings[0] == "Go to", headings
+
+def test_enter_in_the_palette_searches_unless_a_row_was_arrowed(client: TestClient) -> None:
+    """cmdk pre-selects the top match as you type, and exposes nothing to stop it.
+
+    So the intent has to be read from the keys themselves: typing then Enter asks
+    /search, which can rank and explain; arrowing to a row and pressing Enter keeps
+    cmdk's own selection. Asserted against the shell, because the script is the
+    only place this can be decided -- the server never sees which key came first.
+    """
+    shell = client.get("/").text
+    script = shell[shell.index("cmdk-input"):][:600]
+    assert "cmdk-input" in shell and "location.assign" in script
+    assert "/search?q=" in script, "Enter should carry the typed text to the results page"
+    assert "ArrowDown" in script and "ArrowUp" in script, "arrow selection must survive"
+    assert "preventDefault" in script, "cmdk would otherwise select the pre-highlighted row"
 
 
 def test_a_closed_page_does_not_ship_the_search_corpus() -> None:
@@ -184,9 +230,9 @@ def test_a_closed_page_does_not_ship_the_search_corpus() -> None:
     import json
 
     closed = _palette(open_=False)
-    assert not _items(closed), "the closed palette still ships rows"
+    assert not _rows(closed), "the closed palette still ships rows"
     assert len(json.dumps(closed)) < 1_500
-    assert len(_items(_palette())) == len(NAV_ROUTES) + 1  # plus the hand-off row
+    assert len(_rows(_palette())) == len(NAV_ROUTES) + 1  # plus the hand-off row
 
 
 def test_keyword_blobs_stay_small_enough_to_send() -> None:
@@ -254,6 +300,25 @@ def test_result_links_all_lead_to_registered_pages() -> None:
 
 def test_a_query_that_matches_nothing_says_so() -> None:
     nodes = _results("qqzzxwvnotaterm")
-    texts = [" ".join(str(x) for x in (n.get("children") or [])) for n in nodes if n.get("type") == "Text"]
+    texts = [_text_of(n) for n in nodes if n.get("type") == "Text"]
     assert any("0 of" in t for t in texts), texts[:3]
-    assert any("Nothing matched" in t for t in texts), texts[:3]
+
+    # Its own Row, and Markdown so the identifier can be code-fenced: bare
+    # save_prop in a rendered string opened an _italic run_ that ate the spaces
+    # out of the rest of the sentence.
+    hint = next((n for n in nodes if n.get("type") == "Markdown" and "Nothing matched" in str(n)), None)
+    assert hint is not None, texts[:3]
+    content = hint["props"]["content"]
+    assert "`save_prop`" in content, content
+    assert "`" in content and content.count("`") % 2 == 0, f"unbalanced code span: {content}"
+    parent = next(n for n in nodes if hint in (n.get("children") or []))
+    assert parent.get("type") == "Row", "the hint needs a container of its own"
+
+
+def test_snippets_keep_identifiers_in_code_spans() -> None:
+    """The results page renders snippets as Markdown, so an underscore is a hazard."""
+    joined = " ".join(
+        str(n["props"].get("content")) for n in _results("save_prop") if n.get("type") == "Markdown"
+    )
+    assert "save_prop" in joined
+    assert "save prop" not in joined, "the underscore was eaten as emphasis"

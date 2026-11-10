@@ -29,7 +29,6 @@ from refast.components import (
     Button,
     Command,
     CommandEmpty,
-    CommandGroup,
     CommandInput,
     CommandItem,
     CommandList,
@@ -64,6 +63,7 @@ from refast.components import (
     SidebarRail,
     SidebarSeparator,
     SidebarTrigger,
+    Text,
     Tooltip,
 )
 from refast.components.shadcn import KeyboardShortcut, ThemeSwitcher
@@ -128,6 +128,42 @@ ui = RefastApp(
     favicon="/public/favicon.ico",
     custom_css="/styles/main.css",
     preloaded_features=["markdown", "controls", "navigation", "overlay"],
+)
+
+# Enter in the palette should mean "look that up in the pages", not "open whichever
+# row cmdk happened to select first". cmdk auto-selects the top match as you type and
+# its Command wrapper exposes no way to turn that off, so the difference has to be
+# read from intent: if the last thing you did was arrow through rows, Enter selects
+# one; if it was type, Enter asks /search, which can rank and explain properly.
+#
+# The text goes to the page by URL rather than through ctx.save_prop, because a
+# mirrored value is one debounce behind and an Enter pressed immediately after typing
+# deserves what is actually on screen. location.assign loads /search as a document;
+# refast exposes no public JS navigation call to do it more cheaply.
+ui.add_js(
+    """
+(() => {
+  let arrowed = false;
+  document.addEventListener("keydown", (event) => {
+    const input = event.target;
+    if (!input || !input.hasAttribute || !input.hasAttribute("cmdk-input")) {
+      arrowed = false;
+      return;
+    }
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      arrowed = true;
+    } else if (event.key === "Enter") {
+      if (arrowed) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const query = input.value.trim();
+      window.location.assign(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
+    } else {
+      arrowed = false;
+    }
+  }, true);
+})();
+"""
 )
 
 # ── Navigation structure ─────────────────────────────────────────────────
@@ -297,18 +333,46 @@ def _source_url(route: str) -> str | None:
         return None
 
 
+class PaletteRow(CommandItem):
+    """A cmdk row that puts the page title on the left and its section on the right.
+
+    CommandItem renders ``children: [label]``, so a plain label is the only text a
+    row can carry. Gluing the section onto the title with an em-dash makes it read
+    as part of the page's name, so this subclasses the row and hands it two spans.
+    cmdk still scores ``value`` -- untouched -- and still owns selection; the extra
+    span is decoration.
+    """
+
+    def __init__(self, label: str, section: str, **kwargs):
+        super().__init__(label, **kwargs)
+        self._title_text = Text(label, class_name="truncate")
+        self._section_text = Text(
+            section, class_name="ml-auto shrink-0 pl-4 text-xs text-muted-foreground"
+        )
+
+    def render(self) -> dict:
+        node = super().render()
+        node["children"] = [self._title_text.render(), self._section_text.render()]
+        return node
+
+
 def _build_search_dialog(ctx: Context, current_path: str):
     """Build the CMD+K search dialog overlay.
 
     Filtering happens in the browser. cmdk scores each item against the value it
     registers, and refast's Command wrapper forwards neither ``shouldFilter`` nor
     extra props, so the page text has to reach the client for body search to work
-    at all: each item carries its page's title, section and most distinctive
-    terms, ordered so that ``command-score``'s preference for early matches lands
-    the right page on top. Driving the ranking from the server instead --
+    at all: each row carries its page's title, section and most distinctive terms,
+    ordered by tf-idf so that ``command-score``'s preference for early matches
+    lands the right page on top. Driving the ranking from the server instead --
     refreshing per keystroke -- lost letters and then matched nothing, because a
     controlled input echoes one keystroke behind while cmdk scores the live string
     against that stale echo.
+
+    One flat list, because sections are navigation and not ranking: while rows were
+    grouped by section, any tie between groups fell back to DOM order, and Getting
+    Started therefore led every search. The section sits at the right end of each
+    row now.
 
     The list is built only while the dialog is open, which keeps the corpus out of
     every ordinary page payload.
@@ -316,42 +380,25 @@ def _build_search_dialog(ctx: Context, current_path: str):
     if not ctx.state.get("search_open", False):
         return Dialog(open=False, children=[])
 
-    # Group items by section label
-    groups: dict[str, list[dict]] = {}
-    for item in _SEARCH_ITEMS:
-        groups.setdefault(item["group"], []).append(item)
-
-    command_groups = [
-        CommandGroup(
-            heading="Go to",
-            children=[
-                CommandItem(
-                    label="Search page text for everything else",
-                    value="full text search results page every page body snippet",
-                    icon="search",
-                    on_select=ctx.callback(open_full_search),
-                )
-            ],
+    rows: list[CommandItem] = [
+        PaletteRow(
+            "Search the text of every page",
+            "\u21b5 results",
+            value="full text search results page body snippet relevance",
+            icon="search",
+            on_select=ctx.callback(open_full_search),
         )
     ]
-    for group_label, group_items in groups.items():
-        command_groups.append(
-            CommandGroup(
-                heading=group_label,
-                children=[
-                    CommandItem(
-                        # cmdk gives a row one line of text, so the section rides
-                        # along in the label; the results page has room for it on
-                        # the right and for the snippet that explains the match.
-                        label=f"{item['label']} \u2014 {group_label}",
-                        value=search_index.keywords(item["route"]),
-                        icon=item["icon"],
-                        on_select=ctx.callback(search_navigate, path=item["route"]),
-                    )
-                    for item in group_items
-                ],
-            )
+    rows.extend(
+        PaletteRow(
+            item["label"],
+            item["group"],
+            value=search_index.keywords(item["route"]),
+            icon=item["icon"],
+            on_select=ctx.callback(search_navigate, path=item["route"]),
         )
+        for item in _SEARCH_ITEMS
+    )
 
     return Dialog(
         open=True,
@@ -374,7 +421,7 @@ def _build_search_dialog(ctx: Context, current_path: str):
                             CommandList(
                                 children=[
                                     CommandEmpty(message="No pages found."),
-                                    *command_groups,
+                                    *rows,
                                 ],
                             ),
                         ],
