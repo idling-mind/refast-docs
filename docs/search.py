@@ -35,7 +35,11 @@ _STOPWORDS = frozenset(
 )
 
 _TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_.+\-/]*")
-_MD_NOISE_RE = re.compile(r"[`*_>]")
+# Markdown emphasis and raw-markup noise, deliberately without `_`: in this
+# corpus underscores belong to API names -- save_prop, store_as, ctx.file_store --
+# and splitting them turns one searchable identifier into two common English
+# words, which is how a search for save_prop ends up matching 25 pages.
+_MD_NOISE_RE = re.compile(r"[`*>]")
 _LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 _HEADING_RE = re.compile(r"^#{1,6}\s+(.*)$", re.MULTILINE)
 
@@ -57,6 +61,9 @@ class _Doc:
     headings: list[str] = field(default_factory=list)
     body: str = ""
     snippet: str = ""
+    title_terms: frozenset[str] = frozenset()
+    heading_terms: frozenset[str] = frozenset()
+    terms: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -72,7 +79,6 @@ class Hit:
 
 _pages: list[_Doc] = []
 _index: dict[str, dict[int, float]] | None = None
-_doc_norms: list[float] = []
 
 
 def set_pages(entries: list[tuple[str, str, str, Callable[..., Any]]]) -> None:
@@ -82,8 +88,8 @@ def set_pages(entries: list[tuple[str, str, str, Callable[..., Any]]]) -> None:
         entries: ``(title, route, group, render_function)`` for each page. The
             function is only used to find the module its prose lives in.
     """
-    global _index, _doc_norms
-    _index, _doc_norms = None, []
+    global _index
+    _index = None
     _pages.clear()
     _pages.extend(_doc_from_module(route, title, group, func) for title, route, group, func in entries)
 
@@ -111,6 +117,8 @@ def _doc_from_module(route: str, title: str, group: str, func: Callable[..., Any
     doc.body = "\n".join(chunks)
     doc.snippet = _plain(doc.body)
     doc.headings = _HEADING_RE.findall(doc.body)
+    doc.title_terms = frozenset(_tokenize(doc.title))
+    doc.heading_terms = frozenset(t for h in doc.headings for t in _tokenize(h))
     if not doc.title or doc.title == route:
         doc.title = title or route
     return doc
@@ -129,9 +137,9 @@ def _tokenize(text: str) -> list[str]:
 
 def _build() -> None:
     """Invert the pages into ``term -> {doc number: weighted frequency}``."""
-    global _index, _doc_norms
+    global _index
     index: dict[str, dict[int, float]] = {}
-    norms = []
+    weights: list[dict[str, float]] = []
     for n, doc in enumerate(_pages):
         counts: dict[str, float] = {}
         for term in _tokenize(doc.title):
@@ -143,12 +151,29 @@ def _build() -> None:
             counts[term] = counts.get(term, 0.0) + BODY_WEIGHT
         for term, freq in counts.items():
             index.setdefault(term, {})[n] = 1.0 + math.log(freq)
-        norms.append(math.sqrt(len(counts)) or 1.0)
-    _index, _doc_norms = index, norms
+        weights.append(counts)
+    _index = index
+
+    total = len(_pages)
+    for doc, counts in zip(_pages, weights):
+        doc.terms = sorted(
+            counts,
+            key=lambda t: (
+                -(1.0 + math.log(counts[t])) * math.log(1.0 + total / len(index[t])),
+                t,
+            ),
+        )[:12]
 
 
 def search(query: str, limit: int = 12) -> list[Hit]:
-    """Rank pages against ``query``. Returns [] when nothing scores."""
+    """Rank pages against ``query``. Returns [] when nothing scores.
+
+    Frequency alone ranks badly: on a docs site the word "styling" appears in a
+    dozen pages, and a short page that mentions it once outscored the page called
+    Styling. So position beats volume -- a term in the title is worth far more
+    than any number of mentions in the body -- and the whole phrase being a title
+    is worth more still.
+    """
     if _index is None:
         _build()
     terms = _tokenize(query)
@@ -157,6 +182,7 @@ def search(query: str, limit: int = 12) -> list[Hit]:
 
     total = len(_pages)
     scores: dict[int, float] = {}
+    matched: dict[int, set[str]] = {}
     for term in dict.fromkeys(terms):
         postings = _index.get(term, {})
         # Prefix pass: a stem like "pagin" should still find "pagination".
@@ -168,19 +194,53 @@ def search(query: str, limit: int = 12) -> list[Hit]:
             continue
         idf = math.log(1.0 + total / len(postings))
         for n, tf in postings.items():
-            scores[n] = scores.get(n, 0.0) + idf * tf / _doc_norms[n]
+            scores[n] = scores.get(n, 0.0) + idf * tf
+            matched.setdefault(n, set()).add(term)
 
-    phrase = query.strip().lower()
-    if len(phrase.split()) > 1:
+    for n, found in matched.items():
+        doc = _pages[n]
+        if any(_in_terms(t, doc.title_terms) for t in found):
+            scores[n] += 14.0 * sum(1 for t in found if _in_terms(t, doc.title_terms))
+        elif any(_in_terms(t, doc.heading_terms) for t in found):
+            scores[n] += 5.0
+
+    phrase = " ".join(terms)
+    if " " in phrase:
         for n, doc in enumerate(_pages):
-            if phrase in doc.title.lower():
-                scores[n] = scores.get(n, 0.0) + 20.0
+            title = " ".join(_tokenize(doc.title))
+            if phrase in title:
+                scores[n] += 25.0
+            elif any(phrase in " ".join(_tokenize(h)) for h in doc.headings):
+                scores[n] += 6.0
 
-    ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)[:limit]
+    ranked = sorted(scores.items(), key=lambda kv: (-kv[1], _pages[kv[0]].title.lower()))[:limit]
     return [
         Hit(_pages[n].route, _pages[n].title, _pages[n].group, _snippet(_pages[n], terms), s)
         for n, s in ranked
     ]
+
+
+def _in_terms(term: str, terms: frozenset[str]) -> bool:
+    """Whether ``term`` names one of ``terms``, allowing for a typed stem.
+
+    The postings already fall back to a prefix match so "pagin" finds Pagination;
+    without the same courtesy in the title bonus, the page about pagination and a
+    page that merely mentions it arrive at an identical score.
+    """
+    return term in terms or any(t.startswith(term) or term.startswith(t) for t in terms)
+
+
+def highlight(query: str, text: str) -> str:
+    """Bold the words from ``query`` that ``text`` contains, for result listings.
+
+    A reader who got here by searching needs to see *why* a page matched --
+    otherwise a list of titles says nothing more than the sidebar does.
+    """
+    terms = [t for t in dict.fromkeys(_tokenize(query)) if len(t) > 2]
+    if not terms:
+        return text
+    pattern = re.compile(r"\b(" + "|".join(re.escape(t) for t in sorted(terms, key=len, reverse=True)) + r")\w*", re.IGNORECASE)
+    return pattern.sub(lambda m: f"**{m.group(0)}**", text)
 
 
 _FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
@@ -197,7 +257,7 @@ def _plain(body: str) -> str:
     text = _FENCE_RE.sub(" ", body)
     text = _LINK_RE.sub(r"\1", text)
     text = _TAG_RE.sub(" ", text)
-    return re.sub(r"[`*_>#|]+", " ", re.sub(r"\s+", " ", text)).strip()
+    return re.sub(r"[`*>#|]+", " ", re.sub(r"\s+", " ", text)).strip()
 
 
 def _snippet(doc: _Doc, terms: list[str], width: int = 150) -> str:
@@ -218,44 +278,30 @@ def indexed_pages() -> int:
     return len(_pages)
 
 
-_keyword_cache: dict[str, str] = {}
 
 
-def keywords(route: str, limit: int = 20, cap: int = 420) -> str:
+def keywords(route: str, limit: int = 8) -> str:
     """The text cmdk should score ``route`` against, for the ⌘K palette.
 
     cmdk filters client-side over each item's registered value and refast's
     Command wrapper forwards neither ``shouldFilter`` nor extra props, so the
-    only way to make page bodies searchable in the palette is to hand the words
-    to the browser once and let it score locally. Sending the query to the
-    server and rewriting the values was tried first and failed twice over: a
-    controlled input echoes a keystroke behind, and cmdk then scores the stale
-    string against the live one, which matches nothing.
+    words have to reach the browser for page bodies to be searchable at all.
+    Driving the ranking from the server instead -- refreshing per keystroke --
+    lost letters and then matched nothing, because a controlled input echoes one
+    keystroke behind while cmdk scores the live string against that stale echo.
 
-    ``limit`` caps the blob; 28 terms is roughly 150 characters per page.
+    ``command-score`` weighs *where* in the value a match falls, in roughly the
+    first ten characters, and knows nothing about how rare the word is. Ordering
+    the blob by tf-idf instead of raw frequency is what makes position work for
+    us: the words that identify a page lead it, so the page called Styling beats
+    the nine pages that merely mention styling. That ordering was the complaint.
     """
-    if route in _keyword_cache:
-        return _keyword_cache[route]
-
     if _index is None:
         _build()
     doc = next((d for d in _pages if d.route == route), None)
     if doc is None:
         return ""
-
-    counts: dict[str, float] = {}
-    for term in _tokenize(doc.title):
-        counts[term] = counts.get(term, 0.0) + TITLE_WEIGHT
-    for heading in doc.headings:
-        for term in _tokenize(heading):
-            counts[term] = counts.get(term, 0.0) + HEADING_WEIGHT
-    for term in _tokenize(doc.body):
-        counts[term] = counts.get(term, 0.0) + BODY_WEIGHT
-
-    top = sorted(counts, key=lambda t: (-counts[t], t))[:limit]
-    blob = " ".join(dict.fromkeys([doc.title, *doc.headings[:8], *top]))[:cap]
-    _keyword_cache[route] = blob
-    return blob
+    return " ".join(dict.fromkeys([doc.title, doc.group, *doc.terms[:limit]]))
 
 
 def routes() -> list[str]:

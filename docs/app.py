@@ -10,6 +10,7 @@ import inspect
 import os
 from importlib.metadata import version
 from html import escape
+from urllib.parse import quote
 
 from pathlib import Path
 
@@ -115,6 +116,9 @@ from .pages.getting_started import (  # noqa: E402
     todo_app_live,
 )
 from docs.examples.routes import register_example_routes  # noqa: E402
+
+#: the results page is not in NAV_SECTIONS -- it is a utility route, registered by hand
+PAGE_ROUTE_SEARCH = "/search"
 
 # ── App instance ─────────────────────────────────────────────────────────
 
@@ -222,6 +226,17 @@ async def close_search(ctx: Context, current_path: str = "/"):
     await ctx.load(current_path)
 
 
+async def open_full_search(ctx: Context):
+    """Hand the palette's text to the results page.
+
+    The query is read through save_prop rather than the item's own payload: a
+    CommandItem's on_select carries nothing, and making the input controlled to
+    get at it is what cost keystrokes before.
+    """
+    query = str(ctx.state.get("palette_query", "") or "").strip()
+    await ctx.load(f"{PAGE_ROUTE_SEARCH}?q={quote(query)}" if query else PAGE_ROUTE_SEARCH)
+
+
 async def search_navigate(ctx: Context, path: str = "/"):
     """Navigate from a search result and close the dialog."""
     ctx.state["search_open"] = False
@@ -287,14 +302,16 @@ def _build_search_dialog(ctx: Context, current_path: str):
 
     Filtering happens in the browser. cmdk scores each item against the value it
     registers, and refast's Command wrapper forwards neither ``shouldFilter`` nor
-    extra props, so the page text has to reach the client for body search to
-    work at all: each item carries its page's keywords. Driving the ranking from
-    the server instead -- refreshing the list per keystroke -- lost letters and
-    then matched nothing, because a controlled input echoes one keystroke behind
-    while cmdk scores the live string against that stale echo.
+    extra props, so the page text has to reach the client for body search to work
+    at all: each item carries its page's title, section and most distinctive
+    terms, ordered so that ``command-score``'s preference for early matches lands
+    the right page on top. Driving the ranking from the server instead --
+    refreshing per keystroke -- lost letters and then matched nothing, because a
+    controlled input echoes one keystroke behind while cmdk scores the live string
+    against that stale echo.
 
-    The list is built only while the dialog is open, which keeps ~90 keyword
-    blobs out of every ordinary page payload.
+    The list is built only while the dialog is open, which keeps the corpus out of
+    every ordinary page payload.
     """
     if not ctx.state.get("search_open", False):
         return Dialog(open=False, children=[])
@@ -304,15 +321,30 @@ def _build_search_dialog(ctx: Context, current_path: str):
     for item in _SEARCH_ITEMS:
         groups.setdefault(item["group"], []).append(item)
 
-    command_groups = []
+    command_groups = [
+        CommandGroup(
+            heading="Go to",
+            children=[
+                CommandItem(
+                    label="Search page text for everything else",
+                    value="full text search results page every page body snippet",
+                    icon="search",
+                    on_select=ctx.callback(open_full_search),
+                )
+            ],
+        )
+    ]
     for group_label, group_items in groups.items():
         command_groups.append(
             CommandGroup(
                 heading=group_label,
                 children=[
                     CommandItem(
-                        label=item["label"],
-                        value=f"{item['label']} {search_index.keywords(item['route'])}",
+                        # cmdk gives a row one line of text, so the section rides
+                        # along in the label; the results page has room for it on
+                        # the right and for the snippet that explains the match.
+                        label=f"{item['label']} \u2014 {group_label}",
+                        value=search_index.keywords(item["route"]),
                         icon=item["icon"],
                         on_select=ctx.callback(search_navigate, path=item["route"]),
                     )
@@ -331,7 +363,14 @@ def _build_search_dialog(ctx: Context, current_path: str):
                     Command(
                         class_name="rounded-lg border-0 shadow-none",
                         children=[
-                            CommandInput(placeholder="Search titles and page text\u2026"),
+                            CommandInput(
+                                placeholder="Search titles and page text\u2026",
+                                # Uncontrolled: the browser owns what is typed.
+                                # save_prop only mirrors the text to the server so
+                                # the results row can hand it over, and mirroring
+                                # has no echo loop to lose keystrokes in.
+                                on_value_change=ctx.save_prop("palette_query", debounce=200),
+                            ),
                             CommandList(
                                 children=[
                                     CommandEmpty(message="No pages found."),
@@ -743,6 +782,14 @@ register_page(ui, "/", home.render)
 
 # Register all navigation section pages dynamically
 register_nav_routes(ui, NAV_SECTIONS)
+
+
+@ui.page(PAGE_ROUTE_SEARCH)
+def page_search(ctx: Context):
+    """Full-text results. Reachable from the palette and by linking /search?q=…"""
+    from .pages.search_results import render as render_search
+
+    return render_search(ctx)
 
 # Standalone example apps mounted under /examples/...
 register_example_routes(ui)

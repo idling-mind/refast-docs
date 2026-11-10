@@ -63,7 +63,7 @@ def test_finds_a_term_that_appears_in_no_title() -> None:
         ("rate limit", "/docs/advanced/security"),
         ("echarts", "/docs/extensions/echarts"),
         ("pagination", "/docs/components/pagination"),
-        ("sessionStorage", "/docs/concepts/state"),
+        ("sessionStorage", "/docs/advanced/sessions"),
     ],
 )
 def test_ranking_puts_the_documenting_page_first(query: str, expected: str) -> None:
@@ -91,6 +91,8 @@ def test_snippet_is_prose_not_a_code_sample() -> None:
 
 def _palette(open_: bool = True) -> list[dict]:
     """The rendered nodes of the search dialog, the way a page would emit them."""
+def _palette(open_: bool = True) -> list[dict]:
+    """The rendered nodes of the search dialog, the way a page would emit them."""
     from refast import Context
 
     import docs.app as app
@@ -112,64 +114,146 @@ def _walk(node, seen=None) -> list[dict]:
     return seen
 
 
-def test_the_palette_ships_page_text_for_cmdk_to_score() -> None:
-    """Body words have to reach the browser, because cmdk filters locally.
-
-    refast's Command wrapper forwards neither ``shouldFilter`` nor extra props, so
-    a server cannot opt out of cmdk's scoring. The terms come from the index
-    rather than being hardcoded: whatever ``search()`` found in a page body has to
-    be in that page's item value, or the palette cannot find it either.
-    """
-    values = {
-        str(n["props"].get("value", "")).lower()
-        for n in _palette()
+def _items(nodes: list[dict]) -> list[tuple[str, str]]:
+    """(label, value) for every palette row; the label renders, the value scores."""
+    return [
+        ((n.get("children") or [""])[0], str(n["props"].get("value", "")))
+        for n in nodes
         if n.get("type") == "CommandItem"
-    }
-    assert values, "the open palette shipped no items"
-
-    for query in ("save_prop", "debounce"):
-        hits = search.search(query, limit=8)
-        assert hits, f"the index itself knows nothing about {query!r}"
-        assert any(query in search.keywords(h.route).lower() for h in hits), (
-            f"{query!r} is ranked by the index but reaches no item value, so cmdk cannot match it"
-        )
-        assert any(query in v for v in values), f"{query!r} is not searchable in the palette"
+    ]
 
 
-def test_the_palette_input_is_uncontrolled() -> None:
-    """A controlled input loses keystrokes; the palette must not echo them.
+def test_every_palette_row_says_which_section_it_is_in() -> None:
+    """Without the section, "Styling" and "Styling" in another group are identical.
 
-    The first version sent every keystroke to the server and echoed it back as
-    ``value=``. Typing arrived one letter at a time, and cmdk then scored its
-    live string against item values that were one keystroke stale -- so nothing
-    matched. Local filtering has no such window.
+    cmdk gives a row one line of text, so the section rides in the label; the
+    results page has room to put it on the right and add a snippet.
     """
-    inputs = [n["props"] for n in _palette() if n.get("type") == "CommandInput"]
+    rows = [label for label, _value in _items(_palette())]
+    assert any(label.endswith("— Core Concepts") for label in rows), sorted(rows)[:5]
+    assert all("—" in label for label in rows if not label.startswith("Search")), sorted(rows)[:5]
+
+
+def test_palette_rows_score_against_page_text_not_just_titles() -> None:
+    """cmdk filters locally over each row's value, so the words have to be there.
+
+    cmdk's Command wrapper forwards neither shouldFilter nor extra props, so a
+    server cannot opt out of that filter -- what it can choose is what the value
+    contains. Ordering it by tf-idf is what makes position work: the page named
+    Styling leads with the word, the nine pages that mention it do not.
+    """
+    values = [value for _label, value in _items(_palette())]
+    assert values, "the open palette shipped no rows"
+    assert any("safelisted" in value for value in values), "no row is findable by its body text"
+    with_terms = [v for v in values if len(v.split()) > 3]
+    assert len(with_terms) > len(values) * 0.8, "most rows carry nothing but a title"
+    styling = [v for label, v in _items(_palette()) if label.startswith("Styling ")]
+    assert styling and styling[0].lower().startswith("styling"), styling
+
+
+def test_the_palette_input_keeps_the_browsers_text() -> None:
+    """Neither controlled nor server-round-tripped per keystroke.
+
+    A controlled input echoes one keystroke behind, so letters drop; and if the
+    values were rewritten per keystroke, cmdk would score its live string against
+    a stale echo and hide every row. Mirroring the text through save_prop has no
+    echo to fight with -- the browser keeps ownership of what is typed.
+    """
+    nodes = _palette()
+    inputs = [n["props"] for n in nodes if n.get("type") == "CommandInput"]
     assert len(inputs) == 1
-    assert inputs[0].get("value") is None, "the palette input is controlled; keystrokes will drop"
-    assert not inputs[0].get("onValueChange"), "typing round-trips to the server again"
+    assert inputs[0].get("value") is None, "controlled input: keystrokes will drop"
+    mirror = inputs[0].get("onValueChange")
+    assert isinstance(mirror, dict) and mirror.get("saveProp"), "typing is not mirrored to state"
+
+
+def test_the_palette_leads_to_the_results_page() -> None:
+    """The row that turns a vague query into ranked, highlighted results."""
+    nodes = _palette()
+    rows = [n for n in nodes if n.get("type") == "CommandItem" and "Search page text" in str(n.get("children"))]
+    assert len(rows) == 1, "the palette needs exactly one hand-off row"
+    callback = rows[0]["props"]["on_select"]
+    assert callback and callback.get("callbackId"), "the hand-off row goes nowhere"
+
+    headings = [n["props"].get("heading") for n in nodes if n.get("type") == "CommandGroup"]
+    assert headings[0] == "Go to", headings
 
 
 def test_a_closed_page_does_not_ship_the_search_corpus() -> None:
-    """90 keyword blobs on every page load is payload nobody asked for."""
+    """~90 keyword blobs on every page load is payload nobody asked for."""
     import json
 
     closed = _palette(open_=False)
-    assert not [n for n in closed if n.get("type") == "CommandItem"]
-    assert len(json.dumps(closed)) < 1_500, "the closed palette still carries the corpus"
-
-    items = [n for n in _palette(open_=True) if n.get("type") == "CommandItem"]
-    assert len(items) == len(NAV_ROUTES), "every page in the navigation should be reachable"
+    assert not _items(closed), "the closed palette still ships rows"
+    assert len(json.dumps(closed)) < 1_500
+    assert len(_items(_palette())) == len(NAV_ROUTES) + 1  # plus the hand-off row
 
 
 def test_keyword_blobs_stay_small_enough_to_send() -> None:
-    """The corpus crosses the socket the moment ⌘K is pressed, so it costs latency."""
+    """The corpus crosses the socket when ⌘K opens, so it costs latency."""
     sizes = [len(search.keywords(route)) for route in search.routes()]
-    assert max(sizes) <= 420, f"largest blob is {max(sizes)} characters"
-    assert sum(sizes) < 30_000, f"the palette corpus weighs {sum(sizes)} characters"
+    assert max(sizes) <= 200, f"largest blob is {max(sizes)} characters"
+    assert sum(sizes) < 12_000, f"the palette corpus weighs {sum(sizes)} characters"
 
 
-def test_keywords_name_the_page_they_came_from() -> None:
-    """A blob that lost its own title would rank badly in cmdk's scoring."""
-    blob = search.keywords("/docs/advanced/sessions").lower()
-    assert "session" in blob and "cookie" in blob, blob
+def _results(query: str) -> list[dict]:
+    from fastapi.testclient import TestClient
+
+    from docs.app import app
+
+    client = TestClient(app)
+    response = client.get("/api/page", headers={"referer": f"http://testserver/search?q={query}"})
+    assert response.status_code == 200, response.text[:400]
+    return _walk(response.json())
+
+
+def test_the_results_page_is_registered() -> None:
+    from docs.app import ui
+
+    assert "/search" in ui.pages, "the results page has no route"
+
+
+def test_the_results_page_answers_by_relevance_not_by_section() -> None:
+    """The complaint that made this page: Getting Started led every search."""
+    nodes = _results("styling")
+    links = [n["props"].get("href") for n in nodes if n.get("type") == "Link" and n["props"].get("href", "").startswith("/docs")]
+    assert links, "no results for a term several pages document"
+    assert links[0] == "/docs/concepts/styling", links[:5]
+
+
+def test_each_result_shows_its_section_on_the_right() -> None:
+    nodes = _results("styling")
+    badges = [(n.get("children") or [""])[0] for n in nodes if n.get("type") == "Badge"]
+    assert "Core Concepts" in badges, badges
+
+    sections = {section["label"] for section in NAV_SECTIONS}
+    assert set(badges) <= sections, f"unknown section labels: {set(badges) - sections}"
+
+
+def test_the_results_page_marks_what_matched() -> None:
+    """Otherwise a list of titles says nothing the sidebar doesn't already."""
+    for query in ("styling", "save_prop"):
+        nodes = _results(query)
+        contents = [str(n["props"].get("content")) for n in nodes if n.get("type") == "Markdown"]
+        assert any(f"**{query}**" in c.lower() for c in contents), (query, contents[:2])
+        assert not any("**" in c and c.count("**") % 2 for c in contents), "unbalanced bold in a snippet"
+
+
+def test_result_links_all_lead_to_registered_pages() -> None:
+    from docs.app import ui
+
+    hrefs = {
+        n["props"].get("href")
+        for query in ("styling", "table", "session", "echarts")
+        for n in _results(query)
+        if n.get("type") == "Link"
+    }
+    dead = [h for h in hrefs if h and h.startswith("/docs") and h not in ui.pages]
+    assert not dead, dead
+
+
+def test_a_query_that_matches_nothing_says_so() -> None:
+    nodes = _results("qqzzxwvnotaterm")
+    texts = [" ".join(str(x) for x in (n.get("children") or [])) for n in nodes if n.get("type") == "Text"]
+    assert any("0 of" in t for t in texts), texts[:3]
+    assert any("Nothing matched" in t for t in texts), texts[:3]
