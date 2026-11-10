@@ -87,15 +87,24 @@ rendered alongside their code snippets). Priority:
 
 ### Search
 
-- [x] ~~Implement in-page search~~ — done: `⌘K` now ranks page *text* through an
-      inverted index built from each page module's long string literals
-      (`docs/search.py`), with the palette's `CommandItem` values carrying the query
-      so cmdk's client-side filter passes the server's results through.
+- [x] ~~Implement in-page search~~ — done: `⌘K` matches page **text**, by scoring each
+      page's keyword blob locally (cmdk filters `CommandItem` values client-side and
+      refast's `Command` forwards neither `shouldFilter` nor extra props, so the words
+      have to reach the browser; see docs/README.md for why the server-ranked variant
+      dropped keystrokes and then matched nothing).
 - [ ] Index the examples and the home page too; today only `NAV_SECTIONS` routes are
       searchable, so "counter" finds the guide page but not `/examples/counter`.
-- [ ] Show the snippet somewhere. `Hit.snippet` is computed and tested but the
-      palette is single-line; a preview pane or a second disabled row would use it.
-- [ ] Highlight matched terms in results once there is a preview to highlight them in.
+- [ ] A `/search?q=` page would use `search.search()` -- real idf ranking plus the
+      snippets it already computes -- for readers whose query is too vague for the
+      palette's local scoring. The function exists; nothing calls it but tests.
+- [ ] The keyword blobs cost 25 KB when the palette opens. If that ever matters, the
+      corpus could be fetched once and cached in the browser instead of riding in the
+      dialog tree.
+- [ ] The Icons page (`/docs/components/icon`) filters the way the palette used to:
+      a controlled `Input` plus `await ctx.refresh()` per keystroke, which re-renders
+      every icon tile and echoes the value back one change behind. It should either
+      score locally or refresh only the grid. The same fix applies to any page that
+      filters a long list.
 
 ---
 

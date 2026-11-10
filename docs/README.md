@@ -60,12 +60,25 @@ def render(ctx):
 
 ## Search
 
-`⌘K` searches the text of every page in `NAV_SECTIONS`, not just the label in the
-sidebar. `docs/search.py` reads each page module with `ast` and indexes every
-string literal of 120 characters or more, so prose held in a module constant is
-findable while prop labels and button captions are not diluted by noise. Titles
-weigh 8x and `#`/`##` headings 4x, and a term with no exact match falls back to a
-prefix, which is what makes "pagin" find Pagination.
+`⌘K` searches the text of every page, not just the label in the sidebar -- and it
+filters **in the browser**. `docs/search.py` reads each page module with `ast` and
+indexes every string literal of 120 characters or more; from that index it derives
+a short keyword blob per page (title, headings, the ~20 most weighted terms), and
+the palette puts that blob in the `value` of the page's `CommandItem`. cmdk scores
+`value` against the typed text locally, so matching costs no round trip.
+
+Why not rank on the server? refast's `Command` wrapper forwards neither
+`shouldFilter` nor extra props, so cmdk's filter cannot be switched off; and
+routing keystrokes through the server means either a controlled input, which
+echoes one keystroke behind and drops letters, or item values that lag the
+browser's search string by a keystroke -- which cmdk scores at zero, so nothing
+matches. Both were tried. Local scoring is the only shape that works with the
+component as shipped.
+
+Costs, measured: every page used to carry a 30 KB palette of titles. Now a closed
+palette is 242 bytes and opening it sends 56 KB once, of which 25 KB is the
+keyword corpus. `search()` still ranks server-side with idf weighting, which is
+what a future `/search?q=` page would use.
 
 Two consequences when writing a page:
 
@@ -74,7 +87,8 @@ Two consequences when writing a page:
 - Keep `PAGE_TITLE` a plain assignment; that is what the extractor reads.
 
 `tests/test_docs_search.py` asserts one thing per page: that it contributes real
-prose to the index. A new page that fails it is thin, not broken.
+prose to the index. A new page that fails it is thin, not broken. It also asserts
+the input stays uncontrolled and that no page's blob exceeds 420 characters.
 
 ## For AI Agents
 

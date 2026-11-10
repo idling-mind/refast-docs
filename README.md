@@ -39,7 +39,8 @@ rather than in a reader's browser.
 
 ## What the site offers readers
 
-- `⌘K` searches the text of every page, not only its title (`docs/search.py`)
+- `⌘K` searches the text of every page, not only its title — the browser does the
+  matching, over keywords the index derives from each page (`docs/search.py`)
 - every page links to its own source file in the footer, and to the framework's
   source where a component is documented
 - `/robots.txt` and `/sitemap.xml` for machines, and light/dark plus five colour
