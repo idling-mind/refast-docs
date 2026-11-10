@@ -58,6 +58,24 @@ def render(ctx):
     return docs_layout(ctx, content, PAGE_ROUTE)
 ```
 
+## Search
+
+`⌘K` searches the text of every page in `NAV_SECTIONS`, not just the label in the
+sidebar. `docs/search.py` reads each page module with `ast` and indexes every
+string literal of 120 characters or more, so prose held in a module constant is
+findable while prop labels and button captions are not diluted by noise. Titles
+weigh 8x and `#`/`##` headings 4x, and a term with no exact match falls back to a
+prefix, which is what makes "pagin" find Pagination.
+
+Two consequences when writing a page:
+
+- Put explanation in a `CONTENT` string (or any long literal). A page whose text
+  exists only inside `Heading(...)` calls is searchable by its title alone.
+- Keep `PAGE_TITLE` a plain assignment; that is what the extractor reads.
+
+`tests/test_docs_search.py` asserts one thing per page: that it contributes real
+prose to the index. A new page that fails it is thin, not broken.
+
 ## For AI Agents
 
 Each section folder contains an `AGENT_INSTRUCTIONS.md` with detailed per-page content

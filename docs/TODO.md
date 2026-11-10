@@ -70,9 +70,15 @@ rendered alongside their code snippets). Priority:
 
 ### Search
 
-- [ ] Implement in-page search using `Command*` components (client-side filtering of sidebar items)
-  - Current state: `⌘K` filters page *titles* only (`_get_search_items()` in `app.py`); page
-    bodies are not indexed.
+- [x] ~~Implement in-page search~~ — done: `⌘K` now ranks page *text* through an
+      inverted index built from each page module's long string literals
+      (`docs/search.py`), with the palette's `CommandItem` values carrying the query
+      so cmdk's client-side filter passes the server's results through.
+- [ ] Index the examples and the home page too; today only `NAV_SECTIONS` routes are
+      searchable, so "counter" finds the guide page but not `/examples/counter`.
+- [ ] Show the snippet somewhere. `Hit.snippet` is computed and tested but the
+      palette is single-line; a preview pane or a second disabled row would use it.
+- [ ] Highlight matched terms in results once there is a preview to highlight them in.
 
 ---
 
