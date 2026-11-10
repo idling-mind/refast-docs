@@ -15,9 +15,9 @@ uv sync
 uv run uvicorn main:app --reload
 ```
 
-Then open http://localhost:8000. `uv sync` resolves refast from the configured package
-index; run `uv lock` first if there is no `uv.lock` in the checkout (and once more after
-pulling this change, so the `dev` group gets recorded in the lockfile).
+Then open http://localhost:8000. `uv sync` installs from the lockfile, which resolves
+refast and its dependencies from the public index; refast itself is not vendored here,
+so the site tracks whatever version the lock (or your index) provides.
 
 ## Checking your changes
 
@@ -30,9 +30,19 @@ REFAST_REPO=../refast uv run pytest  # also resolve every "View source" link
 ```
 
 `tests/` renders every page function, rejects props that the installed components do not
-accept, checks that every link leads to a registered route, and asserts that the Markdown
-tables have the right number of columns. CI runs them on Python 3.12 and 3.13 against the
-newest refast release, so a framework change that breaks a page fails here rather than in
-a reader's browser.
+accept, checks that every link leads to a registered route, asserts that the Markdown
+tables have the right number of columns, verifies that every page contributes text to the
+search index, and checks the HTML document every tab and crawler sees first — title,
+favicon, share metadata, `robots.txt`, `sitemap.xml`. CI runs them on Python 3.12 and 3.13
+against the newest refast release, so a framework change that breaks a page fails here
+rather than in a reader's browser.
+
+## What the site offers readers
+
+- `⌘K` searches the text of every page, not only its title (`docs/search.py`)
+- every page links to its own source file in the footer, and to the framework's
+  source where a component is documented
+- `/robots.txt` and `/sitemap.xml` for machines, and light/dark plus five colour
+  themes for everyone else
 
 Contributions are welcome!
