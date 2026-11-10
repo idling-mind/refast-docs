@@ -69,6 +69,7 @@ from refast.theme import (
     ocean_breeze_theme,
 )
 
+from . import search as search_index  # noqa: E402
 from .pages import home  # noqa: E402
 from .pages.advanced import (  # noqa: E402
     component_dev,
@@ -213,7 +214,14 @@ async def open_search(ctx: Context, current_path: str = "/"):
 async def close_search(ctx: Context, current_path: str = "/"):
     """Close the search dialog."""
     ctx.state["search_open"] = False
+    ctx.state["search_query"] = ""
     await ctx.load(current_path)
+
+
+async def search_query(ctx: Context, query: str = ""):
+    """Re-rank the palette as the reader types, against page bodies not just titles."""
+    ctx.state["search_query"] = query
+    await ctx.refresh(target_id="search-results")
 
 
 async def search_navigate(ctx: Context, path: str = "/"):
@@ -232,43 +240,76 @@ def _get_search_items() -> list[dict]:
         group_label = section["label"]
         if "groups" in section:
             for group in section["groups"]:
-                for label, route, icon, *_ in group["pages"]:
-                    items.append({"label": label, "route": route, "icon": icon, "group": group_label})
+                for label, route, icon, render in group["pages"]:
+                    items.append(
+                        {"label": label, "route": route, "icon": icon, "group": group_label, "render": render}
+                    )
         else:
-            for label, route, icon, *_ in section["pages"]:
-                items.append({"label": label, "route": route, "icon": icon, "group": group_label})
+            for label, route, icon, render in section["pages"]:
+                items.append(
+                    {"label": label, "route": route, "icon": icon, "group": group_label, "render": render}
+                )
     return items
 
 
-
 _SEARCH_ITEMS = _get_search_items()
+
+# The palette matched page titles only, so a reader hunting for "save_prop" had
+# to know which page documented it first. This hands the same routes to the
+# full-text index in docs/search.py, which covers the prose on them.
+search_index.set_pages(
+    [(item["label"], item["route"], item["group"], item["render"]) for item in _SEARCH_ITEMS]
+)
+
+_ICONS_BY_ROUTE = {item["route"]: item["icon"] for item in _SEARCH_ITEMS}
 
 
 def _build_search_dialog(ctx: Context, current_path: str):
     """Build the CMD+K search dialog overlay."""
     is_open = ctx.state.get("search_open", False)
+    query = str(ctx.state.get("search_query", "") or "")
 
-    # Group items by section label
-    groups: dict[str, list[dict]] = {}
-    for item in _SEARCH_ITEMS:
-        groups.setdefault(item["group"], []).append(item)
-
-    command_groups = []
-    for group_label, group_items in groups.items():
-        command_groups.append(
+    if query.strip():
+        # Ranking happens on the server, over the text of every page. cmdk then
+        # filters its own items client-side, which would throw away results
+        # whose titles do not contain the query -- so the query goes into each
+        # item's value, the documented way of driving cmdk from a backend.
+        command_groups = [
             CommandGroup(
-                heading=group_label,
+                heading=f"Pages matching \u201c{query}\u201d",
                 children=[
                     CommandItem(
-                        label=item["label"],
-                        value=item["label"],
-                        icon=item["icon"],
-                        on_select=ctx.callback(search_navigate, path=item["route"]),
+                        label=hit.title,
+                        value=hit.value_for(query),
+                        icon=_ICONS_BY_ROUTE.get(hit.route, "file-text"),
+                        on_select=ctx.callback(search_navigate, path=hit.route),
                     )
-                    for item in group_items
+                    for hit in search_index.search(query)
                 ],
             )
-        )
+        ]
+    else:
+        # Group items by section label
+        groups: dict[str, list[dict]] = {}
+        for item in _SEARCH_ITEMS:
+            groups.setdefault(item["group"], []).append(item)
+
+        command_groups = []
+        for group_label, group_items in groups.items():
+            command_groups.append(
+                CommandGroup(
+                    heading=group_label,
+                    children=[
+                        CommandItem(
+                            label=item["label"],
+                            value=item["label"],
+                            icon=item["icon"],
+                            on_select=ctx.callback(search_navigate, path=item["route"]),
+                        )
+                        for item in group_items
+                    ],
+                )
+            )
 
     return Dialog(
         open=is_open,
@@ -280,8 +321,13 @@ def _build_search_dialog(ctx: Context, current_path: str):
                     Command(
                         class_name="rounded-lg border-0 shadow-none",
                         children=[
-                            CommandInput(placeholder="Search docs..."),
+                            CommandInput(
+                                placeholder="Search titles and page text\u2026",
+                                value=query,
+                                on_value_change=ctx.callback(search_query),
+                            ),
                             CommandList(
+                                id="search-results",
                                 children=[
                                     CommandEmpty(message="No pages found."),
                                     *command_groups,
