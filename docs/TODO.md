@@ -86,18 +86,13 @@ refast releases:
 
 Open items:
 
-- [ ] **Import hygiene sweep** — `ruff check` currently ignores `F401` under `docs/**` (see
-      `[tool.ruff.lint.per-file-ignores]`). Several component pages import the full
-      component set but only reference those names inside their Markdown samples, so
-      ~400 imports look unused to the linter. Run `ruff check --select F401 --fix docs`
-      on a machine with a working environment, re-run the test suite to confirm nothing
-      was needed at runtime, then drop the ignore.
-- [ ] Run `uv lock` once to record the new `dev` dependency group (pytest, httpx, ruff) in
-      `uv.lock`; CI deliberately ignores the lockfile and resolves from the index, so this
-      only affects local `uv run` commands.
-- [ ] Decide whether `uv.lock` belongs in git. It currently resolves against an internal
-      feed, whose wheel URLs a public runner cannot reach — committing it as-is would break
-      `uv sync --locked` in CI. Keep it untracked, or commit one resolved against the
-      public index.
+- [x] ~~Import hygiene sweep~~ — done: `ruff check --select F401 --fix` removed 429 unused
+      imports from `docs/`, and `F401` is now part of the default rule set. Component pages
+      import only what they instantiate; names shown inside their Markdown samples are
+      illustrative and need no import.
+- [ ] Commit `uv.lock`? It is still untracked. A recent `uv sync` re-resolved it against
+      the public index (no internal-feed URLs remain), so committing it would now make
+      `uv sync --locked` work for contributors and CI alike — confirm before doing so, in
+      case the internal mirror was pinned on purpose.
 - [ ] Consider running `REFAST_REPO=../refast pytest` in a scheduled job, which also
       verifies every "View source" link against the framework checkout.
