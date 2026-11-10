@@ -1,18 +1,9 @@
 """Combobox — /docs/components/combobox."""
 from refast import Context
 from refast.components import (
-    Alert,
-    Badge,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
-    Separator,
     Text,
 )
 from refast.components.shadcn.controls import Combobox, ComboboxOption

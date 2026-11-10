@@ -5,12 +5,6 @@ Reference page for the Sidebar component family.
 
 from refast import Context
 from docs.pages.components.common import render_doc_page
-from refast.components import (
-    Container,
-    Heading,
-    Markdown,
-    Separator,
-)
 
 PAGE_METADATA = {
     "title": "Sidebar",

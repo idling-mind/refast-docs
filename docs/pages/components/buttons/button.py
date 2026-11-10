@@ -5,19 +5,11 @@ Interactive reference page for the Button component.
 
 from refast import Context
 from refast.components import (
-    Badge,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page

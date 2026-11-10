@@ -6,13 +6,8 @@ from docs.pages.components.playground import playground_card
 from refast.components import (
     BlockQuote,
     Column,
-    Container,
-    Heading,
     Input,
-    Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 

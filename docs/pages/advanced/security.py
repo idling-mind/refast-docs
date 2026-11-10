@@ -1,5 +1,4 @@
 """Security — /docs/advanced/security."""
-from typing import Any, Literal
 
 from refast.components import Container, Heading, Markdown, Separator, Alert
 

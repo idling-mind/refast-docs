@@ -4,20 +4,12 @@ from refast import Context
 from refast.components import (
     Badge,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Checkbox,
     Column,
-    Container,
-    Heading,
     Input,
     Markdown,
-    Row,
-    Separator,
     Text,
 )
-from refast.components.shadcn.form import Form, FormField, Label
+from refast.components.shadcn.form import Form, FormField
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 

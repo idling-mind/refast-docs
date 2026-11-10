@@ -5,17 +5,10 @@ Interactive reference page for the IconButton component.
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from refast.components.shadcn.button import IconButton

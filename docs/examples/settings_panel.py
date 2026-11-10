@@ -3,7 +3,6 @@
 from refast import Context
 from refast.components import (
     Avatar,
-    Badge,
     Button,
     Card,
     CardContent,

@@ -1,7 +1,6 @@
 """Auto-discovery and group registry for component documentation pages."""
 
 import importlib
-import pkgutil
 from pathlib import Path
 from typing import Any
 

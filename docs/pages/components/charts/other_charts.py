@@ -6,10 +6,7 @@ from refast.components import (
     Card,
     CardContent,
     CardHeader,
-    Container,
-    Heading,
     Markdown,
-    Separator,
 )
 from refast.components.shadcn.charts import (
     ChartContainer,

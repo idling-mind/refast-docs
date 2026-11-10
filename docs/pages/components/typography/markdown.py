@@ -7,11 +7,9 @@ from docs.pages.components.common import render_doc_page
 from refast.components import (
     Badge,
     Button,
-    Container,
     Heading,
     Markdown,
     Row,
-    Separator,
 )
 
 PAGE_METADATA = {

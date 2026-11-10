@@ -2,20 +2,12 @@
 
 from refast import Context
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Column,
     Container,
-    Heading,
-    Markdown,
-    Paragraph,
     ResizableHandle,
     ResizablePanel,
     ResizablePanelGroup,
-    Row,
     Select,
-    Separator,
     Text,
 )
 from docs.pages.components.common import render_doc_page

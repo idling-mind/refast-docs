@@ -5,19 +5,10 @@ from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
     Badge,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
     Checkbox,
     Column,
-    Container,
-    Heading,
-    Input,
     Markdown,
     Row,
-    Select,
-    Separator,
     Text,
 )
 from refast.components.shadcn import KeyboardShortcut

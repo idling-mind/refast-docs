@@ -5,16 +5,8 @@ Interactive reference page for the ContextMenu component family.
 
 from refast import Context
 from refast.components import (
-    Badge,
-    Card,
-    CardContent,
-    CardHeader,
-    Column,
     Container,
-    Heading,
     Markdown,
-    Row,
-    Separator,
     Text,
 )
 from refast.components.shadcn.overlay import (

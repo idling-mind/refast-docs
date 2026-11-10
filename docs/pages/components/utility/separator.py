@@ -4,12 +4,7 @@ from refast import Context
 from docs.pages.components.common import render_doc_page
 from docs.pages.components.playground import playground_card
 from refast.components import (
-    Card,
-    CardContent,
-    CardHeader,
     Column,
-    Container,
-    Heading,
     Markdown,
     Row,
     Select,

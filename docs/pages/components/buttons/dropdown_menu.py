@@ -5,17 +5,8 @@ Interactive reference page for the DropdownMenu component family.
 
 from refast import Context
 from refast.components import (
-    Badge,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Column,
-    Container,
-    Heading,
     Markdown,
-    Row,
-    Separator,
     Text,
 )
 from refast.components.shadcn.overlay import (
