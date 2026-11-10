@@ -78,7 +78,9 @@ Many component reference pages need live interactive examples (actual Refast com
 rendered alongside their code snippets). Priority:
 
 - [ ] Button variants demo
-- [ ] Input + store_as demo
+- [ ] Input + `ctx.save_prop` / `props=[...]` demo. The previous item here asked for a
+      `store_as` demo; `store_as` is FastUI's API and does not exist in refast 0.12 or
+      0.13 -- grep found it nowhere in either — so it was unsatisfiable as written.
 - [ ] Card composition demo
 - [ ] Tabs demo
 - [ ] Chart demo (one per chart type)
@@ -87,11 +89,14 @@ rendered alongside their code snippets). Priority:
 
 ### Search
 
-- [x] ~~Implement in-page search~~ — done: `⌘K` matches page **text**, by scoring each
-      page's keyword blob locally (cmdk filters `CommandItem` values client-side and
-      refast's `Command` forwards neither `shouldFilter` nor extra props, so the words
-      have to reach the browser; see docs/README.md for why the server-ranked variant
-      dropped keystrokes and then matched nothing).
+- [x] ~~Implement in-page search~~ — done, in two parts: `⌘K` navigates (rows labelled
+      `Title — Section`, cmdk filtering locally over tf-idf-ordered keyword blobs,
+      because refast's `Command` forwards neither `shouldFilter` nor extra props), and
+      `/search?q=` answers (server ranking, section on the right, matched words bolded
+      in a snippet). See docs/README.md for why the server-ranked palette was reverted.
+- [ ] `/search` has no entry in the sidebar, so it is only reachable from the palette
+      or a URL. Adding it to `NAV_SECTIONS` would make it searchable-by-content, which
+      is circular, and the sitemap already lists it.
 - [ ] Index the examples and the home page too; today only `NAV_SECTIONS` routes are
       searchable, so "counter" finds the guide page but not `/examples/counter`.
 - [ ] A `/search?q=` page would use `search.search()` -- real idf ranking plus the

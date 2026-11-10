@@ -60,25 +60,33 @@ def render(ctx):
 
 ## Search
 
-`⌘K` searches the text of every page, not just the label in the sidebar -- and it
-filters **in the browser**. `docs/search.py` reads each page module with `ast` and
-indexes every string literal of 120 characters or more; from that index it derives
-a short keyword blob per page (title, headings, the ~20 most weighted terms), and
-the palette puts that blob in the `value` of the page's `CommandItem`. cmdk scores
-`value` against the typed text locally, so matching costs no round trip.
+Two surfaces, because one row of text cannot do both jobs.
 
-Why not rank on the server? refast's `Command` wrapper forwards neither
-`shouldFilter` nor extra props, so cmdk's filter cannot be switched off; and
-routing keystrokes through the server means either a controlled input, which
-echoes one keystroke behind and drops letters, or item values that lag the
-browser's search string by a keystroke -- which cmdk scores at zero, so nothing
-matches. Both were tried. Local scoring is the only shape that works with the
-component as shipped.
+**`⌘K` navigates.** The palette lists every page in `NAV_SECTIONS`, labelled
+`Title — Section`, and cmdk filters that list **in the browser** against each row's
+`value`. That is not a preference: refast's `Command` wrapper forwards neither
+`shouldFilter` nor extra props, so the server cannot take cmdk's filter away -- it
+can only choose what the value contains. `docs/search.py` reads each page module
+with `ast`, indexes every string literal of 120 characters or more, and gives each
+page a blob ordered by tf-idf: title, section, then its most distinctive terms.
+Ordering by tf-idf rather than frequency is what makes cmdk's preference for early
+matches put the page named Styling above the nine pages that mention styling.
 
-Costs, measured: every page used to carry a 30 KB palette of titles. Now a closed
-palette is 242 bytes and opening it sends 56 KB once, of which 25 KB is the
-keyword corpus. `search()` still ranks server-side with idf weighting, which is
-what a future `/search?q=` page would use.
+Driving the ranking from the server was tried first and failed twice: a controlled
+input echoes one keystroke behind, so letters dropped; and with values rewritten
+per keystroke, cmdk scored its live string against the stale echo, scored 0, and hid
+everything. The palette input is deliberately uncontrolled and only mirrors the text
+through `ctx.save_prop`, which has no echo to fight with.
+
+**`/search` answers.** The results page ranks server-side (title 8x, headings 4x,
+idf-scaled, plus a bonus when the whole phrase is a title), shows the section on the
+right of every row, and bolds the matched words inside a snippet drawn from the
+page's prose -- the thing a palette row cannot say. The query is a URL parameter
+(`/search?q=styling`), so results can be linked and reopened, and the form means
+typing costs nothing until it is submitted. The palette's first row hands off to it.
+
+Measured: a closed palette is 242 bytes and ordinary pages no longer carry a 30 KB
+title list at all; opening it sends 9 KB of keywords.
 
 Two consequences when writing a page:
 
@@ -87,8 +95,10 @@ Two consequences when writing a page:
 - Keep `PAGE_TITLE` a plain assignment; that is what the extractor reads.
 
 `tests/test_docs_search.py` asserts one thing per page: that it contributes real
-prose to the index. A new page that fails it is thin, not broken. It also asserts
-the input stays uncontrolled and that no page's blob exceeds 420 characters.
+prose to the index. A new page that fails it is thin, not broken. It also pins the
+ranking (`styling` is the canary), the uncontrolled input, the keyword budget, and
+that every result link and section badge on `/search` points at something that
+exists.
 
 ## For AI Agents
 
