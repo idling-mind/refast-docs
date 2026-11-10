@@ -223,9 +223,14 @@ async def close_search(ctx: Context, current_path: str = "/"):
     await ctx.load(current_path)
 
 
-async def search_query(ctx: Context, query: str = ""):
-    """Re-rank the palette as the reader types, against page bodies not just titles."""
-    ctx.state["search_query"] = query
+async def search_query(ctx: Context, value: str = ""):
+    """Re-rank the palette as the reader types, against page bodies not just titles.
+
+    The parameter is named ``value`` because that is the key refast puts a text
+    event's payload under -- callbacks receive event data as keyword arguments
+    filtered to the names they declare, so anything else silently stays default.
+    """
+    ctx.state["search_query"] = value
     await ctx.refresh(target_id="search-results")
 
 

@@ -11,9 +11,15 @@ survive the palette's client-side filter.
 """
 
 import pytest
+from fastapi.testclient import TestClient
 
 from docs import search
-from docs.app import NAV_SECTIONS, ui
+from docs.app import NAV_SECTIONS, app, ui
+
+
+@pytest.fixture
+def client() -> TestClient:
+    return TestClient(app)
 
 NAV_ROUTES = {
     page[1]
@@ -116,3 +122,73 @@ def _walk(node, seen=None):
         for child in node:
             _walk(child, seen)
     return seen
+
+
+def _drain(ws, want: str, limit: int = 200) -> dict:
+    """Read WebSocket messages until one of ``want`` type arrives."""
+    for _ in range(limit):
+        message = ws.receive_json()
+        if message.get("type") == "resync_store":
+            ws.send_json({"type": "store_sync", "data": {"local": {}, "session": {}}})
+            continue
+        if message.get("type") == want:
+            return message
+    pytest.fail(f"no {want!r} message among {limit} replies")
+
+
+def test_the_typed_value_arrives_under_the_key_refast_sends() -> None:
+    """Refast fills callback parameters by name from the event payload.
+
+    A text event's payload key is ``value``, so a parameter named ``query`` keeps
+    its default forever and the palette looks inert -- which is exactly how this
+    shipped broken once. Cheaper and steadier than the socket test below, and it
+    fails instantly rather than by timeout.
+    """
+    import inspect
+
+    from docs.app import search_query
+
+    assert "value" in inspect.signature(search_query).parameters, (
+        "the palette's input handler must name its parameter `value`, the key "
+        "refast puts a text event's payload under"
+    )
+
+
+def test_typing_in_the_palette_ranks_page_text_end_to_end(client: TestClient) -> None:
+    """The whole loop: keystroke -> callback -> state -> refreshed result list.
+
+    Everything above this test can pass while the palette is dead, because it
+    hands ``search_query`` a state value the browser never sends. This test is
+    the client: it speaks the WebSocket protocol, so the whole path from a
+    keystroke to a refreshed result list is checked against the wire.
+    """
+    with client.websocket_connect("/ws") as ws:
+        ws.send_json({"type": "store_init", "path": "/docs/components/textarea", "data": {}})
+        tree = _drain(ws, "page_render")["component"]
+
+        input_node = next(n for n in _walk(tree) if n.get("type") == "CommandInput")
+        callback = input_node["props"]["onValueChange"]
+        assert callback, "the palette input has no server callback wired"
+
+        ws.send_json(
+            {
+                "type": "callback",
+                "callback_id": callback["callbackId"],
+                "data": callback.get("boundArgs", {}),
+                "event_data": {"value": "save_prop"},
+            }
+        )
+
+        update = _drain(ws, "update")
+        assert update["targetId"] == "search-results", update
+        nodes = _walk(update["component"])
+
+        headings = [n["props"].get("heading") for n in nodes if n.get("type") == "CommandGroup"]
+        assert headings and headings[0].startswith("Pages matching"), headings
+
+        items = [n["props"] for n in nodes if n.get("type") == "CommandItem"]
+        assert items, "typing produced no results"
+        assert all("save_prop" in str(props.get("value", "")) for props in items), (
+            "results must carry the query in their value or cmdk filters them out"
+        )
+        assert len(items) <= 12
