@@ -40,16 +40,20 @@ or document them as known limitations.
 
 ### Content Completion
 
-All pages currently have placeholder content marked with `> **TODO**`. Each needs to be
-fleshed out per the `AGENT_INSTRUCTIONS.md` in its section folder.
+Every page now has real prose; the `> **TODO**` banners are gone (the last one, on
+`advanced/sessions.py`, was removed when that page was rewritten against the actual
+session API). What is missing is pages for the workflows a reader hits after the
+tutorial:
 
-**Priority order for content writing:**
+- [ ] Deployment — process managers, workers, `uvicorn main:app`, reverse proxy and
+      HTTPS cookie settings, a Dockerfile
+- [ ] Changelog / migration notes per refast release, breaking changes called out
+- [ ] Troubleshooting / FAQ — the errors a reader actually sees in a console
+- [ ] Extension version matrix — which of `refast-echarts` / `refast-grid` /
+      `refast-vtk-js` needs which core
 
-1. Getting Started section (installation, architecture, quick tour)
-2. Core Concepts (callbacks, state, store, updates)
-3. Component Reference (layout, buttons, inputs — most used)
-4. Advanced topics (component dev, extension dev)
-5. Remaining component pages (navigation, charts, etc.)
+Sections still thinnest relative to how often they are used: Getting Started
+(architecture), and the component pages that carry code samples but no live example.
 
 ### Live Examples
 
@@ -94,5 +98,9 @@ Open items:
       the public index (no internal-feed URLs remain), so committing it would now make
       `uv sync --locked` work for contributors and CI alike — confirm before doing so, in
       case the internal mirror was pinned on purpose.
-- [ ] Consider running `REFAST_REPO=../refast pytest` in a scheduled job, which also
-      verifies every "View source" link against the framework checkout.
+- [x] ~~Commit `uv.lock`?~~ — done: tracked, resolved against the public index. A
+      `uv sync` on a machine whose `UV_DEFAULT_INDEX` points at an internal mirror
+      rewrites those URLs back, so re-run `uv lock` with the public index before
+      committing a changed lock.
+- [ ] Run the suite against a framework checkout in a scheduled job
+      (`REFAST_REPO=../refast pytest`), which also verifies every "View source" link.
