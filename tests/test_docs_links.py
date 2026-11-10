@@ -20,14 +20,18 @@ import re
 from pathlib import Path
 
 import pytest
+from refast import Context
 
-from docs.app import ui
+from docs.app import NAV_SECTIONS, ui
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS_ROOT = ROOT / "docs"
 
 #: the docs site's own route namespaces
 ROUTE_PREFIXES = ("/docs", "/examples")
+
+#: where this repository is published, used by the footer's "Edit this page"
+SOURCE_REPO = "https://github.com/idling-mind/refast-docs"
 
 LINK_RE = re.compile(r"\[[^\]]*\]\((/[^\s#)]+)(?:#[^)]*)?\)")
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
@@ -43,6 +47,30 @@ def _page_routes() -> set[str]:
     if callable(pages):
         pages = pages()
     return set(pages or {})
+
+
+def _nav_routes() -> list[str]:
+    """Every route reachable from the sidebar."""
+    return [
+        page[1]
+        for section in NAV_SECTIONS
+        for group in (section["groups"] if "groups" in section else [section])
+        for page in group["pages"]
+    ]
+
+
+def _walk_tree(node) -> list[dict]:
+    """The rendered dicts of a component tree, flattened."""
+    out: list[dict] = []
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            out.append(current)
+            stack.extend(current.get("children") or [])
+        elif isinstance(current, list):
+            stack.extend(current)
+    return out
 
 
 def _files(suffixes: tuple[str, ...]) -> list[Path]:
@@ -154,3 +182,41 @@ def test_github_source_links_resolve() -> None:
         and not Path(repo, match["path"].rstrip("/")).exists()
     ]
     assert not bad, "GitHub source links point at paths that do not exist:\n" + "\n".join(sorted(set(bad)))
+
+
+def test_edit_this_page_links_point_at_this_repo_and_exist() -> None:
+    """Every sidebar page must offer a working link to the file that renders it.
+
+    The URL is derived from ``inspect.getsourcefile`` of the page function, which
+    is the only thing that knows that /docs/components/button lives in
+    ``pages/components/buttons/button.py``. A refactor that moves a module, or a
+    page missing from NAV_SECTIONS, silently drops or misdirects the link.
+    """
+    from docs.app import _build_footer  # noqa: PLC0415
+
+    missing: list[str] = []
+    wrong_repo: list[str] = []
+    broken: list[str] = []
+    for route in _nav_routes():
+        if route == "/":
+            continue
+        tree = _build_footer(Context(), route).render()
+        hrefs = [
+            node["props"].get("href", "")
+            for node in _walk_tree(tree)
+            if node.get("type") == "Link" and "Edit this page" in str(node.get("children"))
+        ]
+        if not hrefs:
+            missing.append(route)
+            continue
+        for href in hrefs:
+            if not href.startswith(SOURCE_REPO):
+                wrong_repo.append(f"{route}: {href}")
+                continue
+            target = ROOT / href.removeprefix(SOURCE_REPO + "/blob/main/").lstrip("/")
+            if not target.is_file():
+                broken.append(f"{route}: {href}")
+
+    assert not missing, f"pages with no 'Edit this page' link: {missing}"
+    assert not wrong_repo, f"edit links pointing somewhere other than this repo: {wrong_repo}"
+    assert not broken, f"edit links whose source file does not exist:\n" + "\n".join(broken)

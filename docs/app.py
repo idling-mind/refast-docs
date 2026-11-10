@@ -6,6 +6,7 @@ Run:
     cd <project_root>
     uvicorn docs.app:app --reload
 """
+import inspect
 from importlib.metadata import version
 
 from pathlib import Path
@@ -38,6 +39,7 @@ from refast.components import (
     DropdownMenuTrigger,
     Flex,
     IconButton,
+    Link,
     Row,
     Separator,
     Sidebar,
@@ -262,6 +264,27 @@ search_index.set_pages(
 )
 
 _ICONS_BY_ROUTE = {item["route"]: item["icon"] for item in _SEARCH_ITEMS}
+
+# Where the site's own source lives; used for the footer's "Edit this page".
+SITE_SOURCE_REPO = "https://github.com/idling-mind/refast-docs"
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _source_url(route: str) -> str | None:
+    """Blob URL of the module that renders ``route``, or None if it cannot be found.
+
+    Derived from the page function rather than from the route, because the two do
+    not line up: ``/docs/components/button`` is rendered by
+    ``pages/components/buttons/button.py``.
+    """
+    func = next((item["render"] for item in _SEARCH_ITEMS if item["route"] == route), None)
+    if func is None:
+        return None
+    try:
+        path = Path(inspect.getsourcefile(inspect.unwrap(func))).resolve()
+        return f"{SITE_SOURCE_REPO}/blob/main/{path.relative_to(_REPO_ROOT)}"
+    except (TypeError, ValueError):  # no source available, or outside this repo
+        return None
 
 
 def _build_search_dialog(ctx: Context, current_path: str):
@@ -672,6 +695,22 @@ def _build_footer(ctx: Context, current_path: str):
                 on_click=ctx.callback(nav, path=next_route),
             )
 
+    edit_link = Container()
+    source_url = _source_url(current_path)
+    if source_url:
+        edit_link = Container(
+            class_name="flex justify-center pt-3",
+            children=[
+                Link(
+                    "Edit this page",
+                    href=source_url,
+                    variant="ghost",
+                    external=True,
+                    class_name="text-xs text-muted-foreground",
+                )
+            ],
+        )
+
     return Container(
         id="docs-page-footer",
         class_name="border-t px-6 py-4 mt-8",
@@ -681,6 +720,7 @@ def _build_footer(ctx: Context, current_path: str):
                 justify="between",
                 children=[prev_btn, next_btn],
             ),
+            edit_link,
         ],
     )
 
