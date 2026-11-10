@@ -698,7 +698,7 @@ def _build_footer(ctx: Context, current_path: str):
     source_url = _source_url(current_path)
     if source_url:
         edit_link = Container(
-            class_name="flex justify-center pt-3",
+            class_name="flex justify-end px-6 pb-2",
             children=[
                 Link(
                     "Edit this page",
@@ -712,14 +712,24 @@ def _build_footer(ctx: Context, current_path: str):
 
     return Container(
         id="docs-page-footer",
-        class_name="border-t px-6 py-4 mt-8",
+        # No horizontal padding here: the rule below has to reach both edges of
+        # the column, so the rows are inset individually instead.
+        class_name="mt-8",
         children=[
-            Flex(
-                direction="row",
-                justify="between",
-                children=[prev_btn, next_btn],
-            ),
             edit_link,
+            # The rule divides the prose from the page-to-page controls, so it has
+            # to sit below both of those; the edit link belongs with the prose.
+            Container(
+                class_name="border-t",
+                children=[
+                    Flex(
+                        direction="row",
+                        justify="between",
+                        class_name="px-6 py-4",
+                        children=[prev_btn, next_btn],
+                    )
+                ],
+            ),
         ],
     )
 
