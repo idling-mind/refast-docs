@@ -32,7 +32,8 @@ REFAST_REPO=../refast uv run pytest  # also resolve every "View source" link
 `tests/` renders every page function, rejects props that the installed components do not
 accept, checks that every link leads to a registered route, asserts that the Markdown
 tables have the right number of columns, verifies that every page contributes text to the
-search index, and checks the HTML document every tab and crawler sees first — title,
+search index, checks that every page's Markdown mirror carries the prose rather than the
+empty shell, and checks the HTML document every tab and crawler sees first — title,
 favicon, share metadata, `robots.txt`, `sitemap.xml`. CI runs them on Python 3.12 and 3.13
 against the newest refast release, so a framework change that breaks a page fails here
 rather than in a reader's browser.
@@ -44,6 +45,13 @@ rather than in a reader's browser.
   (`docs/search.py`, `docs/pages/search_results.py`)
 - every page links to its own source file in the footer, and to the framework's
   source where a component is documented
+- every page has a Markdown mirror at its URL plus `.md`, so a reader that cannot run
+  JavaScript still gets text; `/docs/ai-agents` explains the surfaces for machines,
+  and `/llms.txt`, `/llms-full.txt`, `/api/pages.json` and `/api/search?q=…` are what
+  an agent is pointed at (`docs/markdown_export.py`)
+- every page's HTML carries its own title, description, `canonical` and JSON-LD, even
+  though one shell serves all of them, and advertises its Markdown mirror
+  (`docs/route_head.py`)
 - `/robots.txt` and `/sitemap.xml` for machines, and light/dark plus five colour
   themes for everyone else
 

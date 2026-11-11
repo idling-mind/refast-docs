@@ -40,6 +40,10 @@ GITHUB_PATH_RE = re.compile(
     r"(?P<ref>[\w.-]+)/(?P<path>[^\s)\"']+)"
 )
 
+#: Any absolute URL in this repository's text that claims to be this site, however it
+#: is spelled: the point is to catch the wrong-domain variant, not to match one host.
+HOST_RE = re.compile(r"https?://[\w.-]*fastapicloud[\w.-]*[^\s)\"'`]*")
+
 
 def _page_routes() -> set[str]:
     """Routes registered with a page function (``pages`` is a property)."""
@@ -160,6 +164,30 @@ def test_nav_and_registered_routes_agree() -> None:
     unlisted = sorted(r for r in pages - nav_routes if r.startswith("/docs"))
     assert not dead_links, f"sidebar routes with no page function: {dead_links}"
     assert not unlisted, f"/docs pages missing from the sidebar: {unlisted}"
+
+
+def test_no_page_names_a_host_the_site_does_not_live_on() -> None:
+    """A mistyped host is a link to a domain that does not resolve.
+
+    ``SITE_URL`` defaulted to `refast.fastapicloud.com`, which has never resolved, while
+    the deployment lives on `.dev` -- and robots.txt on the live site still points
+    crawlers at the dead one. Hosts appear in prose too, and prose is copied: the mirror
+    of a page, its `/llms.txt` row and its `curl` examples all repeat whatever the page
+    says. So the one claim on this site that cannot be derived from the request gets
+    checked against the others.
+    """
+    from urllib.parse import urlparse
+
+    from docs.app import SITE_URL
+
+    allowed = {urlparse(SITE_URL).netloc, "refast.fastapicloud.dev"}
+    wrong = {
+        f"{path.relative_to(ROOT)}: {url}"
+        for path in _files((".py", ".md"))
+        for url in HOST_RE.findall(path.read_text(encoding="utf-8"))
+        if urlparse(url).netloc not in allowed
+    }
+    assert not wrong, "prose names a host the site is not on:\n" + "\n".join(sorted(wrong))
 
 
 def test_github_source_links_resolve() -> None:

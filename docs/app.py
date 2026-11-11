@@ -14,7 +14,7 @@ from urllib.parse import quote
 
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 
@@ -75,6 +75,8 @@ from refast.theme import (
     ocean_breeze_theme,
 )
 
+from . import markdown_export  # noqa: E402
+from . import route_head  # noqa: E402
 from . import search as search_index  # noqa: E402
 from .pages import home  # noqa: E402
 from .pages.advanced import (  # noqa: E402
@@ -109,6 +111,7 @@ from .pages.extensions import (  # noqa: E402
     vtk_js as extensions_vtk_js,
 )
 from .pages.getting_started import (  # noqa: E402
+    ai_agents,
     architecture,
     examples_gallery,
     installation,
@@ -226,6 +229,7 @@ NAV_SECTIONS = [
             ("Quick Tour", "/docs/quick-tour", "zap", quick_tour.render),
             ("Live Todo Demo", "/docs/todo-live", "check-circle", todo_app_live.render),
             ("Examples Gallery", "/docs/examples", "grid-3x3", examples_gallery.render),
+            ("AI & Machine-Readable Docs", "/docs/ai-agents", "bot", ai_agents.render),
         ],
     },
     {
@@ -809,21 +813,35 @@ def _build_footer(ctx: Context, current_path: str):
                 on_click=ctx.callback(nav, path=next_route),
             )
 
-    edit_link = Container()
+    links = []
+    if markdown_export.knows(current_path):
+        # external, so the browser asks for the file instead of routing the shell that
+        # would replace it with the page this link sits on.
+        links.append(
+            Link(
+                "View as Markdown",
+                href=markdown_export.markdown_href(current_path),
+                variant="ghost",
+                external=True,
+                class_name="text-xs text-muted-foreground",
+            )
+        )
     source_url = _source_url(current_path)
     if source_url:
-        edit_link = Container(
-            class_name="flex justify-end px-6 pb-2",
-            children=[
-                Link(
-                    "Edit this page",
-                    href=source_url,
-                    variant="ghost",
-                    external=True,
-                    class_name="text-xs text-muted-foreground",
-                )
-            ],
+        links.append(
+            Link(
+                "Edit this page",
+                href=source_url,
+                variant="ghost",
+                external=True,
+                class_name="text-xs text-muted-foreground",
+            )
         )
+    edit_link = (
+        Container(class_name="flex justify-end gap-4 px-6 pb-2", children=links)
+        if links
+        else Container()
+    )
 
     return Container(
         id="docs-page-footer",
@@ -910,7 +928,22 @@ app.mount(
 #: Where this site is published. refast's own README points readers here;
 #: override with REFAST_DOCS_URL on a preview deployment so a staging host does
 #: not advertise itself as canonical.
-SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.com").rstrip("/")
+SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.dev").rstrip("/")
+
+# refast draws every page in the browser, so an LLM asked to read a documentation URL
+# fetches an empty shell. These routes answer with text instead: `<route>.md` per page,
+# the indexes at /llms.txt and /llms-full.txt, and /api/pages.json. See
+# docs/markdown_export.py, and docs/route_head.py for the metadata of the HTML itself.
+markdown_export.configure(
+    [
+        # The landing page is not in NAV_SECTIONS -- the sidebar starts below it -- but
+        # it is a page, and a reader that fetches `/` sees the same empty shell.
+        ("Overview", "/", "Getting Started", home.render),
+        *[(item["label"], item["route"], item["group"], item["render"]) for item in _SEARCH_ITEMS],
+    ],
+    site_url=SITE_URL,
+    source_url_for=_source_url,
+)
 
 SITE_DESCRIPTION = (
     "Documentation for Refast, a Python framework for building reactive web "
@@ -926,8 +959,10 @@ for _tag in (
     f'<meta property="og:description" content="{escape(SITE_DESCRIPTION)}">',
     f'<meta property="og:url" content="{SITE_URL}/">',
     '<meta name="twitter:card" content="summary">',
-    # One shell is served for every route, so the canonical URL can only be the
-    # root; per-page URLs and titles need server rendering. See docs/TODO.md.
+    # One shell is served for every route, so as written these describe the site at
+    # large; docs/route_head.py rewrites the page-describing ones per request. The
+    # values here are what a reader sees when they ask for the root, and what every
+    # other page falls back to if that middleware is ever removed.
     f'<link rel="canonical" href="{SITE_URL}/">',
 ):
     ui.add_head_tag(_tag)
@@ -935,9 +970,23 @@ for _tag in (
 
 @app.get("/robots.txt", include_in_schema=False)
 async def robots_txt() -> PlainTextResponse:
-    """Crawl everything; the site has no private routes."""
+    """Crawl everything; the site has no private routes.
+
+    ``/llms.txt`` is advertised here because robots.txt is the one file both crawlers
+    and model harnesses read before anything else, and it has no field for an index.
+    """
     return PlainTextResponse(
-        "User-agent: *\nAllow: /\n\nSitemap: " + SITE_URL + "/sitemap.xml\n",
+        "User-agent: *\n"
+        "Allow: /\n\n"
+        "# Model-readable documentation:\n"
+        "#   "
+        + SITE_URL
+        + "/llms.txt        index of every page, as links to Markdown\n"
+        "#   "
+        + SITE_URL
+        + "/llms-full.txt   every page, in one file\n"
+        "#   <page url>.md  one page, as Markdown\n\n"
+        "Sitemap: " + SITE_URL + "/sitemap.xml\n",
         media_type="text/plain",
     )
 
@@ -957,6 +1006,77 @@ def sitemap_xml() -> Response:
         f"{locations}</urlset>\n",
         media_type="application/xml",
     )
+
+
+# ── Machine-readable surfaces ───────────────────────────────────────────────
+
+# These have to be added before `ui.router`'s `/{path:path}` catch-all, or every one of
+# them is answered by the shell they exist to make unnecessary.
+
+
+@app.get("/api/search", include_in_schema=False)
+def search_api(q: str = "", limit: int = 10) -> dict:
+    """Ranked results as JSON, for a reader that cannot render HTML.
+
+    The `.md` mirrors let a model fetch a page; this lets it *find* one. Asking it to
+    download every page and grep it costs hundreds of thousands of tokens, so without
+    this the only agent that can answer a question is one whose prompt already carried
+    the answer.
+    """
+    hits = search_index.search(q, limit=max(1, min(limit, 50))) if q.strip() else []
+    return {
+        "query": q,
+        "count": len(hits),
+        "pages_indexed": search_index.indexed_pages(),
+        "results": [
+            {
+                "title": hit.title,
+                "route": hit.route,
+                "section": hit.group,
+                "url": f"{SITE_URL}{hit.route}",
+                "markdown_url": markdown_export.markdown_url(hit.route),
+                "snippet": hit.snippet,
+                "score": round(hit.score, 2),
+            }
+            for hit in hits
+        ],
+    }
+
+
+markdown_export.register_fastapi_routes(app)
+
+
+@app.middleware("http")
+async def per_route_head(request: Request, call_next):
+    """Give every page the ``<head>`` of the page it is.
+
+    refast emits one shell for all routes, so without this the title, description,
+    canonical URL and Open Graph tags of `/docs/advanced/sessions` describe the site
+    rather than the page -- and `canonical` tells a crawler that the hundredth page is
+    a duplicate of the first. See docs/route_head.py for what is rewritten, and
+    docs/TODO.md for the framework feature that would make this middleware unnecessary.
+    """
+    response = await call_next(request)
+    path = request.url.path.rstrip("/") or "/"
+    if (
+        path == "/"
+        or not markdown_export.knows(path)
+        or response.status_code != 200
+        or not response.headers.get("content-type", "").startswith("text/html")
+    ):
+        return response
+
+    body = b"".join([chunk async for chunk in response.body_iterator])
+    patched = route_head.patch_shell(
+        body.decode("utf-8", errors="replace"),
+        route=path,
+        site_url=SITE_URL,
+        default_description=SITE_DESCRIPTION,
+    )
+    # content-length has to go: the patched document is a different number of bytes,
+    # and Starlette recomputes it for a Response built from a body.
+    headers = {k: v for k, v in response.headers.items() if k.lower() != "content-length"}
+    return Response(content=patched, status_code=response.status_code, headers=headers)
 
 
 app.include_router(ui.router)
