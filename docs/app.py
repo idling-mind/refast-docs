@@ -14,7 +14,7 @@ from urllib.parse import quote
 
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 
@@ -76,6 +76,7 @@ from refast.theme import (
 )
 
 from . import markdown_export  # noqa: E402
+from . import route_head  # noqa: E402
 from . import search as search_index  # noqa: E402
 from .pages import home  # noqa: E402
 from .pages.advanced import (  # noqa: E402
@@ -931,7 +932,8 @@ SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.com").
 
 # refast draws every page in the browser, so an LLM asked to read a documentation URL
 # fetches an empty shell. These routes answer with text instead: `<route>.md` per page,
-# and the two indexes at /llms.txt and /llms-full.txt. See docs/markdown_export.py.
+# the indexes at /llms.txt and /llms-full.txt, and /api/pages.json. See
+# docs/markdown_export.py, and docs/route_head.py for the metadata of the HTML itself.
 markdown_export.configure(
     [
         # The landing page is not in NAV_SECTIONS -- the sidebar starts below it -- but
@@ -957,8 +959,10 @@ for _tag in (
     f'<meta property="og:description" content="{escape(SITE_DESCRIPTION)}">',
     f'<meta property="og:url" content="{SITE_URL}/">',
     '<meta name="twitter:card" content="summary">',
-    # One shell is served for every route, so the canonical URL can only be the
-    # root; per-page URLs and titles need server rendering. See docs/TODO.md.
+    # One shell is served for every route, so as written these describe the site at
+    # large; docs/route_head.py rewrites the page-describing ones per request. The
+    # values here are what a reader sees when they ask for the root, and what every
+    # other page falls back to if that middleware is ever removed.
     f'<link rel="canonical" href="{SITE_URL}/">',
 ):
     ui.add_head_tag(_tag)
@@ -1040,6 +1044,40 @@ def search_api(q: str = "", limit: int = 10) -> dict:
 
 
 markdown_export.register_fastapi_routes(app)
+
+
+@app.middleware("http")
+async def per_route_head(request: Request, call_next):
+    """Give every page the ``<head>`` of the page it is.
+
+    refast emits one shell for all routes, so without this the title, description,
+    canonical URL and Open Graph tags of `/docs/advanced/sessions` describe the site
+    rather than the page -- and `canonical` tells a crawler that the hundredth page is
+    a duplicate of the first. See docs/route_head.py for what is rewritten, and
+    docs/TODO.md for the framework feature that would make this middleware unnecessary.
+    """
+    response = await call_next(request)
+    path = request.url.path.rstrip("/") or "/"
+    if (
+        path == "/"
+        or not markdown_export.knows(path)
+        or response.status_code != 200
+        or not response.headers.get("content-type", "").startswith("text/html")
+    ):
+        return response
+
+    body = b"".join([chunk async for chunk in response.body_iterator])
+    patched = route_head.patch_shell(
+        body.decode("utf-8", errors="replace"),
+        route=path,
+        site_url=SITE_URL,
+        default_description=SITE_DESCRIPTION,
+    )
+    # content-length has to go: the patched document is a different number of bytes,
+    # and Starlette recomputes it for a Response built from a body.
+    headers = {k: v for k, v in response.headers.items() if k.lower() != "content-length"}
+    return Response(content=patched, status_code=response.status_code, headers=headers)
+
 
 app.include_router(ui.router)
 

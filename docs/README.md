@@ -20,6 +20,7 @@ docs/
 ├── TODO.md                     # Known issues tracker
 ├── README.md                   # This file
 ├── markdown_export.py          # Page trees -> Markdown: .md mirrors, llms.txt
+├── route_head.py               # Route-specific title, description, canonical, JSON-LD
 ├── search.py                   # The inverted index behind the palette and /search
 └── pages/
     ├── home.py                 # Landing page (/)
@@ -168,3 +169,16 @@ nothing, so the first `.md` or `/llms.txt` request pays ~0.4 s and every later o
 free. `tests/test_docs_llm_surfaces.py` is the contract — every nav route has a
 mirror, no mirror serves the shell, nothing leaks a demo marker or an unclosed fence,
 and every link in exported text answers 200.
+
+## For machines: the head of each route
+
+`docs/route_head.py` uses the same page inventory to rewrite the identity tags of the
+HTML shell per request: `<title>`, description, `og:title`/`og:description`/`og:url`,
+`og:type`, `canonical`, plus a `rel="alternate" type="text/markdown"` pointer and
+TechArticle + BreadcrumbList JSON-LD. Before it, `canonical` named the root on a
+hundred pages, which tells a crawler they are duplicates of the home page.
+
+It is a middleware over the document refast already emits, which is a workaround, not
+the design: the right shape is `head_tags=` on `@ui.page` (or `render_shell_for=path`)
+in the framework, and `docs/TODO.md` keeps that item open. What the middleware cannot do
+is give a route a different *body* — only metadata differs.

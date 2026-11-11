@@ -35,6 +35,23 @@ Markdown mirrors make each page fetchable; the search API is what makes the site
 *navigable* without downloading the whole site into a context window, which no prompt
 wants to spend on it.
 
+## What a page URL says about itself
+
+One shell is served for every route, so the metadata in it would otherwise describe the
+site wherever you fetched it. Each page's HTML therefore carries its own title
+(`State & Store — Refast Docs`), its own description — the first sentence of the page,
+stated once in prose and reused here — a `canonical` that names the page rather than the
+root, Open Graph tags for link previews, and:
+
+```html
+<link rel="alternate" type="text/markdown" href="/docs/concepts/state.md">
+```
+
+which is how a client that fetched the page, rather than the index, learns that a text
+version exists. Pages also embed `TechArticle` and `BreadcrumbList` JSON-LD, so an
+engine that reads schema instead of prose can tell what the page is about and where it
+sits.
+
 ## Pointing an assistant at it
 
 Paste the starting URL into the tool's instructions rather than hoping it guesses:

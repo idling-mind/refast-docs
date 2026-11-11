@@ -154,6 +154,15 @@ class Page:
             return sentence if len(sentence) < 220 else text[:217].rstrip() + "…"
         return ""
 
+    @property
+    def plain_summary(self) -> str:
+        """:attr:`summary` without Markdown, for a context with no markup at all.
+
+        `<meta description>` is read as text by everything that consumes it, where a
+        stray `*` from ``*session*`` is noise and a link is a truncation.
+        """
+        return _plain_markup(self.summary)
+
 
 @dataclass
 class Entry:
@@ -210,7 +219,7 @@ def _build() -> None:
     _pages.extend(
         Page(
             route=entry.route,
-            title=entry.title or entry.route,
+            title=_page_title(entry) or entry.title,
             section=entry.section,
             group=entry.section,
             markdown=markdown,
@@ -315,6 +324,18 @@ def _markdown_path(route: str) -> str:
 # ── Tree → Markdown ──────────────────────────────────────────────────────
 
 _HEADING_RE = re.compile(r"^#{2,6}\s+(.*)$", re.MULTILINE)
+
+
+def _page_title(entry: Entry) -> str:
+    """The page's own ``PAGE_TITLE``, which is the heading its reader sees.
+
+    The sidebar label is what navigation calls the page, and the two differ: the file
+    at `/docs/getting-started` is titled "Installation & Getting Started". Identity —
+    `<title>`, the mirror's H1, the index row — follows the page, so a reader who
+    arrived by URL and a reader who arrived by link are reading the same name.
+    """
+    module = inspect.getmodule(entry.func)
+    return str(getattr(module, "PAGE_TITLE", "") or "")
 
 
 def _from_render_func(func: Callable[..., Any]) -> tuple[str, bool]:
@@ -497,6 +518,11 @@ def _text(children: Any) -> str:
 
 def _strip_md(text: str) -> str:
     return re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", text)
+
+
+def _plain_markup(text: str) -> str:
+    """Emphasis, code spans and heading marks removed; the words kept."""
+    return re.sub(r"[*_`]{1,3}", "", text).strip()
 
 
 def _absolute(href: str) -> str:

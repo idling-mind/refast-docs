@@ -45,13 +45,14 @@ or document them as known limitations.
       Because refast serves one static shell for every route, `<title>`, `og:url` and
       `canonical` can only describe the root — a crawler or link preview never sees
       "Sessions" as the title of `/docs/advanced/sessions`.
-- [ ] Prerender or server-render the shell per route so titles, descriptions and
-      canonical URLs are route-specific. This is the same feature as item 17
-      (prerendering/static export) and needs framework support: either
-      `RefastApp(pages=..., render_shell_for=path)` or a `head_tags` argument on
-      `@ui.page`. `docs/markdown_export.py` solved the *content* half of this —
-      `<route>.md` gives a crawler text today — but not the identity of the HTML URL,
-      which is what `<title>` and `canonical` describe.
+- [x] ~~Prerender or server-render the shell per route~~ — done in site code instead of
+      framework code: the `per_route_head` middleware in `docs/app.py` rewrites title,
+      description, `og:*`, `canonical` and adds a Markdown `alternate` plus JSON-LD, so
+      each page is addressed as itself. `docs/route_head.py` says why, and
+      `tests/test_docs_route_head.py` that a tag was replaced rather than stacked.
+      Framework support (`head_tags=` on `@ui.page`, or `render_shell_for=path`) would
+      still be the better home for it: this pays for a regex pass over a document that
+      never needed one, and it cannot give a route a different body.
 - [ ] Add an `og:image` (1200×630) and point `og:image` at it; previews are currently
       text-only because `public/` holds nothing but a favicon.
 - [ ] Set `REFAST_DOCS_URL` on preview deployments, or they will claim
@@ -172,6 +173,7 @@ refast releases:
 | `test_docs_markdown_tables.py` | Markdown tables that render with the wrong number of columns |
 | `test_docs_search.py` | pages that vanished from the search index, and ranking that stopped reflecting page text |
 | `test_docs_llm_surfaces.py` | a Markdown mirror that serves the shell, an empty export, a `{{ demo_app }}` marker that leaked, or an index that no longer matches the sidebar |
+| `test_docs_route_head.py` | a page whose title, canonical URL or description still describes the site, a tag stacked instead of replaced, a stale `content-length`, a mirror nobody advertises |
 | `test_docs_shell.py` | the HTML document every tab and crawler sees first: title, favicon, share metadata, robots.txt, sitemap.xml |
 
 Open items:

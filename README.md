@@ -49,6 +49,9 @@ rather than in a reader's browser.
   JavaScript still gets text; `/docs/ai-agents` explains the surfaces for machines,
   and `/llms.txt`, `/llms-full.txt`, `/api/pages.json` and `/api/search?q=…` are what
   an agent is pointed at (`docs/markdown_export.py`)
+- every page's HTML carries its own title, description, `canonical` and JSON-LD, even
+  though one shell serves all of them, and advertises its Markdown mirror
+  (`docs/route_head.py`)
 - `/robots.txt` and `/sitemap.xml` for machines, and light/dark plus five colour
   themes for everyone else
 
