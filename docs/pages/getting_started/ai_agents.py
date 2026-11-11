@@ -15,9 +15,9 @@ form: plain Markdown, generated from the same components you are reading.
 If you are a person skimming for a `curl` command, it is this:
 
 ```bash
-curl -s https://refast.fastapicloud.com/llms.txt          # the whole site, as an index
-curl -s https://refast.fastapicloud.com/docs/concepts/state.md   # one page, as text
-curl -s "https://refast.fastapicloud.com/api/search?q=save_prop" # find the page by content
+curl -s https://refast.fastapicloud.dev/llms.txt          # the whole site, as an index
+curl -s https://refast.fastapicloud.dev/docs/concepts/state.md   # one page, as text
+curl -s "https://refast.fastapicloud.dev/api/search?q=save_prop" # find the page by content
 ```
 
 ## The surfaces
@@ -57,7 +57,7 @@ sits.
 Paste the starting URL into the tool's instructions rather than hoping it guesses:
 
 ```text
-Refast documentation: fetch https://refast.fastapicloud.com/llms.txt for the index,
+Refast documentation: fetch https://refast.fastapicloud.dev/llms.txt for the index,
 then fetch only the .md pages you need. Answer from those pages, and cite their URLs.
 ```
 

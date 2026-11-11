@@ -56,7 +56,7 @@ or document them as known limitations.
 - [ ] Add an `og:image` (1200×630) and point `og:image` at it; previews are currently
       text-only because `public/` holds nothing but a favicon.
 - [ ] Set `REFAST_DOCS_URL` on preview deployments, or they will claim
-      `refast.fastapicloud.com` as canonical.
+      `refast.fastapicloud.dev` as canonical.
 
 ### Machine-readable surfaces
 

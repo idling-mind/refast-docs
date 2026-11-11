@@ -928,7 +928,7 @@ app.mount(
 #: Where this site is published. refast's own README points readers here;
 #: override with REFAST_DOCS_URL on a preview deployment so a staging host does
 #: not advertise itself as canonical.
-SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.com").rstrip("/")
+SITE_URL = os.environ.get("REFAST_DOCS_URL", "https://refast.fastapicloud.dev").rstrip("/")
 
 # refast draws every page in the browser, so an LLM asked to read a documentation URL
 # fetches an empty shell. These routes answer with text instead: `<route>.md` per page,
