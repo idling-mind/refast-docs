@@ -19,6 +19,8 @@ docs/
 ├── AGENT_INSTRUCTIONS.md       # Top-level instructions for AI agents
 ├── TODO.md                     # Known issues tracker
 ├── README.md                   # This file
+├── markdown_export.py          # Page trees -> Markdown: .md mirrors, llms.txt
+├── search.py                   # The inverted index behind the palette and /search
 └── pages/
     ├── home.py                 # Landing page (/)
     ├── getting_started/        # Installation, Architecture, Quick Tour, Examples
@@ -125,3 +127,44 @@ exists.
 
 Each section folder contains an `AGENT_INSTRUCTIONS.md` with detailed per-page content
 requirements, source files to read, and examples to include. Start there.
+
+## For machines: Markdown mirrors and the LLM surfaces
+
+refast renders pages in the browser, so `GET /docs/concepts/state` answers with an
+empty shell and a reader that cannot run JavaScript reads nothing. `docs/app.py` says
+the same thing about `<title>`, and `/sitemap.xml` can only announce a page, not
+quote it. `docs/markdown_export.py` is the fix: it calls each page function, takes the
+tree from the `docs-content-*` container `docs_layout` puts the body inside, and
+converts it back to Markdown.
+
+Four surfaces come out of that one generator:
+
+| Route | Reader | Shape |
+|-------|--------|-------|
+| `<route>.md` (`/index.md` for `/`) | anything that can fetch one URL | one page as text, with a header stating section, URL, source file, refast version |
+| `/llms.txt` | an agent with a budget to spend | [llmstxt.org](https://llmstxt.org) index: every page, one sentence, its headings, a link to its `.md` |
+| `/llms-full.txt` | a one-shot prompt | every page, navigation order, `<!-- ===== /route ===== -->` between them |
+| `/api/pages.json`, `/api/search?q=` | a program | the inventory, and ranked results over page text, as JSON |
+
+Why the tree and not the source: `docs/search.py` pulls literals out of modules with
+`ast`, which is enough for an index but wrong for a mirror — props tables come from
+`inspect`, code samples come from signatures, and a module's definition order is not
+the reader's order. Walking the tree means a page cannot be updated and stay stale in
+its own mirror.
+
+Two rules this puts on anyone writing a page:
+
+- **The first paragraph is the page's description.** `Page.summary` takes the first
+  sentence of prose it finds and puts it in `/llms.txt` and `/api/pages.json`. A page
+  that opens with a heading and a playground gets a description of nothing.
+- **Live examples are dropped, at the narrowest place that works.** A node whose
+  children are a control and no prose is pruned (those are `variant`/`size` labels,
+  which are vocabulary, not documentation); a paragraph beside a button keeps the
+  paragraph. The mirror says `Live examples:` in its header when anything went this
+  way, and `docs/pages/utils.py`'s `{{ demo_app }}` markers never reach the export.
+
+Generation is lazy and cached: importing `docs.app` records the pages and renders
+nothing, so the first `.md` or `/llms.txt` request pays ~0.4 s and every later one is
+free. `tests/test_docs_llm_surfaces.py` is the contract — every nav route has a
+mirror, no mirror serves the shell, nothing leaks a demo marker or an unclosed fence,
+and every link in exported text answers 200.

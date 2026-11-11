@@ -49,11 +49,40 @@ or document them as known limitations.
       canonical URLs are route-specific. This is the same feature as item 17
       (prerendering/static export) and needs framework support: either
       `RefastApp(pages=..., render_shell_for=path)` or a `head_tags` argument on
-      `@ui.page`.
+      `@ui.page`. `docs/markdown_export.py` solved the *content* half of this —
+      `<route>.md` gives a crawler text today — but not the identity of the HTML URL,
+      which is what `<title>` and `canonical` describe.
 - [ ] Add an `og:image` (1200×630) and point `og:image` at it; previews are currently
       text-only because `public/` holds nothing but a favicon.
 - [ ] Set `REFAST_DOCS_URL` on preview deployments, or they will claim
       `refast.fastapicloud.com` as canonical.
+
+### Machine-readable surfaces
+
+- [x] ~~Give LLMs something to fetch~~ — done: `docs/markdown_export.py` renders each
+      page and converts the tree back to Markdown, served at `<route>.md`
+      (`/index.md` for `/`), indexed in `/llms.txt`, concatenated in
+      `/llms-full.txt`, described in `/api/pages.json`, and searchable through
+      `/api/search?q=`. `docs/pages/getting_started/ai_agents.py` documents it for
+      readers; `tests/test_docs_llm_surfaces.py` holds it in place.
+- [ ] **Serve the mirrors' HTML twin.** A prerendered `/docs/concepts/state.html` (or
+      a `?_escaped_fragment`-style static export) would let Google-class crawlers index
+      the text at the canonical URL instead of at a `.md` sibling. Same generator.
+- [ ] Content negotiation on the page routes: `Accept: text/markdown` returning the
+      mirror, so a client that knows the page URL but not the convention still gets
+      text. The `.md` suffix is the documented path today.
+- [ ] **MCP server** exposing `search_docs`, `get_page`, `list_pages` over the same
+      modules (`/.well-known/mcp/server-card.json` for discovery, plus a stdio shim).
+      The JSON API is the substrate; the server is packaging.
+- [ ] "Copy page as Markdown" in the footer, next to "View as Markdown", for the human
+      who pastes documentation into a chat.
+- [ ] A one-page cheat sheet (`/docs/cheatsheet.md`, under ~2k tokens: app skeleton,
+      the components that cover most apps, the `ctx` API, the five mistakes) and point
+      `/llms.txt`'s blockquote at it as the thing to read first. Most agent sessions
+      need exactly that and nothing else.
+- [ ] Error-first troubleshooting page, keyed by the literal text of exceptions
+      (`store_as` is FastUI's API, not refast's, is one such entry already). Agents
+      retrieve by pasting an error, and today they would find nothing.
 
 ### Content Completion
 
@@ -142,6 +171,7 @@ refast releases:
 | `test_docs_links.py` | links to unregistered routes, "View source" URLs that 404, and "Edit this page" URLs whose file is gone |
 | `test_docs_markdown_tables.py` | Markdown tables that render with the wrong number of columns |
 | `test_docs_search.py` | pages that vanished from the search index, and ranking that stopped reflecting page text |
+| `test_docs_llm_surfaces.py` | a Markdown mirror that serves the shell, an empty export, a `{{ demo_app }}` marker that leaked, or an index that no longer matches the sidebar |
 | `test_docs_shell.py` | the HTML document every tab and crawler sees first: title, favicon, share metadata, robots.txt, sitemap.xml |
 
 Open items:

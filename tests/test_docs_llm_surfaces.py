@@ -161,15 +161,25 @@ def test_every_mirror_holds_a_sentence_about_itself() -> None:
     assert not thin, f"no first sentence to quote: {thin}"
 
 
-def test_links_inside_exported_text_lead_somewhere() -> None:
-    """A mirror is fetched standalone, so its links have to be absolute and real."""
-    registered = _registered_routes()
+def test_links_inside_exported_text_lead_somewhere(client: TestClient) -> None:
+    """A mirror is fetched standalone, so its links have to be absolute and real.
+
+    Every distinct target is asked once, which covers the surfaces that are not
+    registered pages -- `/llms.txt`, `/api/pages.json` -- and would otherwise be a
+    link that only the page that mentions it has ever followed.
+    """
+    targets: set[str] = set()
     for route in NAV_ROUTES:
         markdown = markdown_export.find(route).markdown
         assert not re.search(r"\]\(/(?!/)", markdown), f"{route} kept a site-relative link"
-        for url in _listed_urls(markdown):
-            target = url.removeprefix(SITE_URL).split("#")[0]
-            assert target in registered or target.endswith(".md"), f"{route} links to {url}"
+        targets.update(url.removeprefix(SITE_URL).split("#")[0] for url in _listed_urls(markdown))
+
+    dead = [
+        target
+        for target in sorted(set(targets))
+        if "{" not in target and client.get(target).status_code != 200
+    ]
+    assert not dead, f"exported text links to nothing:\n" + "\n".join(dead)
 
 
 def test_robots_txt_points_at_the_index(client: TestClient) -> None:
@@ -184,12 +194,3 @@ def test_markdown_paths_are_predictable() -> None:
     assert markdown_export.markdown_href("/") == "/index.md"
     assert markdown_export.knows("/docs/concepts/state")
     assert not markdown_export.knows("/nope")
-
-
-def _registered_routes() -> set[str]:
-    """Routes refast serves, so an exported link can be checked against them."""
-    from docs.app import ui
-
-    pages = getattr(ui, "pages", None)
-    pages = pages() if callable(pages) else pages
-    return {route for route in dict(pages or {}) if "{" not in route}

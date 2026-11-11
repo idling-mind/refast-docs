@@ -110,6 +110,7 @@ from .pages.extensions import (  # noqa: E402
     vtk_js as extensions_vtk_js,
 )
 from .pages.getting_started import (  # noqa: E402
+    ai_agents,
     architecture,
     examples_gallery,
     installation,
@@ -227,6 +228,7 @@ NAV_SECTIONS = [
             ("Quick Tour", "/docs/quick-tour", "zap", quick_tour.render),
             ("Live Todo Demo", "/docs/todo-live", "check-circle", todo_app_live.render),
             ("Examples Gallery", "/docs/examples", "grid-3x3", examples_gallery.render),
+            ("AI & Machine-Readable Docs", "/docs/ai-agents", "bot", ai_agents.render),
         ],
     },
     {

@@ -31,6 +31,13 @@ Open http://localhost:8000 in your browser.
 6. **Code examples**: Use triple-backtick code blocks inside the Markdown text. The Markdown component supports syntax highlighting.
 7. **Cross-links**: Reference other pages by their routes (e.g., `[State Management](/docs/concepts/state)`).
 8. **Tables**: `Markdown` renders with `remark-gfm`, which splits cells on **every** `|` in a row — including inside code spans. Escape type unions as `\|` (write `` `str \| None` ``, never `` `str | None` ``), and keep the cell count identical to the header row. Because `\|` is an invalid Python escape sequence, store table content in **raw** strings (`CONTENT = r"""…"""`).
+9. **Machines read the same page**: every page is mirrored to `<route>.md` by
+   `docs/markdown_export.py`, which walks the rendered tree. Two consequences — the
+   first paragraph of prose becomes the page's description in `/llms.txt`, so do not
+   open a page with a heading and a playground; and playground widgets are pruned from
+   the mirror, so anything a reader must know has to be in text, not only in a demo.
+   `uv run pytest tests/test_docs_llm_surfaces.py` fails a page whose mirror came out
+   empty. See `docs/pages/getting_started/ai_agents.py` for what is offered to agents.
 
 ## Adding a New Page
 
@@ -55,9 +62,10 @@ uv run ruff check docs tests       # lint
 ```
 
 The suite in `tests/` is the contract with refast: it renders every registered page,
-rejects props the components do not accept, fails on links to unregistered routes, and
-checks that every Markdown table has as many cells as its header. If you rename a route,
-update the pages that link to it or `test_docs_links.py` will fail.
+rejects props the components do not accept, fails on links to unregistered routes, checks
+that every Markdown table has as many cells as its header, and checks that every page
+still exports readable Markdown to `<route>.md`. If you rename a route, update the pages
+that link to it or `test_docs_links.py` will fail.
 
 ## Available Components for Documentation
 
